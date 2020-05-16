@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/md-apps.iml" filepath="$PROJECT_DIR$/md-apps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/md-jcore/md-jcore.iml" filepath="$PROJECT_DIR$/md-jcore/md-jcore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/md-jgames-jchess/md-jgames-jchess.iml" filepath="$PROJECT_DIR$/md-jgames-jchess/md-jgames-jchess.iml" />
+    </modules>
+  </component>
+</project>
