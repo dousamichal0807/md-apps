@@ -29,7 +29,7 @@ public final class BasicTree<E> implements Serializable {
 	 * {@code null} and no children inside.
 	 */
 	public BasicTree() {
-		this(new BasicTreeNode<E>());
+		this(new BasicTreeNode<>());
 	}
 
 	public BasicTree(BasicTreeNode<E> rootNode) {

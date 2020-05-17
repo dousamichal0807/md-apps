@@ -15,7 +15,9 @@ import md.jcore.math.MDVector;
  */
 public class MDPoint3D {
 
-	private BigDecimal x, y, z;
+	private final BigDecimal x;
+    private final BigDecimal y;
+    private final BigDecimal z;
 
 	/**
 	 * Gets the <var>x</var>-coordinate of the 3D point.
@@ -80,7 +82,9 @@ public class MDPoint3D {
 	 */
 	public static final class Double {
 
-		private double x, y, z;
+		private final double x;
+        private final double y;
+        private final double z;
 
 		/**
 		 * Gets the <var>x</var>-coordinate of the 3D point.

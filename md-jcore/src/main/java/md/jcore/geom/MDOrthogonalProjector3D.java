@@ -34,10 +34,10 @@ public final class MDOrthogonalProjector3D {
 		public static final MDMatrix.Double MATRIX_PROJECTION_ORTHOGONAL = new MDMatrix.Double(
 				new double[][] { { 1, 0, 0 }, { 0, 1, 0 } });
 
-		private ArrayList<MDRotation3D> rotations;
+		private final ArrayList<MDRotation3D> rotations;
 
 		public Double() {
-			rotations = new ArrayList<MDRotation3D>();
+			rotations = new ArrayList<>();
 		}
 
 		/**
@@ -52,12 +52,10 @@ public final class MDOrthogonalProjector3D {
 
 		@Override
 		public md.jcore.math.MDVector.Double project(md.jcore.math.MDVector.Double vector) {
-			AtomicReference<MDMatrix.Double> mtx = new AtomicReference<MDMatrix.Double>(new MDMatrix.Double(vector));
-			rotations.forEach(rotation -> {
-				mtx.set(rotation.asDoubleMatrix().multiply(mtx.get()));
-			});
-			MDVector.Double result = MATRIX_PROJECTION_ORTHOGONAL.multiply(mtx.get()).columnAsVector(0);
-			return result;
+			AtomicReference<MDMatrix.Double> mtx = new AtomicReference<>(new MDMatrix.Double(vector));
+			rotations.forEach(rotation -> mtx.set(rotation.asDoubleMatrix().multiply(mtx.get())));
+
+			return MATRIX_PROJECTION_ORTHOGONAL.multiply(mtx.get()).columnAsVector(0);
 		}
 	}
 }

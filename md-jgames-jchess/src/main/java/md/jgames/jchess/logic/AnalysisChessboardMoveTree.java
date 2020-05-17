@@ -7,8 +7,8 @@ public class AnalysisChessboardMoveTree {
 	
 	public Move getMove(int rootIndex, int...indices) {
 		AnalysisChessboardMoveNode node = rootNodes.get(rootIndex);
-		for(int i = 0; i < indices.length; i++) {
-			node = node.getChildNodes().get(indices[i]);
+		for (int index : indices) {
+			node = node.getChildNodes().get(index);
 		}
 		return node.getMove();
 	}

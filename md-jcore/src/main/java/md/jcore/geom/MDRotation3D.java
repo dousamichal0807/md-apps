@@ -25,8 +25,8 @@ public class MDRotation3D {
 	 */
 	public static final byte AXIS_Z = 2;
 	
-	private double angle;
-	private byte axis;
+	private final double angle;
+	private final byte axis;
 
 	public MDRotation3D(byte axis, double angle) {
 		if (axis < 0 || axis > 3)

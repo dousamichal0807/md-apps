@@ -56,7 +56,7 @@ public final class BasicTreeNode<E> implements Serializable {
 	 */
 	public BasicTreeNode(E value) {
 		this.setValue(value);
-		this.children = new ArrayList<BasicTreeNode<E>>();
+		this.children = new ArrayList<>();
 	}
 	
 	/**

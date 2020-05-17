@@ -212,7 +212,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 	// Painting & Mouse event handling ----------------------------------------
 
 	private String selectedSquare;
-	private TreeSet<Move> selSquarePossibleMoves;
+	private final TreeSet<Move> selSquarePossibleMoves;
 	private boolean mouseDown;
 
 	public Rectangle getChessboardBounds() {
@@ -357,9 +357,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 			}
 
 			if (selectedSquare != null && sqMouseDown != null) {
-				Iterator<Move> possibleMoves = selSquarePossibleMoves.iterator();
-				while (possibleMoves.hasNext()) {
-					Move move = possibleMoves.next();
+				for (Move move : selSquarePossibleMoves) {
 					if (move.getSquareTo().equals(sqMouseDown)) {
 						repaint();
 						return;
@@ -391,9 +389,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 			}
 			if (squareMouseOver != null) {
 				TreeSet<Move> moves = new TreeSet<>();
-				Iterator<Move> it = selSquarePossibleMoves.iterator();
-				while (it.hasNext()) {
-					Move move = it.next();
+				for (Move move : selSquarePossibleMoves) {
 					if (squareMouseOver.equals(move.getSquareTo()))
 						moves.add(move);
 				}

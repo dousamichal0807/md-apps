@@ -29,10 +29,13 @@ public class NewGameActivity extends MaterialActivity {
 	private GamePlayChessboard chessboard;
 	
 	// Board Setup
-	private JButton backButton, nextButton;
-	private JPanel buttonPane, playerSetupContainer, mainContent;
-	private ChessboardSetupSelect chessboardSetupSelect;
-	private CardLayout mainContentLayout;
+	private final JButton backButton;
+	private final JButton nextButton;
+	private final JPanel buttonPane;
+	private final JPanel playerSetupContainer;
+	private final JPanel mainContent;
+	private final ChessboardSetupSelect chessboardSetupSelect;
+	private final CardLayout mainContentLayout;
 	private int mainContentCardIndex;
 	
 	private NewGameActivity() {
@@ -50,16 +53,7 @@ public class NewGameActivity extends MaterialActivity {
 		buttonPane = new JPanel();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.X_AXIS));
 		buttonPane.setBorder(new EmptyBorder(10, 20, 20, 20));
-		backButton = new MaterialButton("Back", false, MaterialConstants.ELEVATION_ELEVATED);
-		backButton.addActionListener(event -> {
-			if(mainContentCardIndex > 0) {
-				mainContentCardIndex--;
-				mainContentLayout.show(mainContent, Integer.toString(mainContentCardIndex));
-				nextButton.setText("Next");
-			}
-			else
-				Main.getMainWindow().switchActivity(MainActivity.getInstance());
-		});
+
 		nextButton = new MaterialButton("Next", true, MaterialConstants.ELEVATION_ELEVATED);
 		nextButton.addActionListener(event -> {
 			if(mainContentCardIndex < mainContent.getComponentCount() - 1) {
@@ -72,6 +66,17 @@ public class NewGameActivity extends MaterialActivity {
 				GamePlayActivity.getInstance().setChessboard(chessboardSetupSelect.getChessboard(), true);
 				Main.getMainWindow().switchActivity(GamePlayActivity.getInstance());
 			}
+		});
+		
+		backButton = new MaterialButton("Back", false, MaterialConstants.ELEVATION_ELEVATED);
+		backButton.addActionListener(event -> {
+			if (mainContentCardIndex > 0) {
+				mainContentCardIndex--;
+				mainContentLayout.show(mainContent, Integer.toString(mainContentCardIndex));
+				nextButton.setText("Next");
+			}
+			else
+				Main.getMainWindow().switchActivity(MainActivity.getInstance());
 		});
 		
 		buttonPane.add(backButton);

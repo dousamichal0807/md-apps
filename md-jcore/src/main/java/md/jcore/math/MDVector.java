@@ -19,7 +19,7 @@ public final class MDVector implements MDMathEntity, Comparable<MDVector> {
 
 	private static final long serialVersionUID = 0x0100L;
 	
-	private BigDecimal[] coordinates;
+	private final BigDecimal[] coordinates;
 	
 	/**
 	 * Creates new vector. All passed vector coordinates are converted to
@@ -194,7 +194,7 @@ public final class MDVector implements MDMathEntity, Comparable<MDVector> {
 		
 		private static final long serialVersionUID = 0x0100L;
 		
-		private double[] coordinates;
+		private final double[] coordinates;
 		
 		/**
 		 * Creates new vector.

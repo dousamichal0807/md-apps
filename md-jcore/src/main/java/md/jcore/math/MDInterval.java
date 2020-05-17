@@ -6,9 +6,10 @@ public class MDInterval extends MDNumberSet {
     private static final long serialVersionUID = 0x0100L;
 
     private final boolean fromLeftSideClosed, fromRightSideClosed;
-    private BigDecimal leftBound, rightBound;
+    private final BigDecimal leftBound;
+    private final BigDecimal rightBound;
 
-    public MDInterval(final boolean lc, BigDecimal min, BigDecimal max, final boolean rc) {
+    public MDInterval(final boolean lc, final BigDecimal min, final BigDecimal max, final boolean rc) {
         if (min.compareTo(max) >= 0)
             throw new IllegalArgumentException("Left bound is not less than right bound of an interval");
         this.leftBound = min;

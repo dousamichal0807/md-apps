@@ -17,14 +17,14 @@ import java.util.ArrayList;
 public final class MaterialIcon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<MaterialIconPathCommand> path;
+	private final ArrayList<MaterialIconPathCommand> path;
 	
 	public ArrayList<MaterialIconPathCommand> getPath() {
 		return path;
 	}
 	
 	public MaterialIcon() {
-		path = new ArrayList<MaterialIconPathCommand>();
+		path = new ArrayList<>();
 	}
 	
 	/**

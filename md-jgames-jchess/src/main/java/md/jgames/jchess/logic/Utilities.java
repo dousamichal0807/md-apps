@@ -62,6 +62,7 @@ public final class Utilities {
 	 */
 	public static final Pattern PATTERN_UCI_MOVE = Pattern.compile("([a-h][1-8])([a-h][1-8])([qrbn])?");
 
+	public static final Pattern PATTERN_SQUARE = Pattern.compile("[a-h][1-8]");
 	/**
 	 * Method testing if given input is a valid chessboard square notation.
 	 * 
@@ -71,7 +72,7 @@ public final class Utilities {
 	 *         notation
 	 */
 	public static boolean isValidSquare(final String square) {
-		return square.matches("[a-h][1-8]");
+		return PATTERN_SQUARE.matcher(square).matches();
 	}
 
 	/**
@@ -268,7 +269,7 @@ public final class Utilities {
 		case 'k':
 			return Chessboard.PIECE_BLACK_KING;
 		default:
-			throw new IllegalArgumentException("Illegal piece: \'" + piece + "\'");
+			throw new IllegalArgumentException("Illegal piece: '" + piece + "'");
 		}
 	}
 
@@ -278,14 +279,12 @@ public final class Utilities {
 	 * @return the FEN notation of some Chess960 position
 	 */
 	public static String generateChess960FEN() {
-		List<Character> firstRankPieces = Arrays.asList(new Character[] { 'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r' });
+		List<Character> firstRankPieces = Arrays.asList('r', 'n', 'b', 'q', 'k', 'b', 'n', 'r');
 		String firstRank = null;
 		while (firstRank == null) {
 			Collections.shuffle(firstRankPieces);
 			StringBuilder firstRankBuilder = new StringBuilder(8);
-			Iterator<Character> piecesIterator = firstRankPieces.iterator();
-			while (piecesIterator.hasNext())
-				firstRankBuilder.append(piecesIterator.next());
+			for (Character firstRankPiece : firstRankPieces) firstRankBuilder.append(firstRankPiece);
 			firstRank = firstRankBuilder.toString();
 			if (!firstRank.matches(".*r.*k.*r.*") || !firstRank.matches(".*b(..|....|......|)b.*"))
 				firstRank = null;
@@ -341,12 +340,12 @@ public final class Utilities {
 		return new ExecutableProcess(stockfishPath, "StockfishProc" + createdStockfishProcessesCount++);
 	}
 
-	public static String getCurrentFEN(ExecutableProcess process) {
+	public static String getCurrentFEN(final ExecutableProcess process) {
 		synchronized (process) {
-			AtomicReference<String> currFEN = new AtomicReference<String>(null);
+			AtomicReference<String> currFEN = new AtomicReference<>(null);
 			process.send("d");
 			process.read(line -> {
-				md.jcore.debug.Debugger.info(Utilities.class, "getCurrentFEN: accepted line: \'" + line + "\'");
+				md.jcore.debug.Debugger.info(Utilities.class, "getCurrentFEN: accepted line: '" + line + "'");
 				if (line.startsWith("Fen: ")) {
 					currFEN.set(line.substring(5));
 					return false;
@@ -368,7 +367,7 @@ public final class Utilities {
 	 * 
 	 * @see #setOptions(ExecutableProcess, Map)
 	 */
-	public static void setOption(ExecutableProcess process, String name, Object value) {
+	public static void setOption(final ExecutableProcess process, final String name, final Object value) {
 		synchronized (process) {
 			process.send("setoption name " + name + " value " + value);
 		}
@@ -383,11 +382,9 @@ public final class Utilities {
 	 * 
 	 * @see #setOption(ExecutableProcess, String, Object)
 	 */
-	public static void setOptions(ExecutableProcess process, Map<String, Object> options) {
+	public static void setOptions(final ExecutableProcess process, final Map<String, Object> options) {
 		synchronized (process) {
-			Iterator<String> i = options.keySet().iterator();
-			while (i.hasNext()) {
-				String k = i.next();
+			for (String k : options.keySet()) {
 				Object v = options.get(k);
 				setOption(process, k, v);
 			}
@@ -407,7 +404,7 @@ public final class Utilities {
 	 * @see #getCurrentFEN(ExecutableProcess)
 	 * @see #setPosition(ExecutableProcess, String, List)
 	 */
-	public static void setPosition(ExecutableProcess process, String fen, Move... moves) {
+	public static void setPosition(final ExecutableProcess process, final String fen, final Move... moves) {
 		synchronized (process) {
 			Utilities.checkFEN(fen);
 			StringBuilder cmd = new StringBuilder();
@@ -415,9 +412,9 @@ public final class Utilities {
 			cmd.append(fen);
 			if (moves != null && moves.length != 0) {
 				cmd.append(" moves");
-				for (int i = 0; i < moves.length; i++) {
+				for (Move move : moves) {
 					cmd.append(' ');
-					cmd.append(moves[i]);
+					cmd.append(move);
 				}
 			}
 			process.send(cmd.toString());
@@ -435,17 +432,16 @@ public final class Utilities {
 	 * @see #getCurrentFEN(ExecutableProcess)
 	 * @see #setPosition(ExecutableProcess, String, List)
 	 */
-	public static void setPosition(ExecutableProcess process, String fen, List<Move> moves) {
+	public static void setPosition(final ExecutableProcess process, final String fen, final List<Move> moves) {
 		Utilities.checkFEN(fen);
 		StringBuilder cmd = new StringBuilder();
 		cmd.append("position fen ");
 		cmd.append(fen);
 		if (moves != null && !moves.isEmpty()) {
 			cmd.append(" moves");
-			Iterator<Move> iterator = moves.iterator();
-			while (iterator.hasNext()) {
+			for (Move move : moves) {
 				cmd.append(' ');
-				cmd.append(iterator.next().toString());
+				cmd.append(move.toString());
 			}
 		}
 		process.send(cmd.toString());
@@ -463,9 +459,9 @@ public final class Utilities {
 	 * 
 	 * @return the best move that chess engine returned
 	 */
-	public static Move getBestMove(ExecutableProcess process, int depth) {
+	public static Move getBestMove(final ExecutableProcess process, final int depth) {
 		synchronized (process) {
-			AtomicReference<Move> bestMove = new AtomicReference<Move>();
+			AtomicReference<Move> bestMove = new AtomicReference<>();
 
 			process.read(line -> {
 				if (line.startsWith("bestmove")) {
@@ -496,10 +492,10 @@ public final class Utilities {
 	 * 
 	 * @return a {@link TreeMap} as described above
 	 */
-	public static TreeMap<Move, Integer> getAllMovesRating(ExecutableProcess process, int depth) {
+	public static TreeMap<Move, Integer> getAllMovesRating(final ExecutableProcess process, final int depth) {
 		synchronized (process) {
-			TreeMap<Move, Integer> map = new TreeMap<Move, Integer>();
-			AtomicReference<Boolean> done = new AtomicReference<Boolean>(false);
+			TreeMap<Move, Integer> map = new TreeMap<>();
+			AtomicReference<Boolean> done = new AtomicReference<>(false);
 
 			process.read(line -> {
 				Debugger.info(Utilities.class, "getAllMovesRating() - accepted line '" + line + "'");
@@ -533,7 +529,7 @@ public final class Utilities {
 	 */
 	public static void waitForStockfishToBeReady(ExecutableProcess process) {
 		synchronized (process) {
-			AtomicReference<Boolean> ready = new AtomicReference<Boolean>(false);
+			AtomicReference<Boolean> ready = new AtomicReference<>(false);
 			process.read(line -> {
 				boolean rdy = line.equals("readyok");
 				ready.set(rdy);

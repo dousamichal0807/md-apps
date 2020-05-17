@@ -19,7 +19,7 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 	
 	private static final long serialVersionUID = 0x0100L;
 
-	private BigDecimal[][] data;
+	private final BigDecimal[][] data;
 
 	public MDMatrix(final BigDecimal[][] data) {
 		checkMatrixData(data);
@@ -140,7 +140,8 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 		sb.append(" \\end{align*} \\right]");
 		return sb.toString();
 	}
-	
+
+	@SuppressWarnings("MethodDoesntCallSuperMethod")
 	@Override
 	public MDMatrix clone() {
 		return new MDMatrix(this);
@@ -197,8 +198,10 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 	public MDMatrix pow(final int power, final MathContext mc) {
 		if (!isSquareMatrix())
 			throw new IllegalStateException("Matrix is not a square matrix");
-		// TODO pow()
-		return null;
+		MDMatrix result = this;
+		for (int i = 1; i < power; i++)
+			result = multiply(result, mc);
+		return result;
 	}
 
 	// Static methods --------------------------------------------------------------
@@ -208,7 +211,7 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 			throw new IllegalArgumentException("2D array is empty");
 		int w = data[0].length;
 		for (Number[] row : data) {
-			if (row.length != (int) w || w == 0 || (w == 1 && data.length == 1))
+			if (row.length != w || w == 0 || (w == 1 && data.length == 1))
 				throw new IllegalArgumentException("2D array is inconsistent");
 			for (Number cell : row)
 				if (cell == null)
@@ -221,7 +224,7 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 			throw new IllegalArgumentException("2D array is empty");
 		int w = data2[0].length;
 		for (double[] row : data2) {
-			if (row.length != (int) w || w == 0 || (w == 1 && data2.length == 1))
+			if (row.length != w || w == 0 || (w == 1 && data2.length == 1))
 				throw new IllegalArgumentException("2D array is inconsistent");
 		}
 	}
@@ -232,7 +235,7 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 		
 		private static final long serialVersionUID = 0x0100L;
 		
-		private double[][] data;
+		private final double[][] data;
 
 		public Double(final double[][] data) {
 			checkMatrixData(data);

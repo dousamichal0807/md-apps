@@ -16,7 +16,7 @@ import md.jcore.Disposable;
  *
  */
 public abstract class Chessboard implements Disposable {
-	private final Vector<ChessboardListener> chessboardListeners = new Vector<ChessboardListener>();
+	private final Vector<ChessboardListener> chessboardListeners = new Vector<>();
 
 	/**
 	 * Represents a square where is no piece.
@@ -201,10 +201,8 @@ public abstract class Chessboard implements Disposable {
 	 */
 	public SortedSet<Move> possibleMovesFor(String sq) {
 		Disposable.checkIsNotDisposed(this);
-		TreeSet<Move> moveset = new TreeSet<Move>();
-		Iterator<Move> moveit = possibleMoves().iterator();
-		while (moveit.hasNext()) {
-			Move move = moveit.next();
+		TreeSet<Move> moveset = new TreeSet<>();
+		for (Move move : possibleMoves()) {
 			if (move.getSquareFrom().equals(sq))
 				moveset.add(move);
 		}

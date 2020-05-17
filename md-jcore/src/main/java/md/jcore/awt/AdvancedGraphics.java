@@ -170,21 +170,19 @@ public final class AdvancedGraphics {
 		if (horizontalAlign < 0 || horizontalAlign > 2 || verticalAlign < 0 || verticalAlign > 2)
 			throw new IllegalArgumentException("Illegal value for alignment of the text");
 
-		if (text != null) {
-			// AWT - Font Metriccs
-			FontMetrics fontMetrics = baseGraphics.getFontMetrics();
-			int lineHeight = fontMetrics.getHeight();
-			int lineWidth = fontMetrics.stringWidth(text);
-			int lineAscent = fontMetrics.getAscent();
+		// AWT - Font Metriccs
+		FontMetrics fontMetrics = baseGraphics.getFontMetrics();
+		int lineHeight = fontMetrics.getHeight();
+		int lineWidth = fontMetrics.stringWidth(text);
+		int lineAscent = fontMetrics.getAscent();
 
-			// AWT - base point
-			Point2D.Double basePoint = new Point2D.Double(point.getX(), point.getY());
-			basePoint.x -= lineWidth * horizontalAlign * .5;
-			basePoint.y += lineAscent - lineHeight * verticalAlign * .5;
+		// AWT - base point
+		Point2D.Double basePoint = new Point2D.Double(point.getX(), point.getY());
+		basePoint.x -= lineWidth * horizontalAlign * .5;
+		basePoint.y += lineAscent - lineHeight * verticalAlign * .5;
 
-			// AWT - draw
-			baseGraphics.drawString(text, (float) basePoint.x, (float) basePoint.y);
-		}
+		// AWT - draw
+		baseGraphics.drawString(text, (float) basePoint.x, (float) basePoint.y);
 	}
 
 	public void drawText(final Color color, final Font font, final String text, final Point2D point) {

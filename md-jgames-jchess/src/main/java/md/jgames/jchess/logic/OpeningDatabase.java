@@ -16,7 +16,7 @@ import md.jcore.debug.Debugger;
  */
 public final class OpeningDatabase {
 
-	private static final TreeSet<Opening> openings = new TreeSet<Opening>();
+	private static final TreeSet<Opening> openings = new TreeSet<>();
 
 	/**
 	 * Returns editable set of all openings in the database
@@ -44,7 +44,7 @@ public final class OpeningDatabase {
 			throw new NullPointerException("Null passed instead of filter object");
 
 		// TreeSet where we store openings than passed by filter
-		TreeSet<Opening> filtered = new TreeSet<Opening>();
+		TreeSet<Opening> filtered = new TreeSet<>();
 
 		// Filter one by one
 		openings.forEach(opening -> {

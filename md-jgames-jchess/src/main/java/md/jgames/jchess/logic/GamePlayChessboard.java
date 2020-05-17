@@ -129,7 +129,7 @@ public final class GamePlayChessboard extends Chessboard {
 			throw new NullPointerException("Performed move cannot be null");
 		if (!possibleMoves.contains(move))
 			throw new IllegalArgumentException("Not a possible move on this chessboard!");
-		ArrayList<Move> newMoves = new ArrayList<Move>();
+		ArrayList<Move> newMoves = new ArrayList<>();
 		for (int i = 0; i < movesDone; i++)
 			newMoves.add(moves.get(i));
 		newMoves.add(move);
@@ -141,11 +141,7 @@ public final class GamePlayChessboard extends Chessboard {
 
 		ChessboardEvent event = new ChessboardEvent(this, move);
 		for (ChessboardListener listener : this.getChessboardListeners()) {
-			Thread thread = new Thread() {
-				public void run() {
-					listener.moveDone(event);
-				}
-			};
+			Thread thread = new Thread(() -> listener.moveDone(event));
 			thread.start();
 		}
 	}
@@ -166,11 +162,7 @@ public final class GamePlayChessboard extends Chessboard {
 			update();
 			ChessboardEvent event = new ChessboardEvent(this, moves.get(movesDone));
 			for (ChessboardListener listener : this.getChessboardListeners()) {
-				Thread thread = new Thread() {
-					public void run() {
-						listener.moveUndone(event);
-					}
-				};
+				Thread thread = new Thread(() -> listener.moveUndone(event));
 				thread.start();
 			}
 		}
@@ -186,11 +178,7 @@ public final class GamePlayChessboard extends Chessboard {
 			update();
 			ChessboardEvent event = new ChessboardEvent(this, moves.get(movesDone - 1));
 			for (ChessboardListener listener : this.getChessboardListeners()) {
-				Thread thread = new Thread() {
-					public void run() {
-						listener.moveRedone(event);
-					}
-				};
+				Thread thread = new Thread(() -> listener.moveRedone(event));
 				thread.start();
 			}
 		}
@@ -217,8 +205,8 @@ public final class GamePlayChessboard extends Chessboard {
 	 */
 	public GamePlayChessboard(String fen) {
 		Utilities.checkFEN(fen);
-		moves = new ArrayList<Move>();
-		possibleMoves = new TreeSet<Move>();
+		moves = new ArrayList<>();
+		possibleMoves = new TreeSet<>();
 		startingFEN = fen;
 		movesDone = 0;
 		update();
@@ -229,11 +217,11 @@ public final class GamePlayChessboard extends Chessboard {
 			throw new NullPointerException("Cannot pass null as argument");
 		startingFEN = sboard.getStartingFEN();
 		movesDone = sboard.getDoneMovesCount();
-		moves = new ArrayList<Move>();
-		possibleMoves = new TreeSet<Move>();
+		moves = new ArrayList<>();
+		possibleMoves = new TreeSet<>();
 		short[] sbmoves = sboard.getMoves();
-		for (int i = 0; i < sbmoves.length; i++) {
-			this.moves.add(new Move(sbmoves[i]));
+		for (short sbmove : sbmoves) {
+			this.moves.add(new Move(sbmove));
 		}
 
 		update();

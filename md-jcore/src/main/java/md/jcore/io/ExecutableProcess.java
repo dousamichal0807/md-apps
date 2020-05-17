@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -29,9 +30,9 @@ public final class ExecutableProcess extends Thread implements Closeable {
 		if (executablePath == null || name == null)
 			throw new NullPointerException("Passed null as at least one parameter");
 		if (!name.matches("[_A-Za-z][_0-9A-Za-z]*"))
-			throw new IllegalArgumentException("Process name is illegal: \'" + name + "\'");
+			throw new IllegalArgumentException("Process name is illegal: '" + name + "'");
 		this.executablePath = executablePath;
-		this.delegates = new ArrayList<Function<String, Boolean>>();
+		this.delegates = new ArrayList<>();
 		this.setName(name);
 	}
 
@@ -56,8 +57,8 @@ public final class ExecutableProcess extends Thread implements Closeable {
 		// p.toString()).toString());
 		try {
 			process = pb.start();
-			reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-			writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), "UTF-8"));
+			reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+			writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), StandardCharsets.UTF_8));
 			Debugger.info(getClass(), "Process started [" + getName() + "]");
 		} catch (IOException exc) {
 			throw new IllegalStateException(exc);
@@ -72,13 +73,12 @@ public final class ExecutableProcess extends Thread implements Closeable {
 			String nextLine = null;
 			try {
 				nextLine = reader.readLine();
-				Debugger.info(getClass(), "Read line [" + getName() + "]: \'" + nextLine + "\'");
+				Debugger.info(getClass(), "Read line [" + getName() + "]: '" + nextLine + "'");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			for (int i = 0; i < delegates.size(); i++) {
-				Boolean result = delegates.get(i).apply(nextLine);
-				if (result == null || !result.booleanValue())
+				if (!delegates.get(i).apply(nextLine))
 					delegates.remove(i);
 			}
 		}
@@ -119,7 +119,7 @@ public final class ExecutableProcess extends Thread implements Closeable {
 		try {
 			writer.write(command + "\n");
 			writer.flush();
-			Debugger.info(getClass(), "Sent command [" + getName() + "]: \'" + command + "\'");
+			Debugger.info(getClass(), "Sent command [" + getName() + "]: '" + command + "'");
 			return true;
 		} catch (IOException exc) {
 			return false;

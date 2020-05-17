@@ -45,7 +45,7 @@ public final class Resources {
 		InputStream stream = Resources.class.getResourceAsStream(resourceName);
 		if (stream == null)
 			throw new RuntimeException(
-					new FileNotFoundException("jChess resource \'" + resourceName + "\' was not found."));
+					new FileNotFoundException("jChess resource '" + resourceName + "' was not found."));
 		return stream;
 	}
 

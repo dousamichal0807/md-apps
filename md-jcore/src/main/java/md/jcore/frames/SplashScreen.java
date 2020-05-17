@@ -6,8 +6,9 @@ import javax.swing.*;
 public class SplashScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private JProgressBar progressBar;
-	private JLabel label, imageContainer;
+	private final JProgressBar progressBar;
+	private final JLabel label;
+    private final JLabel imageContainer;
 
 	public SplashScreen() {
 		this.setLayout(new GridBagLayout());

@@ -21,16 +21,16 @@ import md.jcore.math.MDVector;
 public class ProjectorComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
 
-	private TreeSet<MDVector.Double> points;
+	private final TreeSet<MDVector.Double> points;
 	private MDProjector.Double projector;
 
 	public ProjectorComponent() {
-		this.points = new TreeSet<MDVector.Double>();
+		this.points = new TreeSet<>();
 		this.projector = new MDOrthogonalProjector3D.Double();
 	}
 	
 	public ProjectorComponent(MDProjector.Double projector) {
-		this.points = new TreeSet<MDVector.Double>();
+		this.points = new TreeSet<>();
 		this.setProjector(projector);
 	}
 	
@@ -59,17 +59,15 @@ public class ProjectorComponent extends JComponent {
 		AdvancedGraphics gadv = new AdvancedGraphics(g2d);
 		
 		gadv.fillRectangle(getBackground(), new Rectangle(new Point(), getSize()));
-		
-		Iterator<MDVector.Double> pointIterator = points.iterator();
-		while (pointIterator.hasNext()) {
-			MDVector.Double v = pointIterator.next();
+
+		for (MDVector.Double v : points) {
 			MDVector.Double v2d = projector.project(v);
-			
+
 			double px = getWidth() / 2.0 + v2d.get(0);
 			double py = getHeight() / 2.0 - v2d.get(1);
-			
-			gadv.drawLine(getForeground(), new BasicStroke(2), new Line2D.Double(px, py-2, px, py+2));
-			gadv.drawLine(getForeground(), new BasicStroke(2), new Line2D.Double(px-2, py, px+2, py));
+
+			gadv.drawLine(getForeground(), new BasicStroke(2), new Line2D.Double(px, py - 2, px, py + 2));
+			gadv.drawLine(getForeground(), new BasicStroke(2), new Line2D.Double(px - 2, py, px + 2, py));
 			gadv.drawText(getForeground(), getFont(), v2d.toString(), new Point2D.Double(px, py), AdvancedGraphics.TEXT_ALIGN_LEFT, AdvancedGraphics.TEXT_ALIGN_CENTER);
 		}
 	}

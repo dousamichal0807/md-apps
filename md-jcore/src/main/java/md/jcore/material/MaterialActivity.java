@@ -5,7 +5,7 @@ import java.awt.Component;
 import java.awt.LayoutManager;
 import java.awt.MenuComponent;
 import java.awt.event.WindowListener;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,10 +13,10 @@ import javax.swing.JPanel;
 public class MaterialActivity extends JPanel {
 	private static final long serialVersionUID = 0x0100L;
 
-	private Vector<WindowListener> windowListeners;
+	private final ArrayList<WindowListener> windowListeners;
 	
 	private int defaultCloseOperation;
-	private JPanel contentPane;
+	private final JPanel contentPane;
 	private MaterialAppBar appBar;
 
 	public void addWindowListener(WindowListener listener) {
@@ -79,7 +79,7 @@ public class MaterialActivity extends JPanel {
 	public MaterialActivity() {
 		defaultCloseOperation = JFrame.EXIT_ON_CLOSE;
 		contentPane = new JPanel(new BorderLayout());
-		windowListeners = new Vector<WindowListener>();
+		windowListeners = new ArrayList<>();
 		
 		super.setLayout(new BorderLayout());
 		super.add(contentPane, BorderLayout.CENTER);

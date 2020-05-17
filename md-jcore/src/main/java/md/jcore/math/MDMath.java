@@ -112,11 +112,10 @@ public final class MDMath {
 	}
 
 	/**
-	 * TODO Javadoc
-	 * 
-	 * @param base
-	 * @param n
-	 * @return
+	 * Calculates root of any non-negative real number.
+	 * @param base the number to take root from
+	 * @param n    the grade of root
+	 * @return {@code n}-th root of {@code base}
 	 */
 	public static double rootOfNonnegativeReal(double base, int n) {
 		return Math.pow(base, 1.0 / n);

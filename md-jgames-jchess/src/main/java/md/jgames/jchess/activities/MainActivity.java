@@ -81,11 +81,6 @@ public final class MainActivity extends MaterialActivity {
 					ois.close();
 					GamePlayActivity.getInstance().setChessboard(ch, true);
 					Main.getMainWindow().switchActivity(GamePlayActivity.getInstance());
-				} catch (IllegalStateException | IOException | ClassNotFoundException exc) {
-					JOptionPane.showMessageDialog(this,
-							"Error during reading the file:\n\n" + exc.getClass().getName() + "\n" + exc.getMessage(),
-							"Error", JOptionPane.ERROR_MESSAGE);
-					exc.printStackTrace();
 				} catch (Exception exc) {
 					JOptionPane.showMessageDialog(this,
 							"Error during reading the file:\n\n" + exc.getClass().getName() + "\n" + exc.getMessage(),

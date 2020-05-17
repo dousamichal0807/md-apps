@@ -29,7 +29,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	private int size, modCount;
 	private final int initialCapacity;
 	private final float loadFactor;
-	private Comparator<E> comparator;
+	private final Comparator<E> comparator;
 
 	/**
 	 * The default constructor for the heap.
@@ -380,11 +380,10 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		Iterator<?> iterator = c.iterator();
 
-		while (iterator.hasNext()) {
+		for (Object o : c) {
 			try {
-				E element = (E) iterator.next();
+				E element = (E) o;
 				if (!contains(element))
 					return false;
 			} catch (ClassCastException exc) {
@@ -396,13 +395,12 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 
 	@Override
 	public Iterator<E> iterator() {
-		return new HeapIterator<E>(this);
+		return new HeapIterator<>(this);
 	}
 
 	@Override
 	public Object[] toArray() {
-		Object[] array = Arrays.stream(tree, 0, size).toArray();
-		return array;
+		return Arrays.stream(tree, 0, size).toArray();
 	}
 
 	@SuppressWarnings("unchecked")

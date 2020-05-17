@@ -34,7 +34,7 @@ public class AnalysisChessboard extends Chessboard {
 	
 	@Override
 	public List<Move> doneMoves() {
-		ArrayList<Move> moves = new ArrayList<Move>(doneMoves.size());
+		ArrayList<Move> moves = new ArrayList<>(doneMoves.size());
 		BasicTreeNode<Move> node = moveTree.getRootNode();
 		for (int i = 0; i < doneMoves.size(); i++) {
 			node = node.getChildren().get(i);

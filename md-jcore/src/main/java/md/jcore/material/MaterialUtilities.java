@@ -55,8 +55,8 @@ public class MaterialUtilities {
 		try {
 			MaterialLookAndFeel laf = new MaterialLookAndFeel(theme, primaryColor, secondaryColor);
 			UIManager.setLookAndFeel(laf);
-		} catch (UnsupportedLookAndFeelException exc) {
-			
+		} catch (UnsupportedLookAndFeelException ignored) {
+			// should never happen
 		}
 	}
 }

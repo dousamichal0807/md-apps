@@ -17,7 +17,7 @@ public class SavedGameFileChooser extends JFileChooser {
 
 	private SavedGameFileChooser() {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("MD jChess Saved Game (*.md-jchess-savedgame)",
-				new String[] { "md-jchess-savedgame" });
+				"md-jchess-savedgame");
 		this.setFileFilter(filter);
 		this.addChoosableFileFilter(filter);
 	}
@@ -27,7 +27,7 @@ public class SavedGameFileChooser extends JFileChooser {
 		if(file == null)
 			return null;
 		if (this.getDialogType() == JFileChooser.SAVE_DIALOG) {
-			String path = file.getAbsolutePath().toString();
+			String path = file.getAbsolutePath();
 			if (!path.toLowerCase().endsWith(".md-jchess-savedgame")) {
 				file = new File(path + ".md-jchess-savedgame");
 			}

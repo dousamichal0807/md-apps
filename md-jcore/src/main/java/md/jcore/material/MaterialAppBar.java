@@ -18,7 +18,9 @@ public final class MaterialAppBar extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private int elevation;
-	private JToolBar leftPanel, centerPanel, rightPanel;
+	private final JToolBar leftPanel;
+    private final JToolBar centerPanel;
+    private final JToolBar rightPanel;
 
 	public MaterialAppBar() {
 		this.setBackground(UIManager.getColor("AppBar.background"));

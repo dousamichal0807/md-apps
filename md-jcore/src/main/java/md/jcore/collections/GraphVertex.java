@@ -12,7 +12,7 @@ public final class GraphVertex<E> implements Disposable {
 	GraphVertex(Graph<E> parent, E value) {
 		this.value = value;
 		this.parentGraph = parent;
-		this.edges = new ArrayList<GraphEdge<E>>();
+		this.edges = new ArrayList<>();
 	}
 
 	public Graph<E> getParentGraph() {
@@ -35,7 +35,7 @@ public final class GraphVertex<E> implements Disposable {
 	@Override
 	public void dispose() {
 		parentGraph.vertices.remove(this);
-		edges.forEach(edge -> edge.dispose());
+		edges.forEach(GraphEdge::dispose);
 		
 		parentGraph = null;
 		edges = null;

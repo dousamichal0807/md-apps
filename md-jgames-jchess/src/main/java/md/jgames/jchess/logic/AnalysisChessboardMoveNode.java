@@ -18,6 +18,6 @@ class AnalysisChessboardMoveNode {
 		if(move == null)
 			throw new NullPointerException();
 		this.move = move;
-		this.childNodes = new Vector<AnalysisChessboardMoveNode>();
+		this.childNodes = new Vector<>();
 	}
 }

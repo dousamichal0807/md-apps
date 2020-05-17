@@ -12,7 +12,7 @@ public final class GraphEdge<E> implements Disposable {
 	/**
 	 * You cannot use this constructor. It's package-private. Use
 	 * {@link Graph#createEdge(int, int, float)} instead.
-	 * @param length 
+	 * @param length length of the vertex
 	 */
 	GraphEdge(GraphVertex<E> from, GraphVertex<E> to, float length) {
 		if (from.getParentGraph() != to.getParentGraph())

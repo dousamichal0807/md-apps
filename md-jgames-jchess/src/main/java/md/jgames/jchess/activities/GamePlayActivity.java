@@ -101,15 +101,13 @@ public class GamePlayActivity extends MaterialActivity
 
 		toolbarHelp = new MaterialButton();
 		toolbarHelp.addActionListener((ActionEvent evt) -> {
-			Thread thread = new Thread() {
-				public void run() {
-					setToolbarEnabled(false);
-					Utilities.setPosition(Main.getMainStockfishProcess(), getChessboard().getCurrentFEN());
-					Move move = Utilities.getBestMove(Main.getMainStockfishProcess(), 20);
-					JOptionPane.showMessageDialog(null, move);
-					setToolbarEnabled(true);
-				}
-			};
+			Thread thread = new Thread(() -> {
+				setToolbarEnabled(false);
+				Utilities.setPosition(Main.getMainStockfishProcess(), getChessboard().getCurrentFEN());
+				Move move = Utilities.getBestMove(Main.getMainStockfishProcess(), 20);
+				JOptionPane.showMessageDialog(null, move);
+				setToolbarEnabled(true);
+			});
 			thread.start();
 		});
 

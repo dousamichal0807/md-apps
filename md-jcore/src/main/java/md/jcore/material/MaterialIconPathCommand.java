@@ -40,8 +40,8 @@ public final class MaterialIconPathCommand implements Serializable {
 	 */
 	public static final int CMD_CURVE_TO = 4;
 
-	private float[] arguments;
-	private int command;
+	private final float[] arguments;
+	private final int command;
 
 	/**
 	 * Gets passed arguments.

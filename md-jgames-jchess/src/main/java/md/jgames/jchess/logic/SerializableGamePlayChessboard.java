@@ -14,9 +14,9 @@ import java.util.List;
 public class SerializableGamePlayChessboard implements Serializable {
 	private static final long serialVersionUID = 0x0100L;
 
-	private String startingFEN;
-	private short[] moves;
-	private int movesDone;
+	private final String startingFEN;
+	private final short[] moves;
+	private final int movesDone;
 	
 	public String getStartingFEN() {
 		return startingFEN;

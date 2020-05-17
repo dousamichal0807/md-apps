@@ -20,7 +20,7 @@ public final class LanguagePack {
 	public static void put(String key, String value) {
 		key = key.trim().toLowerCase();
 		if (!strings.containsKey(key))
-			throw new IllegalArgumentException("\'" + key + "\' is not valid key.");
+			throw new IllegalArgumentException("'" + key + "' is not valid key.");
 	}
 
 	public static void load(String l) throws IOException, IllegalStringFormatException {
@@ -35,7 +35,7 @@ public final class LanguagePack {
 				String[] lsplit = line.split("=", 1);
 				if (lsplit.length != 2) {
 					sc.close();
-					throw new IllegalStringFormatException("Line \'" + line + "\' is incorrectly formatted!");
+					throw new IllegalStringFormatException("Line '" + line + "' is incorrectly formatted!");
 				}
 				strings.put(lsplit[0].trim().toLowerCase(), lsplit[1].trim());
 			}

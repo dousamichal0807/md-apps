@@ -111,7 +111,7 @@ public final class Opening implements Comparable<Opening> {
 	 */
 	public List<Move> moveList() {
 		// Make sure that the instance stays immutable.
-		return Collections.unmodifiableList(Arrays.asList(moves));
+		return List.of(moves);
 	}
 
 	/**
@@ -124,8 +124,7 @@ public final class Opening implements Comparable<Opening> {
 		GamePlayChessboard chessboard = new GamePlayChessboard();
 
 		// Perform all moves
-		for (int i = 0; i < moves.length; i++)
-			chessboard.performMove(moves[i]);
+        for (Move move : moves) chessboard.performMove(move);
 
 		// Return the chessboard
 		return chessboard;

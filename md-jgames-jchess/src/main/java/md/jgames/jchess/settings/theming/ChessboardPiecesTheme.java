@@ -8,6 +8,7 @@ public final class ChessboardPiecesTheme {
 	private HashMap<Character, Image> piecesImages;
 	
 	public static ChessboardPiecesTheme load(String id) {
+		// TODO load()
 		return null;
 	}
 

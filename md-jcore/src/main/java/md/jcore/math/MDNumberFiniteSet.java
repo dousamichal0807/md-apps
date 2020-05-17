@@ -15,7 +15,7 @@ import java.util.TreeSet;
 public class MDNumberFiniteSet extends MDNumberSet {
 	private static final long serialVersionUID = 0x0100L;
 	
-	private TreeSet<MDNumber> elements;
+	private final TreeSet<MDNumber> elements;
 	/**
 	 * <p>Returns if the set contains specified number.</p>
 	 * @param n The specified number
@@ -31,7 +31,7 @@ public class MDNumberFiniteSet extends MDNumberSet {
 	}
 	
 	private MDNumberFiniteSet() {
-		this.elements = new TreeSet<MDNumber>();
+		this.elements = new TreeSet<>();
 	}
 	public MDNumberFiniteSet(Collection<MDNumber> collection) {
 		this();

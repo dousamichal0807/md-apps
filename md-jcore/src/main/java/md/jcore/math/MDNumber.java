@@ -54,8 +54,8 @@ import java.util.Arrays;
 public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEntity {
 	private static final long serialVersionUID = 0x0100L;
 
-	private BigDecimal real;
-	private BigDecimal[] imag;
+	private final BigDecimal real;
+	private final BigDecimal[] imag;
 
 	/**
 	 * Constructs a number.
@@ -197,6 +197,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 		return "!#NO_PLAIN_TEXT";
 	}
 
+	@SuppressWarnings("MethodDoesntCallSuperMethod")
 	@Override
 	public MDNumber clone() {
 		return new MDNumber(this);
@@ -326,8 +327,8 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	// TODO Javadoc
 	public BigDecimal magnitude(final MathContext mc) {
 		BigDecimal s = real.round(mc).pow(2, mc);
-		for (int i = 0; i < imag.length; i++) {
-			s = s.add(imag[i].round(mc).pow(2, mc));
+		for (BigDecimal bigDecimal : imag) {
+			s = s.add(bigDecimal.round(mc).pow(2, mc));
 		}
 		return MDMath.rootOfNonnegativeReal(s, 2, mc);
 	}
@@ -348,7 +349,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	 * @return {@code this + augend}
 	 */
 	public MDNumber add(final MDNumber augend, final MathContext mc) {
-		int imagcount = this.imag.length > augend.imag.length ? this.imag.length : augend.imag.length;
+		int imagcount = Math.max(this.imag.length, augend.imag.length);
 
 		BigDecimal real = this.real.add(augend.real, mc);
 		BigDecimal[] imag = new BigDecimal[imagcount];
@@ -364,7 +365,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	 * @return {@code this - subtrahend}
 	 */
 	public MDNumber subtract(MDNumber subtrahend, MathContext mc) {
-		int imagcount = this.imag.length > subtrahend.imag.length ? this.imag.length : subtrahend.imag.length;
+		int imagcount = Math.max(this.imag.length, subtrahend.imag.length);
 
 		BigDecimal real = this.real.subtract(subtrahend.real, mc);
 		BigDecimal[] imag = new BigDecimal[imagcount];
@@ -488,8 +489,8 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	public static final class Double implements Cloneable, Comparable<MDNumber.Double>, MDMathEntity {
 		private static final long serialVersionUID = 0x0100L;
 
-		private double real;
-		private double[] imag;
+		private final double real;
+		private final double[] imag;
 
 		/**
 		 * Constructs a number.
@@ -623,6 +624,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 			return "!#NO_PLAIN_TEXT";
 		}
 
+		@SuppressWarnings("MethodDoesntCallSuperMethod")
 		@Override
 		public MDNumber.Double clone() {
 			return new MDNumber.Double(this);
@@ -747,8 +749,8 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 		// TODO Javadoc
 		public strictfp double magnitude() {
 			double s = real * real;
-			for (int i = 0; i < imag.length; i++) {
-				s += imag[i] * imag[i];
+			for (double v : imag) {
+				s += v * v;
 			}
 			return Math.sqrt(s);
 		}
@@ -768,7 +770,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 		 * @return {@code this + augend}
 		 */
 		public strictfp MDNumber.Double add(final MDNumber.Double augend) {
-			int imagcount = this.imag.length > augend.imag.length ? this.imag.length : augend.imag.length;
+			int imagcount = Math.max(this.imag.length, augend.imag.length);
 
 			double real = this.real + augend.real;
 			double[] imag = new double[imagcount];
@@ -784,7 +786,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 		 * @return {@code this - subtrahend}
 		 */
 		public strictfp MDNumber.Double subtract(final MDNumber.Double subtrahend) {
-			int imagcount = this.imag.length > subtrahend.imag.length ? this.imag.length : subtrahend.imag.length;
+			int imagcount = Math.max(this.imag.length, subtrahend.imag.length);
 
 			double real = this.real - subtrahend.real;
 			double[] imag = new double[imagcount];
