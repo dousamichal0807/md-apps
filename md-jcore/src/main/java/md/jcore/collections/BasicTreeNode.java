@@ -23,9 +23,9 @@ public final class BasicTreeNode<E> implements Serializable {
 	private E value;
 
 	/**
-	 * Gets all the children organised in a {@link java.util.HashSet HashSet}.
+	 * Gets all the children organised in an {@link ArrayList}.
 	 * 
-	 * @return the {@link java.util.HashSet HashSet} where are all children stored
+	 * @return the {@link ArrayList} where are all children stored
 	 */
 	public ArrayList<BasicTreeNode<E>> getChildren() {
 		return children;
