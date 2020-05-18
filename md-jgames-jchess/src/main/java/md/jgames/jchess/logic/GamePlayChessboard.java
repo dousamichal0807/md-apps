@@ -28,7 +28,8 @@ public final class GamePlayChessboard extends Chessboard {
 
 	private void update() {
 		md.jcore.debug.Debugger.info(getClass(), "Updating chessboard...");
-	
+
+		// Create Stockfish process if not created yet
 		if (stockfishProcess == null) {
 			md.jcore.debug.Debugger.info(getClass(), "Creating Stockfish process...");
 			stockfishProcess = Utilities.createStockfishProcess();
@@ -39,7 +40,7 @@ public final class GamePlayChessboard extends Chessboard {
 		Utilities.setPosition(stockfishProcess, startingFEN, doneMoves());
 	
 		md.jcore.debug.Debugger.info(getClass(), "Computing current FEN...");
-		currentFEN = Utilities.getCurrentFEN(stockfishProcess);
+		currentFEN = Utilities.getPosition(stockfishProcess);
 	
 		md.jcore.debug.Debugger.info(getClass(), "Mapping current FEN...");
 		pieces = Utilities.mapPieces(currentFEN);
@@ -119,6 +120,11 @@ public final class GamePlayChessboard extends Chessboard {
 		moves.clear();
 		startingFEN = fen;
 		movesDone = 0;
+
+		// Reset Stockfish if process exists
+		if (stockfishProcess != null) {
+			stockfishProcess.send("ucinewgame");
+		}
 		update();
 	}
 
@@ -168,9 +174,7 @@ public final class GamePlayChessboard extends Chessboard {
 		}
 	}
 
-	/**
-	 * Can redo 1 move, if possible. Otherwise, calling this method has no effect.
-	 */
+	@Override
 	public void redo() {
 		Disposable.checkIsNotDisposed(this);
 		if (movesDone < moves.size()) {
@@ -212,6 +216,15 @@ public final class GamePlayChessboard extends Chessboard {
 		update();
 	}
 
+	/**
+	 * Creates new instance using information of {@link SerializableGamePlayChessboard}
+	 * instance.
+	 *
+	 * @param sboard {@link SerializableGamePlayChessboard} instance to be the
+	 *               instance created from
+	 *
+	 * @throws NullPointerException if {@code null} is given as argument
+	 */
 	public GamePlayChessboard(SerializableGamePlayChessboard sboard) {
 		if (sboard == null)
 			throw new NullPointerException("Cannot pass null as argument");
