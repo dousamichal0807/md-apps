@@ -39,7 +39,7 @@ public abstract class Chessboard implements Disposable {
 	public static final byte PIECE_WHITE_BISHOP = 3;
 
 	/**
-	 * A constant representing White's root.
+	 * A constant representing White's rook.
 	 */
 	public static final byte PIECE_WHITE_ROOK = 4;
 
@@ -53,16 +53,34 @@ public abstract class Chessboard implements Disposable {
 	 */
 	public static final byte PIECE_WHITE_KING = 6;
 
+	/**
+	 * A constant representing Black's pawn.
+	 */
 	public static final byte PIECE_BLACK_PAWN = 7;
 
+	/**
+	 * A constant representing Black's knight.
+	 */
 	public static final byte PIECE_BLACK_KNIGHT = 8;
 
+	/**
+	 * A constant representing White's bishop.
+	 */
 	public static final byte PIECE_BLACK_BISHOP = 9;
 
+	/**
+	 * A constant representing Black's rook.
+	 */
 	public static final byte PIECE_BLACK_ROOK = 10;
 
+	/**
+	 * A constant representing Black's queen.
+	 */
 	public static final byte PIECE_BLACK_QUEEN = 11;
 
+	/**
+	 * A constant representing Black's king.
+	 */
 	public static final byte PIECE_BLACK_KING = 12;
 
 	/**
@@ -128,7 +146,7 @@ public abstract class Chessboard implements Disposable {
 	/**
 	 * Returns the number of done moves.
 	 * 
-	 * @return no. of done moves.
+	 * @return # of done moves.
 	 * 
 	 * @see #doneMoves()
 	 * @see #getCurrentFEN()
@@ -218,6 +236,13 @@ public abstract class Chessboard implements Disposable {
 	 */
 	public abstract byte[][] pieces();
 
-	public abstract byte pieceAt(String sq);
+	/**
+	 * Returns piece at particular square. Metho returns appropriate constant from
+	 * {@link Chessboard} class.
+	 * @param square the square to return the piece sitting on
+	 * @return the piece sitting on the given square represented by a constant from
+	 *         {@link Chessboard} class
+	 */
+	public abstract byte pieceAt(String square);
 
 }
