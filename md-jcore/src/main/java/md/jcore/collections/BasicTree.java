@@ -3,7 +3,7 @@ package md.jcore.collections;
 import java.io.Serializable;
 
 /**
- * Represents a special tree. It has some benefits:
+ * Represents a basic tree with no limitation. It has some benefits:
  * 
  * <ul>
  * <li>You can add as many children to each node as possible.</li>
@@ -17,9 +17,9 @@ import java.io.Serializable;
  * @author Michal Douša
  * 
  * @see BasicTreeNode
- * @see #getRootNode()
+ * @see #rootNode()
  */
-public final class BasicTree<E> implements Serializable {
+public final class BasicTree<E> implements MDTree {
 	private static final long serialVersionUID = 0x100L;
 
 	private BasicTreeNode<E> rootNode;
@@ -29,19 +29,21 @@ public final class BasicTree<E> implements Serializable {
 	 * {@code null} and no children inside.
 	 */
 	public BasicTree() {
-		this(new BasicTreeNode<>());
-	}
-
-	public BasicTree(BasicTreeNode<E> rootNode) {
-		this.setRootNode(rootNode);
+		this(null);
 	}
 
 	/**
-	 * Gets the root node of this tree
-	 * 
-	 * @return the root node
+	 * Creates {@link BasicTree} instance with specified value stored in the root
+	 * node of this tree.
+	 *
+	 * @param rootNodeValue value of the root node
 	 */
-	public BasicTreeNode<E> getRootNode() {
+	public BasicTree(E rootNodeValue) {
+		this.setRootNode(new BasicTreeNode<>(rootNodeValue));
+	}
+
+	@Override
+	public BasicTreeNode<E> rootNode() {
 		return rootNode;
 	}
 
@@ -54,5 +56,26 @@ public final class BasicTree<E> implements Serializable {
 		if (rootNode == null)
 			throw new NullPointerException("Root node cannot be set to null");
 		this.rootNode = rootNode;
+	}
+
+	/**
+	 * Immutable version of {@link BasicTree}. It holds reference to regular
+	 * editable {@link BasicTree}.
+	 *
+	 * @param <E> elements stored in this tree
+	 */
+	public static final class Unmodifiable<E> implements MDTree {
+		private final BasicTree<E> tree;
+
+		Unmodifiable(BasicTree<E> tree) {
+			if (tree == null)
+				throw new NullPointerException();
+			this.tree = tree;
+		}
+
+		@Override
+		public BasicTreeNode.Unmodifiable<E> rootNode() {
+			return new BasicTreeNode.Unmodifiable<>(tree.rootNode);
+		}
 	}
 }

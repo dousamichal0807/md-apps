@@ -16,6 +16,10 @@ import md.jcore.debug.Debugger;
  */
 public final class OpeningDatabase {
 
+	// Do not create instances!
+	private OpeningDatabase() {
+	}
+
 	private static final TreeSet<Opening> openings = new TreeSet<>();
 
 	/**

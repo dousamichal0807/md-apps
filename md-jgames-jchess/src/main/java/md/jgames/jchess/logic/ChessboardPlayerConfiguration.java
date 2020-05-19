@@ -1,6 +1,6 @@
 package md.jgames.jchess.logic;
 
-public class ChessboardPlayerConfiguration {
+public final class ChessboardPlayerConfiguration {
 	public static final int PLAYER_HUMAN = 0,
 			PLAYER_COMPUTER = 1;
 	

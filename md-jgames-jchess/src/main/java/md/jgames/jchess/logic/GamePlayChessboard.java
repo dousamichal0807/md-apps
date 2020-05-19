@@ -105,7 +105,7 @@ public final class GamePlayChessboard extends Chessboard {
 	public byte pieceAt(String square) {
 		// Checking state and validity
 		Disposable.checkIsNotDisposed(this);
-		Utilities.checkSquare(square);
+		Utilities.assertSquareValidity(square);
 		// Get rank and file
 		int rank = square.charAt(1) - '1';
 		int file = square.charAt(0) - 'a';
@@ -116,7 +116,7 @@ public final class GamePlayChessboard extends Chessboard {
 	@Override
 	public void reset(String fen) {
 		Disposable.checkIsNotDisposed(this);
-		Utilities.checkFEN(fen);
+		Utilities.assertFENValidity(fen);
 		moves.clear();
 		startingFEN = fen;
 		movesDone = 0;
@@ -208,7 +208,7 @@ public final class GamePlayChessboard extends Chessboard {
 	 * @throws IllegalArgumentException   if invalid FEN is passed
 	 */
 	public GamePlayChessboard(String fen) {
-		Utilities.checkFEN(fen);
+		Utilities.assertFENValidity(fen);
 		moves = new ArrayList<>();
 		possibleMoves = new TreeSet<>();
 		startingFEN = fen;

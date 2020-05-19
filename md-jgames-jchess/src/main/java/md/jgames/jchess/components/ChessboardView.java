@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
-import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -184,7 +183,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 	}
 
 	public void markSquare(String sq, Color c) {
-		Utilities.checkSquare(sq);
+		Utilities.assertSquareValidity(sq);
 		if (c == null || c.getAlpha() == 0)
 			markedSquares.remove(sq);
 		else
@@ -227,7 +226,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 	}
 
 	public Rectangle getSquareBounds(String square) {
-		Utilities.checkSquare(square);
+		Utilities.assertSquareValidity(square);
 		int x = square.charAt(0) - 'a';
 		int y = square.charAt(1) - '1';
 		Rectangle bounds = this.getChessboardBounds();
@@ -248,7 +247,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 		selSquarePossibleMoves.clear();
 
 		if (square != null) {
-			Utilities.checkSquare(square);
+			Utilities.assertSquareValidity(square);
 			selectedSquare = square;
 			selSquarePossibleMoves.addAll(chessboard.possibleMovesFor(square));
 		}

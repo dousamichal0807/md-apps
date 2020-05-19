@@ -1,6 +1,6 @@
 package md.jgames.jchess.logic;
 
-public class ChessboardEvent {
+public final class ChessboardEvent {
 	private final Chessboard source;
 	private final Move move;
 

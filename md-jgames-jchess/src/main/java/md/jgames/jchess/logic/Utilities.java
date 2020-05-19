@@ -24,10 +24,14 @@ import md.jcore.io.ExecutableProcess;
  */
 public final class Utilities {
 
-    private static Path stockfishPath = null;
-    // Initialize when path to Stockfish engine is requested through
-    // getStockfishPath() method
+    // Do not create any instance
+    private Utilities() {
+    }
 
+    // Initialize Stockfish path when it is requested through getStockfishPath() method
+    private static Path stockfishPath = null;
+
+    // Count of already created Stockfish processes. Used in createStockfishProcess() method.
     private static int createdStockfishProcessesCount = 0;
 
     /**
@@ -41,7 +45,7 @@ public final class Utilities {
      * all rules of FEN notation.
      *
      * @see #isValidFEN(String)
-     * @see #checkFEN(String)
+     * @see #assertFENValidity(String)
      */
     public static final Pattern PATTERN_FEN = Pattern.compile("((?:[prnbqkPRNBQK1-8]+/){7}[prnbqkPRNBQK1-8]+) ([wb]) (-|KQ?k?q?|K?Qk?q?|K?Q?kq?|K?Q?k?q) (-|[a-h][36]) ([0-9])+ ([0-9])+");
 
@@ -62,6 +66,10 @@ public final class Utilities {
      */
     public static final Pattern PATTERN_UCI_MOVE = Pattern.compile("([a-h][1-8])([a-h][1-8])([qrbn])?");
 
+    /**
+     * Regex pattern for chessboard square notation. To check validity of particular
+     * square, use {@link #isValidSquare(String)} instead.
+     */
     public static final Pattern PATTERN_SQUARE = Pattern.compile("[a-h][1-8]");
 
     /**
@@ -120,39 +128,40 @@ public final class Utilities {
          */
         byte bk = 0, bp = 0, bo = 0, wk = 0, wp = 0, wo = 0;
 
-        for (String rank : ranks) {
+        for (int rankNo = 0; rankNo < ranks.length; rankNo++) {
+            String rank = ranks[7 - rankNo];
             int f = 0;
             for (char ch : rank.toCharArray()) {
-                char chlower = Character.toLowerCase(ch);
-                boolean isBlackPiece = ch == chlower;
                 f++;
-                switch (chlower) {
-                    case 'k':
-                        if (isBlackPiece)
-                            bk++;
-                        else
-                            wk++;
+                switch (ch) {
+                    // King
+                    case 'K': wk++; break;
+                    case 'k': bk++; break;
+                    // Pawn
+                    case 'P':
+                        if (rankNo == 7) return false;
+                        wp++;
                         break;
                     case 'p':
-                        if (isBlackPiece)
-                            bp++;
-                        else
-                            wp++;
+                        if (rankNo == 0) return false;
+                        bp++;
+                        break;
+                    // Other pieces
+                    case 'Q':
+                    case 'B':
+                    case 'N':
+                    case 'R':
+                        wo++;
                         break;
                     case 'q':
                     case 'b':
                     case 'n':
                     case 'r':
-                        if (isBlackPiece)
-                            bo++;
-                        else
-                            wo++;
+                        bo++;
                         break;
                     default:
-                        f--;
-                        int s = (int) chlower - '0';
-                        if (s < 1 || s > 8)
-                            return false;
+                        int s = (int) ch - '1';
+                        if (s < 0 || s > 7) return false;
                         f += s;
                         break;
                 }
@@ -174,11 +183,23 @@ public final class Utilities {
      *
      * @throws IllegalSquareException when square notation is illegal
      *
-     * @see #checkFEN(String)
+     * @see #assertFENValidity(String)
      */
-    public static void checkSquare(String square) {
+    public static void assertSquareValidity(String square) {
         if (!isValidSquare(square))
             throw new IllegalSquareException(square);
+    }
+
+    /**
+     * Checks, if given UCI move notation is valid. If not, throws
+     * {@link IllegalUCIMoveNotationException}.
+     *
+     * @param uciNotation UCI move notation to be asserted as valid
+     * @throws IllegalUCIMoveNotationException if notation is invalid
+     */
+    public static void assertUCIMoveNotationValidity(String uciNotation) {
+        if (!isValidUCIMoveNotation(uciNotation))
+            throw new IllegalUCIMoveNotationException(uciNotation);
     }
 
     /**
@@ -187,10 +208,10 @@ public final class Utilities {
      *
      * @param fen the FEN notation to check
      * @throws IllegalFENException when FEN notation is illegal
-     * @see #checkSquare(String)
+     * @see #assertSquareValidity(String)
      * @see #mapPieces(String)
      */
-    public static void checkFEN(String fen) {
+    public static void assertFENValidity(String fen) {
         if (!isValidFEN(fen))
             throw new IllegalFENException(fen);
     }
@@ -206,7 +227,7 @@ public final class Utilities {
      * @throws IllegalFENException if invalid FEN is given
      */
     public static byte[][] mapPieces(String fen) {
-        Utilities.checkFEN(fen);
+        Utilities.assertFENValidity(fen);
         byte[][] pieces = new byte[8][8];
         String[] ranks = fen.split("/");
 
@@ -425,7 +446,7 @@ public final class Utilities {
      */
     public static void setPosition(final ExecutableProcess process, final String fen, final Move... moves) {
         synchronized (process) {
-            Utilities.checkFEN(fen);
+            Utilities.assertFENValidity(fen);
             StringBuilder cmd = new StringBuilder();
             cmd.append("position fen ");
             cmd.append(fen);
@@ -454,7 +475,7 @@ public final class Utilities {
      * @see #setPosition(ExecutableProcess, String, Move...)
      */
     public static void setPosition(final ExecutableProcess process, final String fen, final List<Move> moves) {
-        Utilities.checkFEN(fen);
+        Utilities.assertFENValidity(fen);
         StringBuilder cmd = new StringBuilder();
         cmd.append("position fen ");
         cmd.append(fen);

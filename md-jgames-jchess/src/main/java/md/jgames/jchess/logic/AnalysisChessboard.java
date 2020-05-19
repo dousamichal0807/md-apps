@@ -5,9 +5,11 @@ import java.util.*;
 import md.jcore.Disposable;
 import md.jcore.collections.BasicTree;
 import md.jcore.collections.BasicTreeNode;
+import md.jcore.collections.MDCollections;
+import md.jcore.collections.MDTree;
 import md.jcore.io.ExecutableProcess;
 
-public final class AnalysisChessboard extends Chessboard {
+public final class AnalysisChessboard extends Chessboard implements MDTree {
     private String startingFEN, currentFEN;
     private BasicTree<Move> moveTree;
     private Vector<Integer> doneMoves;
@@ -58,9 +60,9 @@ public final class AnalysisChessboard extends Chessboard {
     public List<Move> doneMoves() {
         Disposable.checkIsNotDisposed(this);
         ArrayList<Move> moves = new ArrayList<>(doneMoves.size());
-        BasicTreeNode<Move> node = moveTree.getRootNode();
+        BasicTreeNode<Move> node = moveTree.rootNode();
         for (int i = 0; i < doneMoves.size(); i++) {
-            node = node.getChildren().get(i);
+            node = node.childNodes().get(i);
             moves.add(node.getValue());
         }
         return Collections.unmodifiableList(moves);
@@ -69,8 +71,8 @@ public final class AnalysisChessboard extends Chessboard {
     @Override
     public void reset(String fen) {
         Disposable.checkIsNotDisposed(this);
-        Utilities.checkFEN(fen);
-        moveTree.getRootNode().getChildren().clear();
+        Utilities.assertFENValidity(fen);
+        moveTree.rootNode().childNodes().clear();
         doneMoves.clear();
         startingFEN = fen;
 
@@ -90,11 +92,11 @@ public final class AnalysisChessboard extends Chessboard {
     public void redo() {
         Disposable.checkIsNotDisposed(this);
         // Get the current node and check if it has at least one subnode
-        BasicTreeNode<Move> currentNode = moveTree.getRootNode();
+        BasicTreeNode<Move> currentNode = moveTree.rootNode();
         for (int i : doneMoves)
-            currentNode = currentNode.getChildren().get(i);
+            currentNode = currentNode.childNodes().get(i);
         // If it has no children, then, then, cannot redo move
-        if (!currentNode.getChildren().isEmpty())
+        if (!currentNode.childNodes().isEmpty())
             doneMoves.add(0);
     }
 
@@ -110,13 +112,13 @@ public final class AnalysisChessboard extends Chessboard {
             throw new IllegalStateException("Cannot perform given move - it is not a possible move");
 
         // Get the current node where we are
-        BasicTreeNode<Move> currentNode = moveTree.getRootNode();
+        BasicTreeNode<Move> currentNode = moveTree.rootNode();
         for (int i : doneMoves)
-            currentNode = currentNode.getChildren().get(i);
+            currentNode = currentNode.childNodes().get(i);
 
         // Is this move already present in the tree? If yes, don't add it again.
-        for (int i = 0; i < currentNode.getChildren().size(); i++) {
-            BasicTreeNode<Move> node = currentNode.getChildren().get(i);
+        for (int i = 0; i < currentNode.childNodes().size(); i++) {
+            BasicTreeNode<Move> node = currentNode.childNodes().get(i);
             if (node.getValue().equals(move)) {
                 // We have found that move
                 doneMoves.add(i);
@@ -125,8 +127,8 @@ public final class AnalysisChessboard extends Chessboard {
         }
 
         // Otherwise, create new node and add it
-        doneMoves.add(currentNode.getChildren().size());
-        currentNode.getChildren().add(new BasicTreeNode<>(move));
+        doneMoves.add(currentNode.childNodes().size());
+        currentNode.childNodes().add(new BasicTreeNode<>(move));
     }
 
     @Override
@@ -147,12 +149,17 @@ public final class AnalysisChessboard extends Chessboard {
     @Override
     public byte pieceAt(String square) {
         Disposable.checkIsNotDisposed(this);
-        Utilities.checkSquare(square);
+        Utilities.assertSquareValidity(square);
 
         int rank = square.charAt(1) - '1';
         int file = square.charAt(2) - 'a';
 
         return pieces[rank][file];
+    }
+
+    @Override
+    public BasicTreeNode.Unmodifiable<Move> rootNode() {
+        return MDCollections.unmodifiableTree(moveTree).rootNode();
     }
 
     /**

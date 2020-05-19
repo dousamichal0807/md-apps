@@ -128,8 +128,8 @@ public final class Move implements Comparable<Move>, Cloneable {
     }
 
     public Move(final String from, final String to, final byte promotion) {
-        Utilities.checkSquare(from);
-        Utilities.checkSquare(to);
+        Utilities.assertSquareValidity(from);
+        Utilities.assertSquareValidity(to);
 
         switch (promotion) {
             case PROMOTION_NONE:
@@ -149,7 +149,7 @@ public final class Move implements Comparable<Move>, Cloneable {
     public Move(String uci) {
         Matcher matcher = Utilities.PATTERN_UCI_MOVE.matcher(uci);
         if (!matcher.matches())
-            throw new IllegalUCIMoveNotation(uci);
+            throw new IllegalUCIMoveNotationException(uci);
 
         this.from = matcher.group(1);
         this.to = matcher.group(2);

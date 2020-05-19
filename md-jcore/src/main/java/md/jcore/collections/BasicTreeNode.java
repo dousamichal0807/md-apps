@@ -1,7 +1,9 @@
 package md.jcore.collections;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents node of the {@link BasicTree SpecialTree} class. You can find more
@@ -12,22 +14,18 @@ import java.util.ArrayList;
  *
  * @param <E> type of values to be stored in this node and its children
  * 
- * @see #getChildren()
+ * @see #childNodes()
  * @see #getValue()
  * @see #setValue(Object)
  */
-public final class BasicTreeNode<E> implements Serializable {
+public final class BasicTreeNode<E> implements MDTreeNode {
 	private static final long serialVersionUID = 0x100L;
 	
 	private final ArrayList<BasicTreeNode<E>> children;
 	private E value;
 
-	/**
-	 * Gets all the children organised in an {@link ArrayList}.
-	 * 
-	 * @return the {@link ArrayList} where are all children stored
-	 */
-	public ArrayList<BasicTreeNode<E>> getChildren() {
+	@Override
+	public ArrayList<BasicTreeNode<E>> childNodes() {
 		return children;
 	}
 
@@ -66,12 +64,35 @@ public final class BasicTreeNode<E> implements Serializable {
 		this(null);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean equals(Object o2) {
-		if (!(o2 instanceof BasicTreeNode))
+		try {
+			BasicTreeNode<E> n2 = (BasicTreeNode<E>) o2;
+			return this.getValue().equals(n2.getValue());
+		} catch (ClassCastException exc) {
 			return false;
-		BasicTreeNode<E> n2 = (BasicTreeNode<E>) o2;
-		return this.getValue().equals(n2.getValue());
+		}
+	}
+
+	public static final class Unmodifiable<E> implements MDTreeNode {
+		private final BasicTreeNode<E> node;
+
+		Unmodifiable(final BasicTreeNode<E> node) {
+			if (node == null)
+				throw new NullPointerException();
+			this.node = node;
+		}
+
+		@Override
+		public List<BasicTreeNode.Unmodifiable<E>> childNodes() {
+			// Create list
+			ArrayList<BasicTreeNode.Unmodifiable<E>> nodes = new ArrayList<>();
+			// Add immutable instances of children to the list
+			for(BasicTreeNode<E> childNode : node.childNodes())
+				nodes.add(new Unmodifiable<>(childNode));
+			// Return list as immutable list
+			return Collections.unmodifiableList(nodes);
+		}
 	}
 }
