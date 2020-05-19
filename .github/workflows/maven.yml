@@ -21,4 +21,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package --file md-jcore/pom.xml md-jgames-jchess/pom.xml
+      run: mvn -B package --file md-jcore/pom.xml ; mvn -B package --file md-jgames-jchess/pom.xml
