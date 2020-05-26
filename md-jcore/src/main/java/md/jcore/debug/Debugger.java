@@ -6,8 +6,9 @@ public class Debugger {
 		StringBuilder sbuilder = new StringBuilder();
 		sbuilder.append("[INFO: ");
 		sbuilder.append(clazz.getName());
-		sbuilder.append("] ");
+		sbuilder.append("] \n");
 		sbuilder.append(info);
+		sbuilder.append("\n");
 		System.out.println(sbuilder.toString());
 	}
 
@@ -15,8 +16,9 @@ public class Debugger {
 		StringBuilder sbuilder = new StringBuilder();
 		sbuilder.append("[WARNING: ");
 		sbuilder.append(clazz.getName());
-		sbuilder.append("] ");
+		sbuilder.append("] \n");
 		sbuilder.append(info);
+		sbuilder.append("\n");
 		System.err.println(sbuilder.toString());		
 	}
 	
@@ -24,8 +26,9 @@ public class Debugger {
 		StringBuilder sbuilder = new StringBuilder();
 		sbuilder.append("[ERROR: ");
 		sbuilder.append(clazz.getName());
-		sbuilder.append("] ");
+		sbuilder.append("] \n");
 		sbuilder.append(info);
+		sbuilder.append("\n");
 		System.err.println(sbuilder.toString());
 	}
 }

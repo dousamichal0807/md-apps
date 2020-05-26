@@ -1,4 +1,6 @@
-package md.jcore.material;
+package md.jcore.material.components;
+
+import md.jcore.material.MaterialConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

@@ -22,10 +22,14 @@ public final class Resources {
 	 */
 	public static final Color COLOR_PRIMARY = new Color(0x795548);
 
+	public static final Color COLOR_ONPRIMARY = Color.WHITE;
+
 	/**
 	 * Material secondary color of jChess application.
 	 */
-	public static final Color COLOR_SECONDARY = new Color(0x00796b);
+	public static final Color COLOR_SECONDARY = new Color(0x34515e);
+
+	public static final Color COLOR_ONSECONDARY = Color.WHITE;
 
 	/**
 	 * Returns an {@link InputStream} of given resource. If requested resource does

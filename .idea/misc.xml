@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Dokumenty/md-apps-javadoc" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
+    <option name="LOCALE" value="cs-CZ" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/md-jcore/pom.xml" />
         <option value="$PROJECT_DIR$/md-jgames-jchess/pom.xml" />
+        <option value="$PROJECT_DIR$/md-jsk-mathcalc/pom.xml" />
       </list>
     </option>
   </component>

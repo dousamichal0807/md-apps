@@ -22,7 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import md.jcore.awt.AdvancedGraphics;
-import md.jcore.material.MaterialButton;
+import md.jcore.material.components.MaterialButton;
 import md.jcore.material.MaterialConstants;
 import md.jcore.material.MaterialIcon;
 

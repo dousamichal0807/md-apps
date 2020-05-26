@@ -1,8 +1,8 @@
 package md.jgames.jchess.logic;
 
 public final class ChessboardPlayerConfiguration {
-	public static final int PLAYER_HUMAN = 0,
-			PLAYER_COMPUTER = 1;
+	public static final int PLAYER_HUMAN = 0;
+	public static final int PLAYER_COMPUTER = 1;
 	
 	private final int whitePlayerConfiguration, blackPlayerConfiguration;
 	private final int engineSkillLevel;
@@ -17,13 +17,13 @@ public final class ChessboardPlayerConfiguration {
 		return engineSkillLevel;
 	}
 	
-	public ChessboardPlayerConfiguration(int w, int b, int esl) {
-		if((w != PLAYER_HUMAN && w != PLAYER_COMPUTER) ||
-				(b != PLAYER_HUMAN && b != PLAYER_COMPUTER) ||
-				(esl < 0 || esl > 20))
+	public ChessboardPlayerConfiguration(int whiteConfig, int blackConfig, int engineSkillLevel) {
+		if ((whiteConfig != PLAYER_HUMAN && whiteConfig != PLAYER_COMPUTER) || (blackConfig != PLAYER_HUMAN && blackConfig != PLAYER_COMPUTER) || (engineSkillLevel < 0 || engineSkillLevel > 20))
 			throw new IllegalArgumentException("Passed invalid values");
-		this.whitePlayerConfiguration = w;
-		this.blackPlayerConfiguration = b;
-		this.engineSkillLevel = esl;
+		if (whiteConfig == PLAYER_COMPUTER && blackConfig == PLAYER_COMPUTER)
+			throw new IllegalArgumentException("Both players cannot be computers at once");
+		this.whitePlayerConfiguration = whiteConfig;
+		this.blackPlayerConfiguration = blackConfig;
+		this.engineSkillLevel = engineSkillLevel;
 	}
 }

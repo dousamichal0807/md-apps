@@ -1,4 +1,4 @@
-package md.jcore.material;
+package md.jcore.material.components;
 
 import java.awt.Color;
 import javax.swing.JToolBar;

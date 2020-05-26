@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import md.jcore.material.MaterialButton;
+import md.jcore.material.components.MaterialButton;
 import md.jgames.jchess.logic.GamePlayChessboard;
 import md.jgames.jchess.logic.Utilities;
 

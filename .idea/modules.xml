@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/md-apps.iml" filepath="$PROJECT_DIR$/md-apps.iml" />
       <module fileurl="file://$PROJECT_DIR$/md-jcore/md-jcore.iml" filepath="$PROJECT_DIR$/md-jcore/md-jcore.iml" />
       <module fileurl="file://$PROJECT_DIR$/md-jgames-jchess/md-jgames-jchess.iml" filepath="$PROJECT_DIR$/md-jgames-jchess/md-jgames-jchess.iml" />
+      <module fileurl="file://$PROJECT_DIR$/md-jsk-mathcalc/md-jsk-mathcalc.iml" filepath="$PROJECT_DIR$/md-jsk-mathcalc/md-jsk-mathcalc.iml" />
     </modules>
   </component>
 </project>

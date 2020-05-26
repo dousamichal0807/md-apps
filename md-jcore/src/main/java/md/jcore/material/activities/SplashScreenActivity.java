@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
-import md.jcore.material.MaterialActivity;
+import md.jcore.material.components.MaterialActivity;
 
 public class SplashScreenActivity extends MaterialActivity {
 	

@@ -1,6 +1,6 @@
 package md.jgames.jchess.activities;
 
-import md.jcore.material.MaterialActivity;
+import md.jcore.material.components.MaterialActivity;
 import md.jgames.jchess.components.ChessboardView;
 import md.jgames.jchess.logic.AnalysisChessboard;
 

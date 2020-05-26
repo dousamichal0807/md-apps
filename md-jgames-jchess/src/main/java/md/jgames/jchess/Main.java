@@ -41,7 +41,7 @@ public final class Main {
 		SplashScreenActivity splashScreen = null;
 		
 		try {
-			MaterialUtilities.initialize(MaterialConstants.THEME_LIGHT, Resources.COLOR_PRIMARY, Resources.COLOR_SECONDARY);
+			MaterialUtilities.initializeLookAndFeel(MaterialConstants.THEME_LIGHT, Resources.COLOR_PRIMARY, Resources.COLOR_SECONDARY);
 			
 			// Construct SplashScreen -----------------------------------------
 			

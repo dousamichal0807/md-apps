@@ -1,4 +1,4 @@
-package md.jcore.material;
+package md.jcore.material.components;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

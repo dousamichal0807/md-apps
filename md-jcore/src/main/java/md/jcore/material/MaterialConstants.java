@@ -1,8 +1,6 @@
 package md.jcore.material;
 
-import javax.swing.JLabel;
-import javax.swing.UIManager;
-
+import md.jcore.material.components.MaterialButton;
 import md.jcore.material.laf.MaterialLookAndFeel;
 
 public final class MaterialConstants {
@@ -43,18 +41,5 @@ public final class MaterialConstants {
 	 * @see MaterialLookAndFeel
 	 */
 	public static final int THEME_DARK = 1;
-
-	public static JLabel createHeadingSecondaryTextLabel(int level) {
-		JLabel label = new JLabel();
-		label.setBorder(MaterialUtilities.PADDING_TEXT);
-		label.setForeground(UIManager.getColor("Label.disabledForeground"));
-
-		switch (level) {
-		case 3:
-			break;
-		}
-
-		return label;
-	}
 
 }

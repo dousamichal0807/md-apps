@@ -1,4 +1,4 @@
-package md.jcore.material;
+package md.jcore.material.components;
 
 import javax.swing.JTextField;
 

@@ -1,4 +1,4 @@
-package md.jcore.material;
+package md.jcore.material.components;
 
 import java.awt.Color;
 
@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import md.jcore.material.MaterialCardBorder;
+import md.jcore.material.MaterialConstants;
 import md.jcore.material.laf.MaterialLookAndFeel;
 
 public class MaterialCard extends JPanel {

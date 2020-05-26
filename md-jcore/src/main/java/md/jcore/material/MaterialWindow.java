@@ -1,5 +1,7 @@
 package md.jcore.material;
 
+import md.jcore.material.components.MaterialActivity;
+
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -23,7 +25,7 @@ public class MaterialWindow extends JFrame implements WindowListener {
 		return activity;
 	}
 
-	public void switchActivity(MaterialActivity activity) {
+	public void switchActivity(final MaterialActivity activity) {
 		SwingUtilities.invokeLater(() -> {
 			if (this.activity != null) {
 				remove(this.activity);
@@ -43,65 +45,44 @@ public class MaterialWindow extends JFrame implements WindowListener {
 	}
 
 	@Override
-	public void windowOpened(WindowEvent e) {
-		if (activity != null) {
-			for (int i = 0; i < activity.getWindowListeners().length; i++) {
-				activity.getWindowListeners()[i].windowOpened(e);
-			}
-		}
+	public void windowOpened(final WindowEvent e) {
+		if (activity != null) for (int i = 0; i < activity.getWindowListeners().length; i++)
+			activity.getWindowListeners()[i].windowOpened(e);
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e) {
-		if (activity != null) {
-			for (int i = 0; i < activity.getWindowListeners().length; i++) {
-				activity.getWindowListeners()[i].windowClosing(e);
-			}
-		}
+	public void windowClosing(final WindowEvent e) {
+		if (activity != null) for (int i = 0; i < activity.getWindowListeners().length; i++)
+			activity.getWindowListeners()[i].windowClosing(e);
 	}
 
 	@Override
-	public void windowClosed(WindowEvent e) {
-		if (activity != null) {
-			for (int i = 0; i < activity.getWindowListeners().length; i++) {
-				activity.getWindowListeners()[i].windowClosed(e);
-			}
-		}
+	public void windowClosed(final WindowEvent e) {
+		if (activity != null) for (int i = 0; i < activity.getWindowListeners().length; i++)
+			activity.getWindowListeners()[i].windowClosed(e);
 	}
 
 	@Override
-	public void windowIconified(WindowEvent e) {
-		if (activity != null) {
-			for (int i = 0; i < activity.getWindowListeners().length; i++) {
-				activity.getWindowListeners()[i].windowIconified(e);
-			}
-		}
+	public void windowIconified(final WindowEvent e) {
+		if (activity != null) for (int i = 0; i < activity.getWindowListeners().length; i++)
+			activity.getWindowListeners()[i].windowIconified(e);
 	}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {
-		if (activity != null) {
-			for (int i = 0; i < activity.getWindowListeners().length; i++) {
-				activity.getWindowListeners()[i].windowDeiconified(e);
-			}
-		}
+	public void windowDeiconified(final WindowEvent e) {
+		if (activity != null) for (int i = 0; i < activity.getWindowListeners().length; i++)
+			activity.getWindowListeners()[i].windowDeiconified(e);
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {
-		if (activity != null) {
-			for (int i = 0; i < activity.getWindowListeners().length; i++) {
-				activity.getWindowListeners()[i].windowActivated(e);
-			}
-		}
+	public void windowActivated(final WindowEvent e) {
+		if (activity != null) for (int i = 0; i < activity.getWindowListeners().length; i++)
+			activity.getWindowListeners()[i].windowActivated(e);
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {
-		if (activity != null) {
-			for (int i = 0; i < activity.getWindowListeners().length; i++) {
-				activity.getWindowListeners()[i].windowDeactivated(e);
-			}
-		}
+	public void windowDeactivated(final WindowEvent e) {
+		if (activity != null) for (int i = 0; i < activity.getWindowListeners().length; i++)
+			activity.getWindowListeners()[i].windowDeactivated(e);
 	}
 }

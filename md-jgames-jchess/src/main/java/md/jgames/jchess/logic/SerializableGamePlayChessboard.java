@@ -1,6 +1,7 @@
 package md.jgames.jchess.logic;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,9 +22,11 @@ public class SerializableGamePlayChessboard implements Serializable {
 	public String getStartingFEN() {
 		return startingFEN;
 	}
+
 	public short[] getMoves() {
-		return moves;
+		return Arrays.copyOf(moves, moves.length);
 	}
+
 	public int getDoneMovesCount() {
 		return movesDone;
 	}

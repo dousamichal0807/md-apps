@@ -1,4 +1,7 @@
-package md.jcore.material;
+package md.jcore.material.components;
+
+import md.jcore.material.MaterialConstants;
+import md.jcore.material.MaterialIcon;
 
 import javax.swing.JButton;
 

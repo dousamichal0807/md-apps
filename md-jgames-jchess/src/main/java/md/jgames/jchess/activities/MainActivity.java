@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import javax.swing.Box;
@@ -17,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 
-import md.jcore.material.MaterialActivity;
+import md.jcore.material.components.MaterialActivity;
 import md.jgames.jchess.Main;
 import md.jgames.jchess.logic.GamePlayChessboard;
 import md.jgames.jchess.logic.SerializableGamePlayChessboard;

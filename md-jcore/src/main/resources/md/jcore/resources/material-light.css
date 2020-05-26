@@ -1,0 +1,35 @@
+/* Material flat button */
+
+.button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #303030;
+    -fx-font-weight: 700;
+}
+
+.button:hover {
+    -fx-background-color: rgba(48, 48, 48, .2);
+}
+
+.button:disabled {
+    -fx-text-fill: #808080;
+}
+
+/* Flat primary */
+
+.button-flat-primary {
+    -fx-text-fill: -md-material-primary;
+}
+
+.button-flat-primary:hover {
+    -fx-background-color: derive(-md-material-primary, 110%);
+}
+
+/* Flat secondary */
+
+.button-flat-secondary {
+    -fx-text-fill: -md-material-secondary;
+}
+
+.button-flat-secondary:hover {
+    -fx-background-color: derive(-md-material-secondary, 110%);
+}

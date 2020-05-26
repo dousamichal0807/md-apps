@@ -7,7 +7,12 @@
     <groupId>md.jcore</groupId>
     <artifactId>md-jcore</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <build>
+        <directory>${project.basedir}/../target</directory>
+        <outputDirectory>${project.build.directory}/${project.artifactId}</outputDirectory>
+        <testOutputDirectory>${project.build.directory}/${project.artifactId}</testOutputDirectory>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -19,6 +24,8 @@
             </plugin>
         </plugins>
     </build>
+
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>

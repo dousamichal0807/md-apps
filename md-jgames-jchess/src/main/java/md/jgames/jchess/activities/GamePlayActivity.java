@@ -26,10 +26,9 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import md.jcore.material.MaterialActivity;
-import md.jcore.material.MaterialButton;
-import md.jcore.material.MaterialCard;
-import md.jcore.material.MaterialConstants;
+import md.jcore.material.components.MaterialActivity;
+import md.jcore.material.components.MaterialButton;
+import md.jcore.material.components.MaterialCard;
 import md.jcore.material.MaterialUtilities;
 import md.jgames.jchess.Main;
 import md.jgames.jchess.components.ChessboardView;
@@ -69,7 +68,7 @@ public class GamePlayActivity extends MaterialActivity
 		chessboardView.reset();
 
 		racPrimaryText = MaterialUtilities.createHeadingTextLabel(3);
-		racSecondaryText = MaterialConstants.createHeadingSecondaryTextLabel(3);
+		racSecondaryText = MaterialUtilities.createHeadingSecondaryTextLabel(3);
 
 		toolbarSave = new MaterialButton();
 		toolbarSave.addActionListener(event -> {
