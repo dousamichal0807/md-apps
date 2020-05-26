@@ -1,9 +1,21 @@
+.root {
+    -md-material-activity-background: #f0f0f0;
+
+    -fx-background-color: -md-material-activity-background;
+    -fx-font: 16px Roboto;
+}
+
+.h1 {
+    -fx-font-size: 48px;
+    -fx-font-weight: 300;
+}
+
 /* Material flat button */
 
 .button {
     -fx-background-color: transparent;
-    -fx-text-fill: #303030;
     -fx-font-weight: 700;
+    -fx-text-fill: #303030;
 }
 
 .button:hover {

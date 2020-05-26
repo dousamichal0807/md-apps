@@ -10,6 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import md.jcore.resources.CoreResources;
+import md.jsk.mathcalc.Main;
+import md.jsk.mathcalc.resources.Resources;
 
 public class MainActivity extends Scene {
 
@@ -35,6 +37,7 @@ public class MainActivity extends Scene {
         super(new BorderPane(), 800, 600);
 
         title = new Label("MathCalc");
+        title.getStyleClass().add("h1");
 
         startButton = new Button("Start");
         //startButton.setDisable(true);
@@ -45,6 +48,7 @@ public class MainActivity extends Scene {
         mainMenu.getChildren().addAll(title, startButton);
 
         settingsButton = new Button("Settings");
+        settingsButton.setOnAction(event -> Main.primaryStage().setScene(SettingsActivity.getInstance()));
 
         helpButton = new Button("Help");
 
@@ -54,9 +58,9 @@ public class MainActivity extends Scene {
 
         root = (BorderPane) getRoot();
         root.setCenter(mainMenu);
-        root.setStyle("-md-material-primary: #ff0030; -md-material-secondary: #aeea00;");
         root.setBottom(bottomMenu);
 
         this.getStylesheets().add(CoreResources.loadResourceURL("material-light.css").toExternalForm());
+        this.getStylesheets().add(Resources.loadResourceURL("material-theme.css").toExternalForm());
     }
 }

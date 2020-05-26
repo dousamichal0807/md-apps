@@ -2,6 +2,7 @@ package md.jsk.mathcalc;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import md.jcore.resources.CoreResources;
 import md.jsk.mathcalc.activities.MainActivity;
 
 /**
@@ -14,7 +15,7 @@ public final class Main extends Application {
 
     private static Stage primaryStage;
 
-    public static Stage getPrimaryStage() {
+    public static Stage primaryStage() {
         return primaryStage;
     }
 

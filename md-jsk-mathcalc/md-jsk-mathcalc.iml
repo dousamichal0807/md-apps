@@ -12,7 +12,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="md-jcore" exported="" />
     <orderEntry type="library" name="javafx-sdk-11.0" level="project" />
+    <orderEntry type="module" module-name="md-jcore" />
   </component>
 </module>

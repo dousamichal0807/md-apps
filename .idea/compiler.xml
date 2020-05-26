@@ -2,6 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="md-jsk-chemitables" />
+      </profile>
       <profile name="Annotation profile for md-jgames-jchess" enabled="true">
         <sourceOutputDir name="../target/generated-sources/annotations" />
         <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
@@ -14,6 +20,7 @@
     <bytecodeTargetLevel>
       <module name="md-jcore" target="11" />
       <module name="md-jgames-jchess" target="11" />
+      <module name="md-jsk-chemitables" target="1.5" />
       <module name="md-jsk-mathcalc" target="11" />
     </bytecodeTargetLevel>
   </component>
