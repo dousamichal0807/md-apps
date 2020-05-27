@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="md.jsk.mathcalc.activities.MainActivityController"
+            prefHeight="600" prefWidth="800">
+    <center>
+        <VBox alignment="CENTER">
+            <Label text="MD MathCalc" styleClass="h1"/>
+            <Button text="Start" styleClass="button-flat-primary"/>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 32px;">
+            <Button text="Help" styleClass="button-flat"/>
+            <Button text="Settings" styleClass="button-flat" onAction="#openSettings"/>
+        </HBox>
+    </bottom>
+</BorderPane>

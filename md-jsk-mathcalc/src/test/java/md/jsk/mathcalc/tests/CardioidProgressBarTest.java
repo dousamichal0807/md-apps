@@ -34,6 +34,7 @@ public class CardioidProgressBarTest extends Application {
         sizeSlider.setShowTickLabels(true);
         sizeSlider.valueProperty().addListener(observable -> {
             double size = sizeSlider.getValue();
+            System.out.println(size);
             progressBar1.setMinSize(size, size);
         });
 

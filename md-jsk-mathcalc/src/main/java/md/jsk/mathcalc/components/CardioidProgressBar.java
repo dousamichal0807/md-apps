@@ -42,6 +42,8 @@ public final class CardioidProgressBar extends Pane {
     public void setValue(final double value) {
         if (value != INDETERMINATE && (value < 0 || value > 1))
             throw new IllegalArgumentException("Illegal progress bar value: " + value);
+        if ((value == INDETERMINATE && this.value >= 0 && this.value <= 1) || (this.value == INDETERMINATE && value >= 0 && value <= 1))
+            this.animationStartingTime = System.nanoTime();
         this.value = value;
     }
 
@@ -62,7 +64,7 @@ public final class CardioidProgressBar extends Pane {
      * @see #setValue(double)
      * @see #refresh()
      */
-    public CardioidProgressBar(double value) {
+    public CardioidProgressBar(final double value) {
         setValue(value);
         setMinSize(100, 100);
 
@@ -92,8 +94,9 @@ public final class CardioidProgressBar extends Pane {
         double centerY = getHeight() / 2.0;
         boolean reversed = animationProgress % 2 >= 1 && value == INDETERMINATE;
         double progress = value == INDETERMINATE ? (reversed ? 1 - animationProgress % 1.0 : animationProgress % 1.0) : value;
-        int lineCount = (int)Math.round(1.6 * Math.pow(d, 0.8));
+        int lineCount = 175;
         int shownLinesCount = (int)Math.ceil(lineCount * progress);
+        double lineStrokeWidth = .05*Math.exp(d/300);
         double unitAngle = 2.0 * Math.PI / (double) lineCount;
         double phase = (animationProgress - 1.0) * Math.PI / 4.0;
         double phaseDeg = (animationProgress - 1.0) * 45.0;
@@ -108,7 +111,7 @@ public final class CardioidProgressBar extends Pane {
         arc.setStartAngle(arcStart);
         arc.setLength(arcLength);
         arc.setStroke(Color.BLACK);
-        arc.setStrokeWidth(2.0);
+        arc.setStrokeWidth(20.0 * lineStrokeWidth);
         arc.setFill(Color.TRANSPARENT);
 
         Ellipse circle = new Ellipse();
@@ -117,7 +120,7 @@ public final class CardioidProgressBar extends Pane {
         circle.setRadiusX(r);
         circle.setRadiusY(r);
         circle.setStroke(Color.BLACK);
-        circle.setStrokeWidth(.5);
+        circle.setStrokeWidth(lineStrokeWidth);
         circle.setFill(Color.TRANSPARENT);
 
         Line[] lines = new Line[shownLinesCount];
@@ -127,10 +130,10 @@ public final class CardioidProgressBar extends Pane {
             Line line = new Line();
             line.setStartX(centerX - r * Math.sin(angle + phase));
             line.setStartY(centerY + r * Math.cos(angle + phase));
-            line.setEndX(centerX - r * Math.sin(2.0 * angle + phase));
-            line.setEndY(centerY + r * Math.cos(2.0 * angle + phase));
+            line.setEndX(centerX - r * Math.sin(30.0 * angle + phase));
+            line.setEndY(centerY + r * Math.cos(30.0 * angle + phase));
             line.setStroke(Color.BLACK);
-            line.setStrokeWidth(.1);
+            line.setStrokeWidth(lineStrokeWidth);
             lines[i] = line;
         }
 
@@ -161,8 +164,10 @@ public final class CardioidProgressBar extends Pane {
         }
 
         @Override
-        public strictfp void handle(long time) {
-            progressBar.animationProgress = ((time - progressBar.animationStartingTime) / 1000000000.0) % 8.0;
+        public strictfp void handle(final long time) {
+            double timeSecs = (time - progressBar.animationStartingTime) / 1000000000.0;
+            progressBar.animationProgress = progressBar.value == INDETERMINATE ?
+                    (timeSecs % 8.0) : ((timeSecs % 32.0) / 4.0);
             progressBar.refresh();
         }
     }

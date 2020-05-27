@@ -37,7 +37,7 @@ public class SettingsActivity extends Scene {
 
         bottomPane = new HBox();
         bottomPane.setAlignment(Pos.CENTER_RIGHT);
-        bottomPane.setPadding(new Insets(20, 20, 20, 20));
+        bottomPane.setPadding(new Insets(32));
         bottomPane.getChildren().addAll(discardButton, saveButton);
 
         root = (BorderPane) getRoot();
