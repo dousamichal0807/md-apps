@@ -19,7 +19,7 @@ public class MDNumberFiniteSet extends MDNumberSet implements Iterable<MDNumber>
 	private final TreeSet<MDNumber> elements;
 
 	@Override
-	public boolean contains(MDNumber n) {
+	public boolean contains(final MDNumber n) {
 		return elements.contains(n);
 	}
 
@@ -61,8 +61,7 @@ public class MDNumberFiniteSet extends MDNumberSet implements Iterable<MDNumber>
 				sb.append("; ");
 		}
 		sb.append("\\right\\}");
-		
-		System.out.println("LaTeX: " + sb.toString());
+
 		return sb.toString();
 	}
 
@@ -72,7 +71,7 @@ public class MDNumberFiniteSet extends MDNumberSet implements Iterable<MDNumber>
 	}
 
 	@Override
-	public void forEach(Consumer<? super MDNumber> action) {
+	public void forEach(final Consumer<? super MDNumber> action) {
 		elements.forEach(action);
 	}
 
@@ -90,7 +89,7 @@ public class MDNumberFiniteSet extends MDNumberSet implements Iterable<MDNumber>
 		}
 
 		@Override
-		public boolean contains(MDNumber.Double number) {
+		public boolean contains(final MDNumber.Double number) {
 			return elements.contains(number);
 		}
 
@@ -138,7 +137,7 @@ public class MDNumberFiniteSet extends MDNumberSet implements Iterable<MDNumber>
 		}
 
 		@Override
-		public void forEach(Consumer<? super MDNumber.Double> action) {
+		public void forEach(final Consumer<? super MDNumber.Double> action) {
 			elements.forEach(action);
 		}
 

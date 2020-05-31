@@ -23,7 +23,7 @@ public final class Utilities {
 
 	private static String jCoreVersion;
 
-	public static Path getCWD(Class<?> cwdClass) {
+	public static Path getCWD(final Class<?> cwdClass) {
 		try {
 			Path cwd = Paths.get(cwdClass.getProtectionDomain().getCodeSource().getLocation().toURI());
 			cwd = Paths.get("/").resolve(cwd.subpath(0, cwd.getNameCount() - 1));
@@ -37,7 +37,7 @@ public final class Utilities {
 		}
 	}
 
-	public static Attributes getJARManifestData(Class<?> clazz) {
+	public static Attributes getJARManifestData(final Class<?> clazz) {
 		try (InputStream inputStream = clazz.getResourceAsStream("/META-INF/MANIFEST.MF")) {
 			Manifest manifest = new Manifest(inputStream);
 			return manifest.getMainAttributes();
@@ -49,17 +49,6 @@ public final class Utilities {
 			return null;
 		}
 	}
-	
-	public static boolean loadFont(String fileName) {
-		try {
-			Font font = Font.createFont(Font.TRUETYPE_FONT,
-					Utilities.class.getResourceAsStream("/md/jcore/fonts/" + fileName + ".ttf"));
-			return GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-		} catch (Exception exc) {
-			exc.printStackTrace();
-			return false;
-		}
-	}
 
 	public static String jCoreVersion() {
 		if(jCoreVersion == null)
@@ -67,7 +56,7 @@ public final class Utilities {
 		return jCoreVersion;
 	}
 
-	public static String getVersion(Class<?> clazz) {
+	public static String getVersion(final Class<?> clazz) {
 		return getJARManifestData(clazz).getValue(Utilities.JAR_MANIFEST_IMPL_VERSION);
 	}
 }

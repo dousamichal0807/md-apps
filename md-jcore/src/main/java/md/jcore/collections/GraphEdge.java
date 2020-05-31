@@ -14,7 +14,7 @@ public final class GraphEdge<E> implements Disposable {
 	 * {@link Graph#createEdge(int, int, float)} instead.
 	 * @param length length of the vertex
 	 */
-	GraphEdge(GraphVertex<E> from, GraphVertex<E> to, float length) {
+	GraphEdge(final GraphVertex<E> from, final GraphVertex<E> to, final float length) {
 		if (from.getParentGraph() != to.getParentGraph())
 			throw new IllegalArgumentException("Given vertices are from different graphs");
 		

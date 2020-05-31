@@ -20,9 +20,7 @@ public class NewGameActivity extends MaterialActivity {
 	
 	private static NewGameActivity instance;
 	public static NewGameActivity getInstance() {
-		if(instance == null) {
-			instance = new NewGameActivity();
-		}
+		if(instance == null) instance = new NewGameActivity();
 		return instance;
 	}
 

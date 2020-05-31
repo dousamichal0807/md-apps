@@ -10,6 +10,9 @@ import md.jcore.IllegalStringFormatException;
 
 public final class LanguagePack {
 
+	private LanguagePack() {
+	}
+
 	private static HashMap<String, String> strings;
 
 	public static String get(String key) {
@@ -17,17 +20,17 @@ public final class LanguagePack {
 		return strings.get(key);
 	}
 
-	public static void put(String key, String value) {
+	public static void put(String key, final String value) {
 		key = key.trim().toLowerCase();
 		if (!strings.containsKey(key))
 			throw new IllegalArgumentException("'" + key + "' is not valid key.");
 	}
 
-	public static void load(String l) throws IOException, IllegalStringFormatException {
+	public static void load(final String l) throws IOException, IllegalStringFormatException {
 		load(new FileInputStream("langpacks" + File.separator + l + ".md-jchess-langpack"));
 	}
 
-	private static void load(FileInputStream fis) throws IllegalStringFormatException {
+	private static void load(final FileInputStream fis) throws IllegalStringFormatException {
 		Scanner sc = new Scanner(fis);
 		while (sc.hasNext()) {
 			String line = sc.nextLine().trim();

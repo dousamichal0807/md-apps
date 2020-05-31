@@ -5,6 +5,9 @@ import md.jcore.material.laf.MaterialLookAndFeel;
 
 public final class MaterialConstants {
 
+	private MaterialConstants() {
+	}
+
 	/**
 	 * One of the possible values for the elevation: a flat component with no
 	 * border.

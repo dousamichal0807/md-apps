@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -16,6 +17,9 @@ import javax.swing.ImageIcon;
  * @author Michal Douša
  */
 public final class Resources {
+
+	private Resources() {
+	}
 
 	/**
 	 * Material primary color of jChess application.
@@ -45,12 +49,19 @@ public final class Resources {
 	 * 
 	 * @see #loadImageResource(String)
 	 */
-	public static InputStream loadResource(String resourceName) {
+	public static InputStream loadResource(final String resourceName) {
 		InputStream stream = Resources.class.getResourceAsStream(resourceName);
 		if (stream == null)
 			throw new RuntimeException(
 					new FileNotFoundException("jChess resource '" + resourceName + "' was not found."));
 		return stream;
+	}
+
+	public static URL loadResourceURL(final String resourceName) {
+		URL url = Resources.class.getResource(resourceName);
+		if (url == null)
+			throw new RuntimeException(new FileNotFoundException("Resource not found: " + resourceName));
+		return url;
 	}
 
 	/**
@@ -68,7 +79,7 @@ public final class Resources {
 	 *                          {@link ImageIO#read(InputStream)} method</li>
 	 *                          </ul>
 	 */
-	public static BufferedImage loadImageResource(String resourceName) {
+	public static BufferedImage loadImageResource(final String resourceName) {
 		try {
 			InputStream stream = loadResource(resourceName);
 			return ImageIO.read(stream);
@@ -89,7 +100,22 @@ public final class Resources {
 	 * 
 	 * @see #loadImageResource(String)
 	 */
-	public static ImageIcon loadIconResource(String resourceName) {
+	public static ImageIcon loadIconResource(final String resourceName) {
 		return new ImageIcon(loadImageResource(resourceName));
+	}
+
+	/**
+	 * Returns an {@link URL} of given activity FXML file, if exists.
+	 *
+	 * @param activityName the name of the requested activity
+	 * @return {@link URL} of given activity FXML file
+	 * @throws RuntimeException caused by {@link FileNotFoundException} if activity
+	 *                          FXML file does not exist
+	 */
+	public static URL loadActivityFXML(final String activityName) {
+		URL url = Resources.class.getResource("activity_" + activityName + ".fxml");
+		if (url == null)
+			throw new RuntimeException(new FileNotFoundException("Activity FXML file not found: \"" + activityName + "\""));
+		return url;
 	}
 }

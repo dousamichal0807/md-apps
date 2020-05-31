@@ -110,7 +110,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      *         {@code false} is returned
      */
     @Override
-    public boolean equals(Object o2) {
+    public boolean equals(final Object o2) {
         if (!(o2 instanceof Move))
             return false;
         Move move2 = (Move) o2;
@@ -118,10 +118,11 @@ public final class Move implements Comparable<Move>, Cloneable {
     }
 
     @Override
-    public int compareTo(Move move2) {
+    public int compareTo(final Move move2) {
         return this.toString().compareTo(move2.toString());
     }
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public Move clone() {
         return new Move(this);
@@ -146,7 +147,7 @@ public final class Move implements Comparable<Move>, Cloneable {
         this.promotion = promotion;
     }
 
-    public Move(String uci) {
+    public Move(final String uci) {
         Matcher matcher = Utilities.PATTERN_UCI_MOVE.matcher(uci);
         if (!matcher.matches())
             throw new IllegalUCIMoveNotationException(uci);

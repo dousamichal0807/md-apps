@@ -46,18 +46,17 @@ public class MaterialLookAndFeel extends MetalLookAndFeel {
 		return defaults;
 	}
 
-	public MaterialLookAndFeel(int theme, Color primaryColor, Color secondaryColor) {
+	public MaterialLookAndFeel(final int theme, final Color primaryColor, final Color secondaryColor) {
 		reset(theme, primaryColor, secondaryColor);
 	}
 
-	public void reset(int theme, Color primaryColor, Color secondaryColor) {
-		if (theme != MaterialConstants.THEME_LIGHT && theme != MaterialConstants.THEME_DARK) {
+	public void reset(final int theme, final Color primaryColor, final Color secondaryColor) {
+		if (theme != MaterialConstants.THEME_LIGHT && theme != MaterialConstants.THEME_DARK)
 			throw new IllegalArgumentException("Illegal value for theme");
-		} else if (primaryColor == null || secondaryColor == null) {
+		if (primaryColor == null || secondaryColor == null)
 			throw new NullPointerException("Both primary and secondary color must be set");
-		} else if (primaryColor.getAlpha() < 255 || secondaryColor.getAlpha() < 255) {
+		if (primaryColor.getAlpha() < 255 || secondaryColor.getAlpha() < 255)
 			throw new IllegalArgumentException("Both primary and secondary color must be opaque");
-		}
 
 		this.theme = theme;
 		this.primaryColor = primaryColor;

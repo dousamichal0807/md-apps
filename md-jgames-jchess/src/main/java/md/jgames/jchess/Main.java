@@ -18,6 +18,10 @@ import md.jgames.jchess.resources.Resources;
  * @author Michal Douša
  */
 public final class Main {
+
+	private Main() {
+	}
+
 	private static ExecutableProcess mainStockfishProcess;
 	private static MaterialWindow mainWindow;
 	
@@ -36,7 +40,7 @@ public final class Main {
 		return mainWindow;
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		
 		SplashScreenActivity splashScreen = null;
 		

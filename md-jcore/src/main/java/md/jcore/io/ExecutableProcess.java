@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.function.Function;
 
 import md.jcore.debug.Debugger;
@@ -26,7 +27,7 @@ public final class ExecutableProcess extends Thread implements Closeable {
 	private BufferedWriter writer;
 	private final ArrayList<Function<String, Boolean>> delegates;
 
-	public ExecutableProcess(File executablePath, String name) {
+	public ExecutableProcess(final File executablePath, final String name) {
 		if (executablePath == null || name == null)
 			throw new NullPointerException("Passed null as at least one parameter");
 		if (!name.matches("[_A-Za-z][_0-9A-Za-z]*"))
@@ -36,7 +37,7 @@ public final class ExecutableProcess extends Thread implements Closeable {
 		this.setName(name);
 	}
 
-	public ExecutableProcess(Path executablePath, String name) {
+	public ExecutableProcess(final Path executablePath, final String name) {
 		this(executablePath.toFile(), name);
 	}
 
@@ -49,9 +50,7 @@ public final class ExecutableProcess extends Thread implements Closeable {
 	 */
 	@Override
 	public void start() {
-		if (process != null && process.isAlive()) {
-			throw new IllegalStateException("Process already running");
-		}
+		if (process != null && process.isAlive()) throw new IllegalStateException("Process already running");
 		ProcessBuilder pb = new ProcessBuilder(executablePath.toString());
 		// Paths.get(Utilities.getCurrentWorkingDirectory(getClass()).toString(),
 		// p.toString()).toString());
@@ -77,9 +76,11 @@ public final class ExecutableProcess extends Thread implements Closeable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			for (int i = 0; i < delegates.size(); i++) {
-				if (!delegates.get(i).apply(nextLine))
-					delegates.remove(i);
+			Iterator<Function<String, Boolean>> iterator = delegates.iterator();
+			while (iterator.hasNext()) {
+				Function<String, Boolean> next = iterator.next();
+				if (!next.apply(nextLine))
+					iterator.remove();
 			}
 		}
 	}
@@ -96,13 +97,11 @@ public final class ExecutableProcess extends Thread implements Closeable {
 	 * Shuts down the process.
 	 */
 	public void close() {
-		if (process != null) {
-			if (process.isAlive()) {
-				process.destroy();
-				process = null;
-				reader = null;
-				writer = null;
-			}
+		if (process != null) if (process.isAlive()) {
+			process.destroy();
+			process = null;
+			reader = null;
+			writer = null;
 		}
 	}
 
@@ -113,7 +112,7 @@ public final class ExecutableProcess extends Thread implements Closeable {
 	 * @param command The command to be sent
 	 * @return if the command was sent successfully
 	 */
-	public boolean send(String command) {
+	public boolean send(final String command) {
 		if (command == null)
 			return false;
 		try {
@@ -133,7 +132,7 @@ public final class ExecutableProcess extends Thread implements Closeable {
 	 * @param delegate Always accepts the next line of the program's output and
 	 *                 returns a boolean if you want to read next line too.
 	 */
-	public void read(Function<String, Boolean> delegate) {
+	public void read(final Function<String, Boolean> delegate) {
 		if (delegate == null)
 			throw new NullPointerException();
 		delegates.add(delegate);

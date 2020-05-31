@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import javax.swing.JComponent;
@@ -29,12 +28,12 @@ public class ProjectorComponent extends JComponent {
 		this.projector = new MDOrthogonalProjector3D.Double();
 	}
 	
-	public ProjectorComponent(MDProjector.Double projector) {
+	public ProjectorComponent(final MDProjector.Double projector) {
 		this.points = new TreeSet<>();
 		this.setProjector(projector);
 	}
 	
-	public ProjectorComponent(Collection<MDVector.Double> points, MDProjector.Double projector) {
+	public ProjectorComponent(final Collection<MDVector.Double> points, final MDProjector.Double projector) {
 		this(projector);
 		this.points.addAll(points);
 	}
@@ -47,14 +46,14 @@ public class ProjectorComponent extends JComponent {
 		return projector;
 	}
 
-	public void setProjector(MDProjector.Double projector) {
+	public void setProjector(final MDProjector.Double projector) {
 		if (projector == null)
 			throw new NullPointerException("Projector cannot be set to null");
 		this.projector = projector;
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paint(final Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		AdvancedGraphics gadv = new AdvancedGraphics(g2d);
 		

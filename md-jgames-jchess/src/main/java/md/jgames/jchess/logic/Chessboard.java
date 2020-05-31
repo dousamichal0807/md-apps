@@ -1,7 +1,6 @@
 package md.jgames.jchess.logic;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -217,13 +216,14 @@ public abstract class Chessboard implements Disposable {
 	 * 
 	 * @return possible moves for piece on particular square
 	 */
-	public SortedSet<Move> possibleMovesFor(String sq) {
+	public SortedSet<Move> possibleMovesFor(final String sq) {
 		Disposable.checkIsNotDisposed(this);
+
 		TreeSet<Move> moveset = new TreeSet<>();
-		for (Move move : possibleMoves()) {
+		for (Move move : possibleMoves())
 			if (move.getSquareFrom().equals(sq))
 				moveset.add(move);
-		}
+
 		return Collections.unmodifiableSortedSet(moveset);
 	}
 

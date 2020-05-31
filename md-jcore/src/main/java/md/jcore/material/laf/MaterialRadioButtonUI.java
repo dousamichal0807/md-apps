@@ -19,12 +19,12 @@ import md.jcore.awt.AdvancedGraphics;
 
 public class MaterialRadioButtonUI extends BasicRadioButtonUI {
 
-	public static MaterialRadioButtonUI createUI(JComponent component) {
+	public static MaterialRadioButtonUI createUI(final JComponent component) {
 		return new MaterialRadioButtonUI();
 	}
 
 	@Override
-	public synchronized void paint(Graphics g, JComponent c) {
+	public synchronized void paint(final Graphics g, final JComponent c) {
 		JRadioButton radioButton = (JRadioButton) c;
 
 		Graphics2D g2d = (Graphics2D) g;
@@ -64,12 +64,12 @@ public class MaterialRadioButtonUI extends BasicRadioButtonUI {
 	}
 
 	@Override
-	public Dimension getMinimumSize(JComponent c) {
+	public Dimension getMinimumSize(final JComponent c) {
 		return getPreferredSize(c);
 	}
 
 	@Override
-	public Dimension getPreferredSize(JComponent c) {
+	public Dimension getPreferredSize(final JComponent c) {
 		JRadioButton radioButton = (JRadioButton) c;
 		FontMetrics fontMetrics = c.getFontMetrics(UIManager.getFont("Label.font"));
 		String text = radioButton.getText();

@@ -55,13 +55,13 @@ public class MDInterval extends MDNumberSet {
     }
 
     @Override
-    public boolean contains(MDNumber number) {
+    public boolean contains(final MDNumber number) {
         if (!number.isRealNumber())
             return false;
         return contains(number.getRealPart());
     }
 
-    public boolean contains(BigDecimal n) {
+    public boolean contains(final BigDecimal n) {
         boolean b1 = this.leftBound == null || (this.leftClosed ? n.compareTo(this.leftBound) >= 0 : n.compareTo(this.leftBound) > 0);
         boolean b2 = this.rightBound == null || (this.rightClosed ? n.compareTo(this.rightBound) <= 0 : n.compareTo(this.rightBound) < 0);
         return b1 && b2;
@@ -131,13 +131,13 @@ public class MDInterval extends MDNumberSet {
         }
 
         @Override
-        public boolean contains(MDNumber.Double number) {
+        public boolean contains(final MDNumber.Double number) {
             if (!number.isRealNumber())
                 return false;
             return contains(number.getRealPart());
         }
 
-        public boolean contains(double n) {
+        public boolean contains(final double n) {
             boolean b1 = this.leftBound == java.lang.Double.MIN_VALUE || (this.fromLeftSideClosed ? n >= this.leftBound : n > this.leftBound);
             boolean b2 = this.rightBound == java.lang.Double.MAX_VALUE || (this.fromRightSideClosed ? n <= this.leftBound : n < this.leftBound);
             return b1 && b2;

@@ -21,7 +21,7 @@ public interface Disposable {
 	public boolean isDisposed();
 	
 	
-	public static void checkIsNotDisposed(Disposable obj) {
+	public static void checkIsNotDisposed(final Disposable obj) {
 		if(obj.isDisposed())
 			throw new AlreadyDisposedException(obj);
 	}

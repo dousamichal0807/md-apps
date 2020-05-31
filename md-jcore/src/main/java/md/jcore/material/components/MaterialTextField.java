@@ -13,9 +13,8 @@ public class MaterialTextField extends JTextField {
 	}
 
 	public void setLabelText(final String labelText) {
-		if (labelText == null) {
-			this.labelText = null;
-		} else {
+		if (labelText == null) this.labelText = null;
+        else {
 			String trimmed = labelText.trim();
 			this.labelText = trimmed.isEmpty() ? null : trimmed;
 		}

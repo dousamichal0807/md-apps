@@ -31,7 +31,7 @@ public final class Opening implements Comparable<Opening> {
 	 * @param name  opening name
 	 * @param moves done moves as array
 	 */
-	public Opening(String eco, String name, Move... moves) {
+	public Opening(final String eco, final String name, final Move... moves) {
 		// Opening name
 		if (name == null)
 			throw new NullPointerException("Opening name cnnot be null");
@@ -43,9 +43,7 @@ public final class Opening implements Comparable<Opening> {
 			if (!ecoMatcher.matches() && !eco.isBlank())
 				throw new IllegalArgumentException("Illegal ECO code");
 			this.ecoCode = eco;
-		} else {
-			this.ecoCode = null;
-		}
+		} else this.ecoCode = null;
 
 		// Done moves
 		this.moves = new Move[moves.length];
@@ -147,7 +145,7 @@ public final class Opening implements Comparable<Opening> {
 	}
 	
 	@Override
-	public boolean equals(Object object2) {
+	public boolean equals(final Object object2) {
 		// false if it is not opening
 		if (!(object2 instanceof Opening))
 			return false;
@@ -161,18 +159,17 @@ public final class Opening implements Comparable<Opening> {
 			return false;
 		
 		// ...and we need to compare them one by one
-		for (int i = 0; i < this.moves.length; i++) {
-			// If there is at least one different move, return false...
+		// If there is at least one different move, return false...
+		for (int i = 0; i < this.moves.length; i++)
 			if (!this.moves[i].equals(opening2.moves[i]))
 				return false;
-		}
 		
 		// ...otherwise return true
 		return true;
 	}
 	
 	@Override
-	public int compareTo(Opening opening2) {
+	public int compareTo(final Opening opening2) {
 		// First, compare by eco code
 		int compare = this.ecoCode.compareTo(opening2.ecoCode);
 		

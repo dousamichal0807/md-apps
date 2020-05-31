@@ -42,7 +42,7 @@ public class MaterialButton extends JButton {
 	 *                                  described above.
 	 * @see #getElevation()
 	 */
-	public void setElevation(int elevation) {
+	public void setElevation(final int elevation) {
 		if (elevation != MaterialConstants.ELEVATION_FLAT && elevation != MaterialConstants.ELEVATION_OUTLINED
 				&& elevation != MaterialConstants.ELEVATION_ELEVATED)
 			throw new IllegalArgumentException("Invalid elevation argument passed");
@@ -68,7 +68,7 @@ public class MaterialButton extends JButton {
 	 *                action
 	 * @see #isPrimary()
 	 */
-	public void setIsPrimary(boolean primary) {
+	public void setIsPrimary(final boolean primary) {
 		this.isPrimary = primary;
 	}
 
@@ -87,34 +87,34 @@ public class MaterialButton extends JButton {
 	 * 
 	 * @param icon {@link MaterialIcon} to be used on this button
 	 */
-	public void setMaterialIcon(MaterialIcon icon) {
+	public void setMaterialIcon(final MaterialIcon icon) {
 		this.materialIcon = icon;
 	}
 
-	public MaterialButton(MaterialIcon icon, String text, boolean primary, int elevation) {
+	public MaterialButton(final MaterialIcon icon, final String text, final boolean primary, final int elevation) {
 		this.setMaterialIcon(icon);
 		this.setText(text);
 		this.setIsPrimary(primary);
 		this.setElevation(elevation);
 	}
 
-	public MaterialButton(MaterialIcon icon, boolean primary, int elevation) {
+	public MaterialButton(final MaterialIcon icon, final boolean primary, final int elevation) {
 		this(icon, null, primary, elevation);
 	}
 
-	public MaterialButton(String text, boolean primary, int elevation) {
+	public MaterialButton(final String text, final boolean primary, final int elevation) {
 		this(null, text, primary, elevation);
 	}
 
-	public MaterialButton(boolean primary, int elevation) {
+	public MaterialButton(final boolean primary, final int elevation) {
 		this(null, null, primary, elevation);
 	}
 
-	public MaterialButton(String text) {
+	public MaterialButton(final String text) {
 		this(text, false, MaterialConstants.ELEVATION_OUTLINED);
 	}
 
-	public MaterialButton(MaterialIcon icon) {
+	public MaterialButton(final MaterialIcon icon) {
 		this(icon, false, MaterialConstants.ELEVATION_OUTLINED);
 	}
 

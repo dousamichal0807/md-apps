@@ -1,12 +1,2 @@
-board.boardsetup=Board Setup
-board.startpos.customfen=Enter custom FEN code
-board.startpos.default=Default starting position
-board.startpos.chess960=Fischer random Chess960 position
-board.playersetup=Player Setup
-std.about=About jChess...
-std.cancel=Cancel
-std.help=Help
-std.no=No
-std.ok=OK
-std.yes=Yes
-stockfish.initfailed=Initialization of Stockfish engine failed.
+jchess.main.newgame = New Game
+jchess.main.analysis = Analysis

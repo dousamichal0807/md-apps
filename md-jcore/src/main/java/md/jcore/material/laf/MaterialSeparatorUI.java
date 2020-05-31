@@ -15,12 +15,12 @@ import md.jcore.awt.AdvancedGraphics;
 
 public class MaterialSeparatorUI extends BasicSeparatorUI {
 	
-	public static MaterialSeparatorUI createUI(JComponent c) {
+	public static MaterialSeparatorUI createUI(final JComponent c) {
 		return new MaterialSeparatorUI();
 	}
 
 	@Override
-	public void paint(Graphics g, JComponent c) {
+	public void paint(final Graphics g, final JComponent c) {
 		// Cast to javax.swing.JSeparator
 		JSeparator separator = (JSeparator) c;
 		
@@ -57,17 +57,17 @@ public class MaterialSeparatorUI extends BasicSeparatorUI {
 	}
 
 	@Override
-	public Dimension getPreferredSize(JComponent c) {
+	public Dimension getPreferredSize(final JComponent c) {
 		return new Dimension(9, 9);
 	}
 
 	@Override
-	public Dimension getMinimumSize(JComponent c) {
+	public Dimension getMinimumSize(final JComponent c) {
 		return new Dimension(9, 9);
 	}
 
 	@Override
-	public Dimension getMaximumSize(JComponent c) {
+	public Dimension getMaximumSize(final JComponent c) {
 		// Cast to javax.swing.JSeparator
 		JSeparator separator = (JSeparator) c;
 		

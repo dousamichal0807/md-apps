@@ -9,6 +9,10 @@ import java.math.MathContext;
  * @author Michal Douša
  */
 public final class MDMath {
+
+	private MDMath() {
+	}
+
 	/**
 	 * <p>
 	 * The Avogadro constant <var>N</var><sub>A</sub>. It says how many particles
@@ -29,7 +33,7 @@ public final class MDMath {
 	 * </p>
 	 * <p>
 	 * <strong>Value</strong>: <var>q</var><sub>E</sub> = 1.602176634 &middot;
-	 * 10<sup>-19</sup> C
+	 * 10<sup>-19</sup> C exactly
 	 * </p>
 	 */
 	public static final BigDecimal ELEMENTARY_CHARGE = new BigDecimal("1.602176634e-19");
@@ -85,7 +89,7 @@ public final class MDMath {
 	 *                                  {@code mc}'s precision is less than zero or
 	 *                                  {@code base} is less than zero
 	 */
-	public static BigDecimal rootOfNonnegativeReal(BigDecimal base, int grade, MathContext mc) {
+	public static BigDecimal rootOfNonnegativeReal(final BigDecimal base, final int grade, final MathContext mc) {
 		if (base == null || mc == null)
 			throw new NullPointerException("null was passed");
 		if (grade <= 0 || mc.getPrecision() < 0 || base.compareTo(BigDecimal.ZERO) < 0)
@@ -96,11 +100,8 @@ public final class MDMath {
 		BigDecimal r = BigDecimal.ZERO;
 		for (int i = (int) -Math.log10(base.doubleValue()); i < mc.getPrecision() + 2; i++) {
 			BigDecimal unit = BigDecimal.TEN;
-			if (i < 0) {
-				unit = unit.pow(-i);
-			} else {
-				unit = BigDecimal.valueOf(1.0).divide(unit.pow(i), mc);
-			}
+			if (i < 0) unit = unit.pow(-i);
+			else unit = BigDecimal.valueOf(1.0).divide(unit.pow(i), mc);
 			while (r.pow(grade).compareTo(base) < 1) {
 				if (r.pow(grade).compareTo(base) == 0)
 					return r.round(mc);
@@ -117,7 +118,7 @@ public final class MDMath {
 	 * @param n    the grade of root
 	 * @return {@code n}-th root of {@code base}
 	 */
-	public static double rootOfNonnegativeReal(double base, int n) {
+	public static double rootOfNonnegativeReal(final double base, final int n) {
 		return Math.pow(base, 1.0 / n);
 	}
 }

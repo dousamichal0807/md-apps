@@ -204,7 +204,7 @@ public class GamePlayActivity extends MaterialActivity
 		return this.file;
 	}
 
-	public void setFile(File file) {
+	public void setFile(final File file) {
 		this.file = file;
 	}
 
@@ -212,22 +212,19 @@ public class GamePlayActivity extends MaterialActivity
 		return saved;
 	}
 
-	public void setSaved(boolean saved) {
+	public void setSaved(final boolean saved) {
 		this.saved = saved;
 	}
 
-	private void save(File file) throws IOException {
+	private void save(final File file) throws IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 		oos.writeObject(new SerializableGamePlayChessboard((GamePlayChessboard) chessboardView.getChessboard()));
 		oos.close();
 	}
 
 	private void save() throws IOException {
-		if (file == null) {
-			file = saveAs();
-		} else {
-			save(file);
-		}
+		if (file == null) file = saveAs();
+		else save(file);
 	}
 
 	private File saveAs() throws IOException {
@@ -242,7 +239,7 @@ public class GamePlayActivity extends MaterialActivity
 
 	// Manipulation with components -------------------------------------------
 
-	private void setToolbarEnabled(boolean e) {
+	private void setToolbarEnabled(final boolean e) {
 		for (int i = 0; i < racToolbar.getComponentCount(); i++) {
 			Component comp = racToolbar.getComponent(i);
 			comp.setEnabled(e);
@@ -265,7 +262,7 @@ public class GamePlayActivity extends MaterialActivity
 		return (GamePlayChessboard) chessboardView.getChessboard();
 	}
 
-	public void setChessboard(GamePlayChessboard newChessboard, boolean disposePrevous) {
+	public void setChessboard(final GamePlayChessboard newChessboard, final boolean disposePrevous) {
 		Chessboard previousChessboard = chessboardView.getChessboard();
 		if (previousChessboard != null && disposePrevous)
 			previousChessboard.dispose();
@@ -275,19 +272,19 @@ public class GamePlayActivity extends MaterialActivity
 	// ChessboardListener -----------------------------------------------------
 
 	@Override
-	public void moveDone(ChessboardEvent evt) {
+	public void moveDone(final ChessboardEvent evt) {
 		saved = false;
 		refresh();
 	}
 
 	@Override
-	public void moveUndone(ChessboardEvent evt) {
+	public void moveUndone(final ChessboardEvent evt) {
 		saved = false;
 		refresh();
 	}
 
 	@Override
-	public void moveRedone(ChessboardEvent evt) {
+	public void moveRedone(final ChessboardEvent evt) {
 		saved = false;
 		refresh();
 	}
@@ -295,12 +292,12 @@ public class GamePlayActivity extends MaterialActivity
 	// WindowListener ---------------------------------------------------------
 
 	@Override
-	public void windowOpened(WindowEvent e) {
+	public void windowOpened(final WindowEvent e) {
 		refresh();
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e) {
+	public void windowClosing(final WindowEvent e) {
 		boolean close = saved;
 		if (!saved) {
 			int opt = JOptionPane.showConfirmDialog(this, "You have not saved all changes. Close anyway?",
@@ -314,39 +311,39 @@ public class GamePlayActivity extends MaterialActivity
 	}
 
 	@Override
-	public void windowClosed(WindowEvent e) {
+	public void windowClosed(final WindowEvent e) {
 	}
 
 	@Override
-	public void windowIconified(WindowEvent e) {
+	public void windowIconified(final WindowEvent e) {
 	}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {
+	public void windowDeiconified(final WindowEvent e) {
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {
+	public void windowActivated(final WindowEvent e) {
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {
+	public void windowDeactivated(final WindowEvent e) {
 	}
 
 	@Override
-	public void componentResized(ComponentEvent e) {
+	public void componentResized(final ComponentEvent e) {
 		refresh();
 	}
 
 	@Override
-	public void componentMoved(ComponentEvent e) {
+	public void componentMoved(final ComponentEvent e) {
 	}
 
 	@Override
-	public void componentShown(ComponentEvent e) {
+	public void componentShown(final ComponentEvent e) {
 	}
 
 	@Override
-	public void componentHidden(ComponentEvent e) {
+	public void componentHidden(final ComponentEvent e) {
 	}
 }

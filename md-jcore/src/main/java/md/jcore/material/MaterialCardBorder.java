@@ -14,7 +14,7 @@ import javax.swing.border.Border;
 public class MaterialCardBorder implements Border {
 
 	@Override
-	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	public void paintBorder(final Component c, final Graphics g, final int x, final int y, final int width, final int height) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		int w = width - 1, h = height - 1;
@@ -60,7 +60,7 @@ public class MaterialCardBorder implements Border {
 	}
 
 	@Override
-	public Insets getBorderInsets(Component c) {
+	public Insets getBorderInsets(final Component c) {
 		return new Insets(16, 4, 12, 4);
 	}
 

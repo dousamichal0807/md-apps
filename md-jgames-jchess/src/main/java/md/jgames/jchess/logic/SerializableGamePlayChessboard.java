@@ -31,15 +31,13 @@ public class SerializableGamePlayChessboard implements Serializable {
 		return movesDone;
 	}
 	
-	public SerializableGamePlayChessboard(GamePlayChessboard chessboard) {
+	public SerializableGamePlayChessboard(final GamePlayChessboard chessboard) {
 		List<Move> moveList = chessboard.getAllMoves();
 		
 		startingFEN = chessboard.getStartingFEN();
 		moves = new short[moveList.size()];
 		movesDone = chessboard.doneMovesCount();
 		
-		for(int i = 0; i < moves.length; i++) {
-			moves[i] = moveList.get(i).shortHashCode();
-		}
+		for(int i = 0; i < moves.length; i++) moves[i] = moveList.get(i).shortHashCode();
 	}
 }

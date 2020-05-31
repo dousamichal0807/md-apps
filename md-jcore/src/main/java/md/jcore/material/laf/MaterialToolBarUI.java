@@ -7,16 +7,14 @@ import javax.swing.plaf.ToolBarUI;
 
 public class MaterialToolBarUI extends ToolBarUI {
 
-	public static MaterialToolBarUI createUI(JComponent component) {
+	public static MaterialToolBarUI createUI(final JComponent component) {
 		return new MaterialToolBarUI();
 	}
 	
 	@Override
-	public void paint(Graphics g, JComponent c) {
+	public void paint(final Graphics g, final JComponent c) {
 		g.setColor(c.getParent().getBackground());
 		g.fillRect(0, 0, c.getWidth(), c.getHeight());
-		for(int i = 0; i < c.getComponentCount(); i++) {
-			c.getComponent(i).repaint();
-		}
+		for(int i = 0; i < c.getComponentCount(); i++) c.getComponent(i).repaint();
 	}
 }

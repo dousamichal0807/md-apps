@@ -28,7 +28,7 @@ public class MDRotation3D {
 	private final double angle;
 	private final byte axis;
 
-	public MDRotation3D(byte axis, double angle) {
+	public MDRotation3D(final byte axis, final double angle) {
 		if (axis < 0 || axis > 3)
 			throw new IllegalArgumentException("Illegal axis");
 		this.angle = angle;

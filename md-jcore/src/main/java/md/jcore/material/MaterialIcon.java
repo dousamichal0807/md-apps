@@ -68,7 +68,7 @@ public final class MaterialIcon implements Serializable {
 	/**
 	 * Creates image from this object.
 	 */
-	public BufferedImage getAWTImage(float scale, Color color) {
+	public BufferedImage getAWTImage(final float scale, final Color color) {
 		int size = (int) (24f * scale + .5f);
 		
 		Path2D.Float path = getAWTPath(scale);

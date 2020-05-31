@@ -2,6 +2,9 @@ package md.jcore.math;
 
 public abstract class MDNumberSet implements MDMathEntity {
 
+    protected MDNumberSet() {
+    }
+
     /**
      * Returns, if the set contains particular value.
      *
@@ -17,7 +20,10 @@ public abstract class MDNumberSet implements MDMathEntity {
      */
     public abstract boolean isEmpty();
 
-    public static abstract class Double implements MDMathEntity {
+    public abstract static class Double implements MDMathEntity {
+
+        protected Double() {
+        }
 
         /**
          * Returns, if the set contains particular number.

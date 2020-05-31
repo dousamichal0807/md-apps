@@ -28,9 +28,7 @@ public class SavedGameFileChooser extends JFileChooser {
 			return null;
 		if (this.getDialogType() == JFileChooser.SAVE_DIALOG) {
 			String path = file.getAbsolutePath();
-			if (!path.toLowerCase().endsWith(".md-jchess-savedgame")) {
-				file = new File(path + ".md-jchess-savedgame");
-			}
+			if (!path.toLowerCase().endsWith(".md-jchess-savedgame")) file = new File(path + ".md-jchess-savedgame");
 		}
 		return file;
 	}

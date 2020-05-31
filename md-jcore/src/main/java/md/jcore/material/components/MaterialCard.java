@@ -22,7 +22,7 @@ public class MaterialCard extends JPanel {
 	
 	private final MaterialCardBorder border;
 	
-	public void setBorder(Border border) {
+	public void setBorder(final Border border) {
 		// do nothing
 	}
 	

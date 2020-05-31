@@ -5,7 +5,6 @@ import md.jcore.math.*;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public final class Equations {
@@ -59,6 +58,7 @@ public final class Equations {
      * @param b the <var>b</var> coefficient as above
      * @return all roots of given binomic equation
      */
+    @SuppressWarnings("unchecked")
     public static MDNumberSet.Double solveBinomic(final int n, final double a, final double b) {
         if (a == 0 && b == 0)
             return null;
@@ -73,7 +73,7 @@ public final class Equations {
      *
      * @param n <var>n</var> &isin; &Nopf; coefficient as above
      * @param c <var>c</var> coefficient as above
-     * @return
+     * @return set of all roots of given binomic equation
      */
     public static strictfp MDNumberSet.Double solveBinomic(final int n, final double c) {
         ArrayList<MDNumber.Double> roots = new ArrayList<>(n);

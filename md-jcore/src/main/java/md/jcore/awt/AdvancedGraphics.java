@@ -55,7 +55,7 @@ public final class AdvancedGraphics {
 	 * 
 	 * @see #getBaseGraphics()
 	 */
-	public AdvancedGraphics(Graphics2D graphics) {
+	public AdvancedGraphics(final Graphics2D graphics) {
 		if (graphics == null)
 			throw new NullPointerException("Passed java.awt.Graphics2D object cannot be null");
 		this.baseGraphics = graphics;
@@ -71,7 +71,7 @@ public final class AdvancedGraphics {
 	 * @throws NullPointerException if {@code null} is passed instead of
 	 *                              {@link java.awt.geom.Ellipse2D} object
 	 */
-	public void drawEllipse(Paint paint, Stroke stroke, Ellipse2D ellipse) {
+	public void drawEllipse(final Paint paint, final Stroke stroke, final Ellipse2D ellipse) {
 		if (paint != null)
 			baseGraphics.setPaint(paint);
 		if (stroke != null)
@@ -88,7 +88,7 @@ public final class AdvancedGraphics {
 	 * @param stroke {@link Stroke} to be used
 	 * @param line   {@link Line2D} to be drawn
 	 */
-	public void drawLine(Paint paint, Stroke stroke, Line2D line) {
+	public void drawLine(final Paint paint, final Stroke stroke, final Line2D line) {
 		if (paint != null)
 			baseGraphics.setPaint(paint);
 		if (stroke != null)
@@ -112,7 +112,7 @@ public final class AdvancedGraphics {
 	 * @throws NullPointerException if {@code null} is passed instead of
 	 *                              {@link java.awt.geom.Rectangle2D} object
 	 */
-	public void drawRectangle(Paint paint, Stroke stroke, Rectangle2D rect) {
+	public void drawRectangle(final Paint paint, final Stroke stroke, final Rectangle2D rect) {
 		if (paint != null)
 			baseGraphics.setPaint(paint);
 		if (stroke != null)
@@ -132,7 +132,7 @@ public final class AdvancedGraphics {
 	 * @throws NullPointerException if {@code null} is passed instead of
 	 *                              {@link java.awt.Shape} object
 	 */
-	public void drawShape(Paint paint, Stroke stroke, Shape shape) {
+	public void drawShape(final Paint paint, final Stroke stroke, final Shape shape) {
 		if (paint != null)
 			baseGraphics.setPaint(paint);
 		if (stroke != null)
@@ -199,7 +199,7 @@ public final class AdvancedGraphics {
 	 * @throws NullPointerException if {@code null} is passed instead of
 	 *                              {@link java.awt.geom.Ellipse2D} object
 	 */
-	public void fillEllipse(Paint paint, Ellipse2D ellipse) {
+	public void fillEllipse(final Paint paint, final Ellipse2D ellipse) {
 		if (paint != null)
 			baseGraphics.setPaint(paint);
 
@@ -217,7 +217,7 @@ public final class AdvancedGraphics {
 	 * @throws NullPointerException if {@code null} is passed instead of
 	 *                              {@link java.awt.geom.Rectangle2D} object
 	 */
-	public void fillRectangle(Paint paint, Rectangle2D rect) {
+	public void fillRectangle(final Paint paint, final Rectangle2D rect) {
 		if (paint != null)
 			baseGraphics.setPaint(paint);
 
@@ -234,14 +234,14 @@ public final class AdvancedGraphics {
 	 * @throws NullPointerException if {@code null} is passed instead of // *
 	 *                              {@link java.awt.Shape} object
 	 */
-	public void fillShape(Paint paint, Shape shape) {
+	public void fillShape(final Paint paint, final Shape shape) {
 		if (paint != null)
 			baseGraphics.setPaint(paint);
 
 		baseGraphics.fill(shape);
 	}
 
-	public void paintImage(Image img, Rectangle2D rect) {
+	public void paintImage(final Image img, final Rectangle2D rect) {
 		baseGraphics.setPaint(null);
 		// XY coordinates
 		int x = (int) (Math.round(rect.getX()));
@@ -253,7 +253,7 @@ public final class AdvancedGraphics {
 		baseGraphics.drawImage(img, x, y, w, h, null);
 	}
 
-	public void paintImage(Image image, Point2D position, Dimension2D size) {
+	public void paintImage(final Image image, final Point2D position, final Dimension2D size) {
 		baseGraphics.setPaint(null);
 		// XY coordinates
 		int x = (int) (Math.round(position.getX()));

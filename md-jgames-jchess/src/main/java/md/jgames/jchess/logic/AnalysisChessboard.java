@@ -69,7 +69,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree {
     }
 
     @Override
-    public void reset(String fen) {
+    public void reset(final String fen) {
         Disposable.checkIsNotDisposed(this);
         Utilities.assertFENValidity(fen);
         moveTree.rootNode().childNodes().clear();
@@ -101,7 +101,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree {
     }
 
     @Override
-    public void performMove(Move move) {
+    public void performMove(final Move move) {
         Disposable.checkIsNotDisposed(this);
         // Move cannot be null
         if (move == null)
@@ -147,7 +147,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree {
     }
 
     @Override
-    public byte pieceAt(String square) {
+    public byte pieceAt(final String square) {
         Disposable.checkIsNotDisposed(this);
         Utilities.assertSquareValidity(square);
 
@@ -175,7 +175,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree {
      * given as parameter.
      * @param fen FEN of the initial position
      */
-    public AnalysisChessboard(String fen) {
+    public AnalysisChessboard(final String fen) {
         moveTree = new BasicTree<>();
         moveTree.setRootNode(new BasicTreeNode<>(null));
         doneMoves = new Vector<>();
@@ -197,7 +197,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree {
      * @throws md.jcore.AlreadyDisposedException if given chessboard is already
      *                                           disposed
      */
-    public AnalysisChessboard(GamePlayChessboard chessboard) {
+    public AnalysisChessboard(final GamePlayChessboard chessboard) {
         this(chessboard.getStartingFEN());
         for (Move move : chessboard.doneMoves())
             performMove(move);
@@ -214,6 +214,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree {
             currentFEN = null;
             moveTree = null;
             doneMoves = null;
+            possibleMoves = null;
             pieces = null;
         }
     }

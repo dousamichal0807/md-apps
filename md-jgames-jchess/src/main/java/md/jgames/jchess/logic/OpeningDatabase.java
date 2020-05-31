@@ -42,7 +42,7 @@ public final class OpeningDatabase {
 	 *                              returns {@code null} instead of {@code true} or
 	 *                              {@code false}
 	 */
-	public static SortedSet<Opening> filtered(Function<Opening, Boolean> filter) {
+	public static SortedSet<Opening> filtered(final Function<? super Opening, Boolean> filter) {
 		// If filter == null, throw exception
 		if (filter == null)
 			throw new NullPointerException("Null passed instead of filter object");
@@ -68,7 +68,7 @@ public final class OpeningDatabase {
 	 * 
 	 * @param stream {@link InputStream} of the TSV file
 	 */
-	public static void loadTSV(InputStream stream) {
+	public static void loadTSV(final InputStream stream) {
 		// Stream cannot be null
 		if (stream == null)
 			throw new NullPointerException("Null passed as input stream");

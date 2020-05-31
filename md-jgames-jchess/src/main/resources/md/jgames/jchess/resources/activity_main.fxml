@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Label?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="md.jgames.jchess.activities.MainActivityController"
+            prefWidth="800"
+            prefHeight="600">
+
+    <center>
+        <HBox alignment="CENTER">
+            <ImageView fx:id="logoImageView"/>
+            <VBox alignment="CENTER_LEFT">
+                <Label styleClass="mdc-h1" text="jChess" />
+                <Button styleClass="mdc-button-menu" minWidth="200.0" text="New Game"/>
+                <Button styleClass="mdc-button-menu" minWidth="200.0" text="Open Game"/>
+                <Button styleClass="mdc-button-menu" minWidth="200.0" text="Analysis"/>
+                <Button styleClass="mdc-button-menu" minWidth="200.0" text="Learn"/>
+                <Button styleClass="mdc-button-menu" minWidth="200.0" text="Statistics"/>
+                <Button styleClass="mdc-button-menu" minWidth="200.0" text="Settings"/>
+                <Button styleClass="mdc-button-menu" minWidth="200.0" text="Help"/>
+            </VBox>
+        </HBox>
+    </center>
+
+</BorderPane>

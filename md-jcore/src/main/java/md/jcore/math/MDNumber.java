@@ -92,7 +92,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	 * 
 	 * @param number the {@link MDNumber} instance to be copied
 	 */
-	public MDNumber(MDNumber number) {
+	public MDNumber(final MDNumber number) {
 		this.real = number.real;
 		this.imag = Arrays.copyOf(number.imag, number.imag.length);
 	}
@@ -183,9 +183,8 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 						sb.append('-');
 					sb.append(im);
 					sb.append("\\mathbf{");
-					if (i < 4) {
-						sb.append((char) ('i' + i));
-					} else {
+					if (i < 4) sb.append((char) ('i' + i));
+					else {
 						sb.append('l');
 						sb.append('i' + i - 4);
 					}
@@ -327,9 +326,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	// TODO Javadoc
 	public BigDecimal magnitude(final MathContext mc) {
 		BigDecimal s = real.round(mc).pow(2, mc);
-		for (BigDecimal bigDecimal : imag) {
-			s = s.add(bigDecimal.round(mc).pow(2, mc));
-		}
+		for (BigDecimal bigDecimal : imag) s = s.add(bigDecimal.round(mc).pow(2, mc));
 		return MDMath.rootOfNonnegativeReal(s, 2, mc);
 	}
 
@@ -364,7 +361,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	 * @param subtrahend the other hypercomplex to be subtracted
 	 * @return {@code this - subtrahend}
 	 */
-	public MDNumber subtract(MDNumber subtrahend, MathContext mc) {
+	public MDNumber subtract(final MDNumber subtrahend, final MathContext mc) {
 		int imagcount = Math.max(this.imag.length, subtrahend.imag.length);
 
 		BigDecimal real = this.real.subtract(subtrahend.real, mc);
@@ -385,7 +382,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	 * 
 	 * @see #isComplexNumber()
 	 */
-	public MDNumber root(int n, MathContext mc) {
+	public MDNumber root(final int n, final MathContext mc) {
 		if (!isComplexNumber())
 			throw new IllegalArgumentException("Cannot compute root of non-complex number");
 
@@ -410,7 +407,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	 * @see #root(int, MathContext)
 	 * @see #cbrt(MathContext)
 	 */
-	public MDNumber sqrt(MathContext mc) {
+	public MDNumber sqrt(final MathContext mc) {
 		return root(2, mc);
 	}
 
@@ -426,15 +423,14 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 	 * @see #root(int, MathContext)
 	 * @see #sqrt(MathContext)
 	 */
-	public MDNumber cbrt(MathContext mc) {
+	public MDNumber cbrt(final MathContext mc) {
 		return root(3, mc);
 	}
 
-	private boolean noImagPartFrom(int startIndex) {
-		for (int i = startIndex; i < imag.length; i++) {
+	private boolean noImagPartFrom(final int startIndex) {
+		for (int i = startIndex; i < imag.length; i++)
 			if (imag[i].compareTo(BigDecimal.ZERO) != 0)
 				return false;
-		}
 		return true;
 	}
 
@@ -521,7 +517,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 		 * 
 		 * @param number the {@link MDNumber} instance to be copied
 		 */
-		public Double(MDNumber.Double number) {
+		public Double(final MDNumber.Double number) {
 			this.real = number.real;
 			this.imag = Arrays.copyOf(number.imag, number.imag.length);
 		}
@@ -610,9 +606,8 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 							sb.append('-');
 						sb.append(im);
 						sb.append("\\mathbf{");
-						if (i < 4) {
-							sb.append((char) ('i' + i));
-						} else {
+						if (i < 4) sb.append((char) ('i' + i));
+						else {
 							sb.append('l');
 							sb.append('i' + i - 4);
 						}
@@ -749,9 +744,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 		// TODO Javadoc
 		public strictfp double magnitude() {
 			double s = real * real;
-			for (double v : imag) {
-				s += v * v;
-			}
+			for (double v : imag) s += v * v;
 			return Math.sqrt(s);
 		}
 
@@ -805,7 +798,7 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 		 * 
 		 * @see #isComplexNumber()
 		 */
-		public strictfp MDNumber.Double root(int n) {
+		public strictfp MDNumber.Double root(final int n) {
 			if (!isComplexNumber())
 				throw new IllegalStateException("Cannot compute root of non-complex number");
 
@@ -848,11 +841,10 @@ public final class MDNumber implements Cloneable, Comparable<MDNumber>, MDMathEn
 			return root(3);
 		}
 
-		private boolean noImagPartFrom(int startIndex) {
-			for (int i = startIndex; i < imag.length; i++) {
+		private boolean noImagPartFrom(final int startIndex) {
+			for (int i = startIndex; i < imag.length; i++)
 				if (imag[i] != 0)
 					return false;
-			}
 			return true;
 		}
 	}

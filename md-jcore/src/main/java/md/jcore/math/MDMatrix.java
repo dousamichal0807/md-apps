@@ -24,27 +24,25 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 	public MDMatrix(final BigDecimal[][] data) {
 		checkMatrixData(data);
 		this.data = new BigDecimal[data.length][data[0].length];
-		for (int row = 0; row < data.length; row++) {
-			for (int col = 0; col < data[0].length; col++) {
-				BigDecimal value = data[row][col];
-				if (value == null)
-					throw new NullPointerException("Null at row " + row + " column " + col);
-				this.data[row][col] = value;
-			}
-		}
+		for (int row = 0; row < data.length; row++)
+            for (int col = 0; col < data[0].length; col++) {
+                BigDecimal value = data[row][col];
+                if (value == null)
+                    throw new NullPointerException("Null at row " + row + " column " + col);
+                this.data[row][col] = value;
+            }
 	}
 
 	public MDMatrix(final Number[][] data) {
 		checkMatrixData(data);
 		this.data = new BigDecimal[data.length][data[0].length];
-		for (int row = 0; row < data.length; row++) {
-			for (int col = 0; col < data[0].length; col++) {
-				Number value = data[row][col];
-				if (value == null)
-					throw new NullPointerException("Null at row " + row + " column " + col);
-				this.data[row][col] = new BigDecimal(value.toString());
-			}
-		}
+		for (int row = 0; row < data.length; row++)
+            for (int col = 0; col < data[0].length; col++) {
+                Number value = data[row][col];
+                if (value == null)
+                    throw new NullPointerException("Null at row " + row + " column " + col);
+                this.data[row][col] = new BigDecimal(value.toString());
+            }
 	}
 
 	/**
@@ -72,11 +70,8 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 		int rows = vectors[0].size();
 		int cols = vectors.length;
 		this.data = new BigDecimal[rows][cols];
-		for (int row = 0; row < rows; row++) {
-			for (int col = 0; col < cols; col++) {
-				this.data[row][col] = vectors[col].get(row);
-			}
-		}
+		for (int row = 0; row < rows; row++)
+            for (int col = 0; col < cols; col++) this.data[row][col] = vectors[col].get(row);
 		checkMatrixData(this.data);
 	}
 
@@ -128,15 +123,14 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 	public String toLaTeX() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\\left[ \\begin{align*} ");
-		for (int i = 0; i < rows(); i++) {
-			for (int j = 0; j < columns(); j++) {
-				sb.append(data[i][j]);
-				if (j < columns() - 1)
-					sb.append(" & ");
-				else if (i < rows() - 1)
-					sb.append(" \\\\ ");
-			}
-		}
+		for (int i = 0; i < rows(); i++)
+            for (int j = 0; j < columns(); j++) {
+                sb.append(data[i][j]);
+                if (j < columns() - 1)
+                    sb.append(" & ");
+                else if (i < rows() - 1)
+                    sb.append(" \\\\ ");
+            }
 		sb.append(" \\end{align*} \\right]");
 		return sb.toString();
 	}
@@ -152,11 +146,8 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 			throw new IllegalArgumentException("Different matrix sizes");
 
 		BigDecimal[][] data = new BigDecimal[rows()][columns()];
-		for (int r = 0; r < rows(); r++) {
-			for (int c = 0; c < columns(); c++) {
-				data[r][c] = get(r, c).add(mtx2.get(r, c), mc);
-			}
-		}
+		for (int r = 0; r < rows(); r++)
+            for (int c = 0; c < columns(); c++) data[r][c] = get(r, c).add(mtx2.get(r, c), mc);
 		return new MDMatrix(data);
 	}
 
@@ -165,11 +156,8 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 			throw new IllegalArgumentException("Different matrix sizes");
 
 		BigDecimal[][] data = new BigDecimal[rows()][columns()];
-		for (int r = 0; r < rows(); r++) {
-			for (int c = 0; c < columns(); c++) {
-				data[r][c] = get(r, c).subtract(mtx2.get(r, c), mc);
-			}
-		}
+		for (int r = 0; r < rows(); r++)
+            for (int c = 0; c < columns(); c++) data[r][c] = get(r, c).subtract(mtx2.get(r, c), mc);
 		return new MDMatrix(data);
 	}
 
@@ -178,19 +166,18 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 			throw new IllegalArgumentException("Cannot multiply given matrices");
 
 		BigDecimal[][] data = new BigDecimal[this.rows()][mtx2.columns()];
-		for (int row = 0; row < this.rows(); row++) {
-			for (int col = 0; col < mtx2.columns(); col++) {
-				BigDecimal sum = BigDecimal.ZERO;
-				for (int k = 0; k < this.columns(); k++)
-					sum = sum.add(this.get(row, k).multiply(mtx2.get(k, col)), mc);
-				data[row][col] = sum;
-			}
-		}
+		for (int row = 0; row < this.rows(); row++)
+            for (int col = 0; col < mtx2.columns(); col++) {
+                BigDecimal sum = BigDecimal.ZERO;
+                for (int k = 0; k < this.columns(); k++)
+                    sum = sum.add(this.get(row, k).multiply(mtx2.get(k, col)), mc);
+                data[row][col] = sum;
+            }
 
 		return new MDMatrix(data);
 	}
 	
-	public BigDecimal determinant(MathContext mc) {
+	public BigDecimal determinant(final MathContext mc) {
 		// TODO determinant
 		return null;
 	}
@@ -223,10 +210,9 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 		if (data2.length == 0)
 			throw new IllegalArgumentException("2D array is empty");
 		int w = data2[0].length;
-		for (double[] row : data2) {
-			if (row.length != w || w == 0 || (w == 1 && data2.length == 1))
-				throw new IllegalArgumentException("2D array is inconsistent");
-		}
+		for (double[] row : data2)
+            if (row.length != w || w == 0 || (w == 1 && data2.length == 1))
+                throw new IllegalArgumentException("2D array is inconsistent");
 	}
 	
 	// Double class ----------------------------------------------------------------
@@ -240,9 +226,7 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 		public Double(final double[][] data) {
 			checkMatrixData(data);
 			this.data = new double[data.length][data[0].length];
-			for (int row = 0; row < data.length; row++) {
-				this.data[row] = Arrays.copyOf(data[row], data[row].length);
-			}
+			for (int row = 0; row < data.length; row++) this.data[row] = Arrays.copyOf(data[row], data[row].length);
 		}
 
 		/**
@@ -270,11 +254,8 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 			int rows = vectors[0].coordinates();
 			int cols = vectors.length;
 			this.data = new double[rows][cols];
-			for (int row = 0; row < rows; row++) {
-				for (int col = 0; col < cols; col++) {
-					this.data[row][col] = vectors[col].get(row);
-				}
-			}
+			for (int row = 0; row < rows; row++)
+                for (int col = 0; col < cols; col++) this.data[row][col] = vectors[col].get(row);
 			checkMatrixData(this.data);
 		}
 
@@ -326,15 +307,14 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 		public String toLaTeX() {
 			StringBuilder sb = new StringBuilder();
 			sb.append("\\left[ \\begin{align*} ");
-			for (int i = 0; i < rows(); i++) {
-				for (int j = 0; j < columns(); j++) {
-					sb.append(data[i][j]);
-					if (j < columns() - 1)
-						sb.append(" & ");
-					else if (i < rows() - 1)
-						sb.append(" \\\\ ");
-				}
-			}
+			for (int i = 0; i < rows(); i++)
+                for (int j = 0; j < columns(); j++) {
+                    sb.append(data[i][j]);
+                    if (j < columns() - 1)
+                        sb.append(" & ");
+                    else if (i < rows() - 1)
+                        sb.append(" \\\\ ");
+                }
 			sb.append(" \\end{align*} \\right]");
 			return sb.toString();
 		}
@@ -344,11 +324,8 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 				throw new IllegalArgumentException("Different matrix sizes");
 
 			double[][] data = new double[rows()][columns()];
-			for (int r = 0; r < rows(); r++) {
-				for (int c = 0; c < columns(); c++) {
-					data[r][c] = this.get(r, c) + mtx2.get(r, c);
-				}
-			}
+			for (int r = 0; r < rows(); r++)
+                for (int c = 0; c < columns(); c++) data[r][c] = this.get(r, c) + mtx2.get(r, c);
 			return new Double(data);
 		}
 
@@ -357,11 +334,8 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 				throw new IllegalArgumentException("Different matrix sizes");
 
 			double[][] data = new double[rows()][columns()];
-			for (int r = 0; r < rows(); r++) {
-				for (int c = 0; c < columns(); c++) {
-					data[r][c] = this.get(r, c) - mtx2.get(r, c);
-				}
-			}
+			for (int r = 0; r < rows(); r++)
+                for (int c = 0; c < columns(); c++) data[r][c] = this.get(r, c) - mtx2.get(r, c);
 			return new Double(data);
 		}
 
@@ -370,14 +344,13 @@ public final class MDMatrix implements Cloneable, MDMathEntity {
 				throw new IllegalArgumentException("Cannot multiply given matrices");
 
 			double[][] data = new double[this.rows()][mtx2.columns()];
-			for (int row = 0; row < this.rows(); row++) {
-				for (int col = 0; col < mtx2.columns(); col++) {
-					double sum = .0;
-					for (int k = 0; k < this.columns(); k++)
-						sum += this.get(row, k) * mtx2.get(k, col);
-					data[row][col] = sum;
-				}
-			}
+			for (int row = 0; row < this.rows(); row++)
+                for (int col = 0; col < mtx2.columns(); col++) {
+                    double sum = .0;
+                    for (int k = 0; k < this.columns(); k++)
+                        sum += this.get(row, k) * mtx2.get(k, col);
+                    data[row][col] = sum;
+                }
 
 			return new Double(data);
 		}

@@ -185,7 +185,7 @@ public final class Utilities {
      *
      * @see #assertFENValidity(String)
      */
-    public static void assertSquareValidity(String square) {
+    public static void assertSquareValidity(final String square) {
         if (!isValidSquare(square))
             throw new IllegalSquareException(square);
     }
@@ -197,7 +197,7 @@ public final class Utilities {
      * @param uciNotation UCI move notation to be asserted as valid
      * @throws IllegalUCIMoveNotationException if notation is invalid
      */
-    public static void assertUCIMoveNotationValidity(String uciNotation) {
+    public static void assertUCIMoveNotationValidity(final String uciNotation) {
         if (!isValidUCIMoveNotation(uciNotation))
             throw new IllegalUCIMoveNotationException(uciNotation);
     }
@@ -211,7 +211,7 @@ public final class Utilities {
      * @see #assertSquareValidity(String)
      * @see #mapPieces(String)
      */
-    public static void assertFENValidity(String fen) {
+    public static void assertFENValidity(final String fen) {
         if (!isValidFEN(fen))
             throw new IllegalFENException(fen);
     }
@@ -226,7 +226,7 @@ public final class Utilities {
      *
      * @throws IllegalFENException if invalid FEN is given
      */
-    public static byte[][] mapPieces(String fen) {
+    public static byte[][] mapPieces(final String fen) {
         Utilities.assertFENValidity(fen);
         byte[][] pieces = new byte[8][8];
         String[] ranks = fen.split("/");
@@ -236,9 +236,8 @@ public final class Utilities {
             for (int fileIndex = 0, rankCharIndex = 0; rankCharIndex < rank.length()
                     && fileIndex < 8; rankCharIndex++) {
                 char rankChar = rank.charAt(rankCharIndex);
-                if (rankChar >= '1' && rankChar <= '8') {
-                    fileIndex += rankChar - '0';
-                } else {
+                if (rankChar >= '1' && rankChar <= '8') fileIndex += rankChar - '0';
+                else {
                     pieces[rankIndex][fileIndex] = pieceCharToConstant(rankChar);
                     fileIndex++;
                 }
@@ -262,7 +261,7 @@ public final class Utilities {
      *                                  {@code 'N'}, {@code 'B'}, {@code 'Q'},
      *                                  {@code 'K'}
      */
-    public static byte pieceCharToConstant(char piece) {
+    public static byte pieceCharToConstant(final char piece) {
         switch (piece) {
             case 'P':
                 return Chessboard.PIECE_WHITE_PAWN;
@@ -483,7 +482,7 @@ public final class Utilities {
             cmd.append(" moves");
             for (Move move : moves) {
                 cmd.append(' ');
-                cmd.append(move.toString());
+                cmd.append(move);
             }
         }
         process.send(cmd.toString());
@@ -543,9 +542,8 @@ public final class Utilities {
 
             process.read(line -> {
                 Debugger.info(Utilities.class, "getAllMovesRating() - accepted line '" + line + "'");
-                if (line.isEmpty()) {
-                    return true;
-                } else if (line.startsWith("Nodes searched:")) {
+                if (line.isEmpty()) return true;
+                else if (line.startsWith("Nodes searched:")) {
                     done.set(true);
                     return false;
                 }
@@ -573,7 +571,7 @@ public final class Utilities {
      *
      * @throws NullPointerException if {@code process} is {@code null}
      */
-    public static void waitForStockfishToBeReady(ExecutableProcess process) {
+    public static void waitForStockfishToBeReady(final ExecutableProcess process) {
         synchronized (process) {
             AtomicReference<Boolean> ready = new AtomicReference<>(false);
             process.read(line -> {

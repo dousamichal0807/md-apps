@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 import md.jcore.math.MDMatrix;
-import md.jcore.math.MDVector;
 
 /**
  * Projector that project 3D points into 2D using orthogonal projection. Uses
@@ -32,7 +31,7 @@ public final class MDOrthogonalProjector3D {
 	public static final class Double implements MDProjector.Double {
 
 		public static final MDMatrix.Double MATRIX_PROJECTION_ORTHOGONAL = new MDMatrix.Double(
-				new double[][] { { 1, 0, 0 }, { 0, 1, 0 } });
+				new double[][] {{0, 0, 1}, {0, 1, 0}});
 
 		private final ArrayList<MDRotation3D> rotations;
 
@@ -51,7 +50,7 @@ public final class MDOrthogonalProjector3D {
 		}
 
 		@Override
-		public md.jcore.math.MDVector.Double project(md.jcore.math.MDVector.Double vector) {
+		public md.jcore.math.MDVector.Double project(final md.jcore.math.MDVector.Double vector) {
 			AtomicReference<MDMatrix.Double> mtx = new AtomicReference<>(new MDMatrix.Double(vector));
 			rotations.forEach(rotation -> mtx.set(rotation.asDoubleMatrix().multiply(mtx.get())));
 

@@ -7,10 +7,20 @@ import md.jsk.mathcalc.resources.Resources;
 
 import java.io.IOException;
 
-public class MainActivity extends Scene {
+/**
+ * Main activity for MD jSK MathCalc
+ *
+ * @author Michal Douša
+ * @see SettingsActivity
+ */
+public final class MainActivity extends Scene {
 
     private static MainActivity instance;
 
+    /**
+     * Returns the only instance of {@link MainActivity} class.
+     * @return the {@link MainActivity} instance
+     */
     public static MainActivity getInstance() {
         if (instance == null) try {
             instance = new MainActivity();
@@ -22,8 +32,10 @@ public class MainActivity extends Scene {
     }
 
     private MainActivity() throws IOException {
-        super(FXMLLoader.load(ActivityLoader.loadActivity("main")), 800, 600);
+        // Load FXML file
+        super(FXMLLoader.load(ActivityLoader.loadActivityFXML("main")), 800, 600);
 
+        // Load CSS stylesheets
         this.getStylesheets().add(CoreResources.loadResourceURL("material-light.css").toExternalForm());
         this.getStylesheets().add(Resources.loadResourceURL("material-theme.css").toExternalForm());
     }

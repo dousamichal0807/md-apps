@@ -1,7 +1,6 @@
 package md.jcore.collections;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public final class BasicTreeNode<E> implements MDTreeNode {
 	 * 
 	 * @param value  the value that will be stored in the node
 	 */
-	public void setValue(E value) {
+	public void setValue(final E value) {
 		this.value = value;
 	}
 
@@ -52,7 +51,7 @@ public final class BasicTreeNode<E> implements MDTreeNode {
 	 * 
 	 * @param value  the initial value
 	 */
-	public BasicTreeNode(E value) {
+	public BasicTreeNode(final E value) {
 		this.setValue(value);
 		this.children = new ArrayList<>();
 	}
@@ -66,7 +65,7 @@ public final class BasicTreeNode<E> implements MDTreeNode {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean equals(Object o2) {
+	public boolean equals(final Object o2) {
 		try {
 			BasicTreeNode<E> n2 = (BasicTreeNode<E>) o2;
 			return this.getValue().equals(n2.getValue());

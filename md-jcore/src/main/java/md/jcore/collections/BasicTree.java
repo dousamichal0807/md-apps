@@ -1,7 +1,5 @@
 package md.jcore.collections;
 
-import java.io.Serializable;
-
 /**
  * Represents a basic tree with no limitation. It has some benefits:
  * 
@@ -38,7 +36,7 @@ public final class BasicTree<E> implements MDTree {
 	 *
 	 * @param rootNodeValue value of the root node
 	 */
-	public BasicTree(E rootNodeValue) {
+	public BasicTree(final E rootNodeValue) {
 		this.setRootNode(new BasicTreeNode<>(rootNodeValue));
 	}
 
@@ -52,7 +50,7 @@ public final class BasicTree<E> implements MDTree {
 	 * 
 	 * @param rootNode the root node to be set
 	 */
-	public void setRootNode(BasicTreeNode<E> rootNode) {
+	public void setRootNode(final BasicTreeNode<E> rootNode) {
 		if (rootNode == null)
 			throw new NullPointerException("Root node cannot be set to null");
 		this.rootNode = rootNode;
@@ -67,7 +65,7 @@ public final class BasicTree<E> implements MDTree {
 	public static final class Unmodifiable<E> implements MDTree {
 		private final BasicTree<E> tree;
 
-		Unmodifiable(BasicTree<E> tree) {
+		Unmodifiable(final BasicTree<E> tree) {
 			if (tree == null)
 				throw new NullPointerException();
 			this.tree = tree;

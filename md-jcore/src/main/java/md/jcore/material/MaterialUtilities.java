@@ -10,25 +10,33 @@ import javax.swing.border.EmptyBorder;
 
 import md.jcore.Utilities;
 import md.jcore.material.laf.MaterialLookAndFeel;
+import md.jcore.resources.CoreResources;
 
-public class MaterialUtilities {
-    static final EmptyBorder PADDING_TEXT = new EmptyBorder(0, 16, 0, 16);
+public final class MaterialUtilities {
 
+    private MaterialUtilities() {
+    }
+
+    private static final EmptyBorder PADDING_TEXT = new EmptyBorder(0, 16, 0, 16);
+
+    /**
+     * Registers all font used in Material Design to {@link java.awt.GraphicsEnvironment GraphicsEnvironment}
+     */
     public static void registerFonts() {
-        Utilities.loadFont("Roboto-Thin");
-        Utilities.loadFont("Roboto-ThinItalic");
+        CoreResources.loadFont("Roboto-Thin");
+        CoreResources.loadFont("Roboto-ThinItalic");
 
-        Utilities.loadFont("Roboto-Light");
-        Utilities.loadFont("Roboto-LightItalic");
+        CoreResources.loadFont("Roboto-Light");
+        CoreResources.loadFont("Roboto-LightItalic");
 
-        Utilities.loadFont("Roboto-Regular");
-        Utilities.loadFont("Roboto-Italic");
+        CoreResources.loadFont("Roboto-Regular");
+        CoreResources.loadFont("Roboto-Italic");
 
-        Utilities.loadFont("Roboto-Medium");
-        Utilities.loadFont("Roboto-MediumItalic");
+        CoreResources.loadFont("Roboto-Medium");
+        CoreResources.loadFont("Roboto-MediumItalic");
 
-        Utilities.loadFont("Roboto-Bold");
-        Utilities.loadFont("Roboto-BoldItalic");
+        CoreResources.loadFont("Roboto-Bold");
+        CoreResources.loadFont("Roboto-BoldItalic");
     }
 
     /**
@@ -38,7 +46,7 @@ public class MaterialUtilities {
      *              and so on
      * @return the appropriate {@link javax.swing.JLabel JLabel}.
      */
-    public static JLabel createHeadingTextLabel(int level) {
+    public static JLabel createHeadingTextLabel(final int level) {
         JLabel label = new JLabel();
         label.setBorder(MaterialUtilities.PADDING_TEXT);
 
@@ -51,7 +59,7 @@ public class MaterialUtilities {
         return label;
     }
 
-    public static void initializeLookAndFeel(int theme, Color primaryColor, Color secondaryColor) {
+    public static void initializeLookAndFeel(final int theme, final Color primaryColor, final Color secondaryColor) {
         try {
             MaterialLookAndFeel laf = new MaterialLookAndFeel(theme, primaryColor, secondaryColor);
             UIManager.setLookAndFeel(laf);
@@ -60,7 +68,7 @@ public class MaterialUtilities {
         }
     }
 
-    public static JLabel createHeadingSecondaryTextLabel(int level) {
+    public static JLabel createHeadingSecondaryTextLabel(final int level) {
         JLabel label = new JLabel();
         label.setBorder(PADDING_TEXT);
         label.setForeground(UIManager.getColor("Label.disabledForeground"));

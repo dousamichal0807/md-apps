@@ -40,12 +40,12 @@ public class MaterialButtonUI extends BasicButtonUI {
 	 * @param c the button to create UI on
 	 * @return new {@link MaterialButtonUI} instance
 	 */
-	public static MaterialButtonUI createUI(JComponent c) {
+	public static MaterialButtonUI createUI(final JComponent c) {
 		return new MaterialButtonUI();
 	}
 
 	@Override
-	public void paint(Graphics g, JComponent c) {
+	public void paint(final Graphics g, final JComponent c) {
 		Graphics2D g2d = (Graphics2D) g;
 		AdvancedGraphics gadv = new AdvancedGraphics(g2d);
 		JButton button = (JButton) c;
@@ -122,24 +122,17 @@ public class MaterialButtonUI extends BasicButtonUI {
 				g2d.fill(path);
 			}
 		}
-		if (!button.isEnabled()) {
-			g2d.setColor(UIManager.getColor("Button.disabledForeground"));
-		} else if (primary) {
-			g2d.setColor(UIManager.getColor("Button.primaryForeground"));
-		} else if (button.getParent() instanceof JToolBar) {
-			g2d.setColor(button.getParent().getForeground());
-		} else {
-			g2d.setColor(UIManager.getColor("Button.foreground"));
-		}
-		if (text != null && icon == null) {
-			g2d.drawString(text,
-					(button.getParent() instanceof JToolBar ? (button.getHeight() - textHeight) / 2
-							: (button.getWidth() - textWidth) / 2),
-					textYOffset + (button.getHeight() - textHeight) / 2);
-		}
+		if (!button.isEnabled()) g2d.setColor(UIManager.getColor("Button.disabledForeground"));
+		else if (primary) g2d.setColor(UIManager.getColor("Button.primaryForeground"));
+		else if (button.getParent() instanceof JToolBar) g2d.setColor(button.getParent().getForeground());
+		else g2d.setColor(UIManager.getColor("Button.foreground"));
+		if (text != null && icon == null) g2d.drawString(text,
+				(button.getParent() instanceof JToolBar ? (button.getHeight() - textHeight) / 2
+						: (button.getWidth() - textWidth) / 2),
+				textYOffset + (button.getHeight() - textHeight) / 2);
 	}
 
-	private static BufferedImage getButtonIcon(JButton button) {
+	private static BufferedImage getButtonIcon(final JButton button) {
 		if (!(button instanceof MaterialButton)) // Not a Material button
 			return null;
 		MaterialButton mb = (MaterialButton) button;
@@ -150,18 +143,18 @@ public class MaterialButtonUI extends BasicButtonUI {
 				UIManager.getColor(mb.isPrimary() ? "Button.primaryForeground" : "Button.foreground"));
 	}
 
-	private static String getButtonText(JButton button) {
+	private static String getButtonText(final JButton button) {
 		return (button.getParent() instanceof JToolBar || button.getText() == null) ? button.getText()
 				: button.getText().toUpperCase((Locale) UIManager.get("Locale"));
 	}
 
 	@Override
-	public Dimension getMinimumSize(JComponent c) {
+	public Dimension getMinimumSize(final JComponent c) {
 		return getPreferredSize(c);
 	}
 
 	@Override
-	public Dimension getPreferredSize(JComponent c) {
+	public Dimension getPreferredSize(final JComponent c) {
 		JButton button = (JButton) c;
 		Font font = UIManager.getFont("Button.font");
 		FontMetrics fontMetrics = button.getFontMetrics(font);
@@ -173,7 +166,7 @@ public class MaterialButtonUI extends BasicButtonUI {
 	}
 
 	@Override
-	public Dimension getMaximumSize(JComponent c) {
+	public Dimension getMaximumSize(final JComponent c) {
 		return getPreferredSize(c);
 	}
 }

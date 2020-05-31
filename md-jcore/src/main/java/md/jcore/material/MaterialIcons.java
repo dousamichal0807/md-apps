@@ -10,6 +10,9 @@ import static md.jcore.material.MaterialIcon.PathCommand.*;
  */
 public final class MaterialIcons {
 
+	private MaterialIcons() {
+	}
+
 	/**
 	 * Creates the 'x' icon.
 	 * 

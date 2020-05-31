@@ -6,7 +6,7 @@ public final class MDCollections {
     private MDCollections() {
     }
 
-    public static <E> BasicTree.Unmodifiable<E> unmodifiableTree(BasicTree<E> tree) {
+    public static <E> BasicTree.Unmodifiable<E> unmodifiableTree(final BasicTree<E> tree) {
         return (tree == null ? null : new BasicTree.Unmodifiable<>(tree));
     }
 }

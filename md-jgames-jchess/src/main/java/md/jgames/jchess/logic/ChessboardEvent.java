@@ -12,7 +12,7 @@ public final class ChessboardEvent {
 		return move;
 	}
 
-	ChessboardEvent(Chessboard source, Move move) {
+	ChessboardEvent(final Chessboard source, final Move move) {
 		if (source == null)
 			throw new NullPointerException("The source is set to null");
 		this.source = source;

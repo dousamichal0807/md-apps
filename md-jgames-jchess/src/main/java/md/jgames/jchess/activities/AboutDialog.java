@@ -21,7 +21,7 @@ public final class AboutDialog extends JDialog {
 	private final JTextArea contentInner;
 	private final JScrollPane contentOuter;
 
-	public AboutDialog(Window win) {
+	public AboutDialog(final Window win) {
 		super(win);
 		
 		contentInner = new JTextArea();

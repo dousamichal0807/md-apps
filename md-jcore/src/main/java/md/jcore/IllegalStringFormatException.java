@@ -7,7 +7,7 @@ public class IllegalStringFormatException extends IllegalArgumentException {
 		super();
 	}
 
-	public IllegalStringFormatException(String m) {
+	public IllegalStringFormatException(final String m) {
 		super(m);
 	}
 }

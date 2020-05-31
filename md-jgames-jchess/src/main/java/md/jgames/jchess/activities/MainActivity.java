@@ -125,7 +125,7 @@ public final class MainActivity extends MaterialActivity {
 		getContentPane().add(buttonContainer, gbc);
 	}
 
-	private static void buttonPaneInit(JComponent b) {
+	private static void buttonPaneInit(final JComponent b) {
 		b.setAlignmentX(0f);
 		b.setMaximumSize(new Dimension(300, b.getPreferredSize().height));
 	}

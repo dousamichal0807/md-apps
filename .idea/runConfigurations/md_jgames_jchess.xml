@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="md.jgames.jchess.Main" type="Application" factoryName="Application">
+  <configuration default="false" name="md.jgames.jchess" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="md.jgames.jchess.Main" />
     <module name="md-jgames-jchess" />
     <method v="2">

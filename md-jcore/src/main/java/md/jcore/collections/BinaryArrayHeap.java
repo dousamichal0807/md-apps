@@ -25,11 +25,11 @@ import java.util.Queue;
 public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Comparator<E> {
 	private static final long serialVersionUID = 0x100L;
 	
-	private Object[] tree;
+	private E[] tree;
 	private int size, modCount;
 	private final int initialCapacity;
 	private final float loadFactor;
-	private final Comparator<E> comparator;
+	private final Comparator<? super E> comparator;
 
 	/**
 	 * The default constructor for the heap.
@@ -51,7 +51,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 * @see #getLoadFactor()
 	 * @see #getComparator()
 	 */
-	public BinaryArrayHeap(int initialCapacity, float loadFactor, Comparator<E> comparator) {
+	public BinaryArrayHeap(final int initialCapacity, final float loadFactor, final Comparator<? super E> comparator) {
 		if (loadFactor < 1f)
 			throw new IllegalArgumentException("Load factor must be greater or equal to 1");
 
@@ -88,7 +88,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 * 
 	 * @return the comparator used to compare elements
 	 */
-	public Comparator<E> getComparator() {
+	public Comparator<? super E> getComparator() {
 		return comparator;
 	}
 
@@ -135,22 +135,20 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int compare(E o1, E o2) {
+	public int compare(final E o1, final E o2) {
 		return comparator == null ? ((Comparable<E>) o1).compareTo(o2) : comparator.compare(o1, o2);
 	}
 
 	// Methods manipulating with elements -------------------------------------
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public synchronized boolean offer(E element) {
+	public synchronized boolean offer(final E element) {
 		if (element == null)
 			// throw new NullPointerException("Cannot add null");
 			return false;
 		// Add a new ply if the heap is full
-		if (capacity() == size()) {
+		if (capacity() == size())
 			expand();
-		}
 		// Add new element as the last, save needed indices of used elements in
 		// the tree and increase the size and modification count...
 		tree[size] = element;
@@ -159,7 +157,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 		size++;
 		modCount++;
 		// ...And re-arrange elements that the heap is really heap!
-		while (compare((E) tree[parentIdx], (E) tree[addedElemIdx]) > 0) {
+		while (compare(tree[parentIdx], tree[addedElemIdx]) > 0) {
 			// While parent is bigger...
 			swap(parentIdx, addedElemIdx);
 			addedElemIdx = parentIdx;
@@ -169,14 +167,14 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	}
 
 	@Override
-	public synchronized boolean add(E e) {
+	public synchronized boolean add(final E e) {
 		if(e == null)
 			throw new NullPointerException("Null value cannot be added");
 		return offer(e);
 	}
 
 	@Override
-	public synchronized boolean addAll(Collection<? extends E> c) {
+	public synchronized boolean addAll(final Collection<? extends E> c) {
 		Iterator<? extends E> iterator = c.iterator();
 		boolean added = true;
 
@@ -200,11 +198,10 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 * @see #remove()
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public E element() {
 		if (isEmpty())
 			throw new IllegalStateException("No elements left");
-		return (E) tree[0];
+		return tree[0];
 	}
 
 	/**
@@ -219,12 +216,11 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 * @see #poll()
 	 * @see #remove()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public E peek() {
 		if (isEmpty())
 			return null;
-		return (E) tree[0];
+		return tree[0];
 	}
 
 	/**
@@ -240,7 +236,6 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 * @see #remove()
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public synchronized E poll() {
 		if(isEmpty())
 			return null;
@@ -253,7 +248,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 		tree[size - 1] = null;
 		size--;
 		int nodeIdx = 0, lchildIdx = 1, rchildIdx = 2;
-		E node = (E) tree[0];
+		E node = tree[0];
 		boolean done = false;
 		// While we aren't done...
 		while (!done) {
@@ -261,9 +256,9 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 			// Get left and right child if they exist, otherwise leave variables
 			// set to null
 			if (lchildIdx < size)
-				lchild = (E) tree[lchildIdx];
+				lchild = tree[lchildIdx];
 			if (rchildIdx < size)
-				rchild = (E) tree[rchildIdx];
+				rchild = tree[rchildIdx];
 
 			if ((lchild == null || compare(node, lchild) <= 0) && (rchild == null || compare(node, rchild) <= 0)) {
 				// Both children are bigger or equal or they don't exist, we're done
@@ -315,7 +310,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 * @see #remove()
 	 */
 	@Override
-	public boolean remove(Object o) {
+	public boolean remove(final Object o) {
 		return false;
 	}
 
@@ -328,7 +323,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 * @see #clear()
 	 */
 	@Override
-	public boolean removeAll(Collection<?> c) {
+	public boolean removeAll(final Collection<?> c) {
 		return false;
 	}
 
@@ -341,7 +336,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 * @see #clear()
 	 */
 	@Override
-	public boolean retainAll(Collection<?> c) {
+	public boolean retainAll(final Collection<?> c) {
 		return false;
 	}
 
@@ -352,14 +347,14 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	 */
 	@Override
 	public synchronized void clear() {
-		tree = new Object[initialCapacity];
+		tree = (E[]) new Object[initialCapacity];
 		size = 0;
 		modCount++;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean contains(Object o) {
+	public boolean contains(final Object o) {
 		E element;
 
 		// Cast to generic type 'E'
@@ -370,18 +365,18 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 		}
 
 		// If element found return true
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++)
 			if (tree[i].equals(element))
 				return true;
-		}
+
 		return false;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean containsAll(Collection<?> c) {
+	public boolean containsAll(final Collection<?> c) {
 
-		for (Object o : c) {
+		for (Object o : c)
 			try {
 				E element = (E) o;
 				if (!contains(element))
@@ -389,7 +384,6 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 			} catch (ClassCastException exc) {
 				return false;
 			}
-		}
 		return true;
 	}
 
@@ -403,40 +397,35 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 		return Arrays.stream(tree, 0, size).toArray();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T[] toArray(T[] a) {
-		if (a.length < size) // Make a new array of a's runtime type, but my contents
-			return (T[]) Arrays.copyOf(tree, size, a.getClass());
-		System.arraycopy(tree, 0, a, 0, size);
-		if (a.length > size)
-			a[size] = null;
+	public <T> T[] toArray(final T[] a) {
+		System.arraycopy(tree, 0, a, 0, Math.min(size, a.length));
 		return a;
 	}
 
 	// Private methods --------------------------------------------------------
 
 	private void expand() {
-		Object[] tree2 = new Object[(int) (tree.length * loadFactor + 1)];
+		E[] tree2 = (E[]) new Object[(int) (tree.length * loadFactor + 1)];
 		System.arraycopy(tree, 0, tree2, 0, tree.length);
 		tree = tree2;
 	}
 
-	private void swap(int i1, int i2) {
-		Object t = tree[i1];
+	private void swap(final int i1, final int i2) {
+		E t = tree[i1];
 		tree[i1] = tree[i2];
 		tree[i2] = t;
 	}
 
-	private static int treeLeftChild(int parent) {
+	private static int treeLeftChild(final int parent) {
 		return 2 * parent + 1;
 	}
 
-	private static int treeRightChild(int parent) {
+	private static int treeRightChild(final int parent) {
 		return 2 * parent + 2;
 	}
 
-	private static int treeParent(int child) {
+	private static int treeParent(final int child) {
 		return (child - 1) / 2;
 	}
 
@@ -445,9 +434,9 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 	private static final class HeapIterator<F> implements Iterator<F> {
 		private final int modCount;
 		private int nextElemIndex;
-		private final BinaryArrayHeap<F> heap;
+		private final BinaryArrayHeap<? extends F> heap;
 
-		HeapIterator(BinaryArrayHeap<F> heap) {
+		HeapIterator(final BinaryArrayHeap<? extends F> heap) {
 			this.heap = heap;
 			this.modCount = heap.modCount;
 			this.nextElemIndex = 0;
@@ -458,7 +447,6 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 			return nextElemIndex < heap.size();
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public F next() {
 			if (heap.modCount != modCount)
@@ -466,7 +454,7 @@ public final class BinaryArrayHeap<E> implements Serializable, Queue<E>, Compara
 			if (!hasNext())
 				throw new IllegalStateException("Heap has no more elements");
 
-			F element = (F) heap.tree[nextElemIndex];
+			F element = heap.tree[nextElemIndex];
 			nextElemIndex++;
 			return element;
 		}

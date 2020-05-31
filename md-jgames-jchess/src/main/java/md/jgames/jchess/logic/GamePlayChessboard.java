@@ -97,12 +97,12 @@ public final class GamePlayChessboard extends Chessboard {
 		Disposable.checkIsNotDisposed(this);
 		byte[][] pieces = new byte[8][8];
 		for (int i = 0; i < 8; i++)
-			Arrays.copyOf(this.pieces[i], 8);
+			pieces[i] = Arrays.copyOf(this.pieces[i], 8);
 		return pieces;
 	}
 	
 	@Override
-	public byte pieceAt(String square) {
+	public byte pieceAt(final String square) {
 		// Checking state and validity
 		Disposable.checkIsNotDisposed(this);
 		Utilities.assertSquareValidity(square);
@@ -114,7 +114,7 @@ public final class GamePlayChessboard extends Chessboard {
 	}
 
 	@Override
-	public void reset(String fen) {
+	public void reset(final String fen) {
 		Disposable.checkIsNotDisposed(this);
 		Utilities.assertFENValidity(fen);
 		moves.clear();
@@ -122,14 +122,12 @@ public final class GamePlayChessboard extends Chessboard {
 		movesDone = 0;
 
 		// Reset Stockfish if process exists
-		if (stockfishProcess != null) {
-			stockfishProcess.send("ucinewgame");
-		}
+		if (stockfishProcess != null) stockfishProcess.send("ucinewgame");
 		update();
 	}
 
 	@Override
-	public void performMove(Move move) {
+	public void performMove(final Move move) {
 		Disposable.checkIsNotDisposed(this);
 		if (move == null)
 			throw new NullPointerException("Performed move cannot be null");
@@ -152,7 +150,7 @@ public final class GamePlayChessboard extends Chessboard {
 		}
 	}
 
-	public void setDoneMovesCount(int doneMoves) {
+	public void setDoneMovesCount(final int doneMoves) {
 		Disposable.checkIsNotDisposed(this);
 		if (doneMoves < 0 || doneMoves > moves.size())
 			throw new IllegalArgumentException("Invalid range of number of move.");
@@ -207,7 +205,7 @@ public final class GamePlayChessboard extends Chessboard {
 	 * 
 	 * @throws IllegalArgumentException   if invalid FEN is passed
 	 */
-	public GamePlayChessboard(String fen) {
+	public GamePlayChessboard(final String fen) {
 		Utilities.assertFENValidity(fen);
 		moves = new ArrayList<>();
 		possibleMoves = new TreeSet<>();
@@ -225,7 +223,7 @@ public final class GamePlayChessboard extends Chessboard {
 	 *
 	 * @throws NullPointerException if {@code null} is given as argument
 	 */
-	public GamePlayChessboard(SerializableGamePlayChessboard sboard) {
+	public GamePlayChessboard(final SerializableGamePlayChessboard sboard) {
 		if (sboard == null)
 			throw new NullPointerException("Cannot pass null as argument");
 		startingFEN = sboard.getStartingFEN();
@@ -233,9 +231,7 @@ public final class GamePlayChessboard extends Chessboard {
 		moves = new ArrayList<>();
 		possibleMoves = new TreeSet<>();
 		short[] sbmoves = sboard.getMoves();
-		for (short sbmove : sbmoves) {
-			this.moves.add(new Move(sbmove));
-		}
+		for (short sbmove : sbmoves) this.moves.add(new Move(sbmove));
 
 		update();
 	}

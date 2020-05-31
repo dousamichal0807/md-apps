@@ -9,7 +9,7 @@ public final class GraphVertex<E> implements Disposable {
 	ArrayList<GraphEdge<E>> edges;
 	private E value;
 	
-	GraphVertex(Graph<E> parent, E value) {
+	GraphVertex(final Graph<E> parent, final E value) {
 		this.value = value;
 		this.parentGraph = parent;
 		this.edges = new ArrayList<>();
@@ -25,7 +25,7 @@ public final class GraphVertex<E> implements Disposable {
 		return value;
 	}
 	
-	public void setValue(E value) {
+	public void setValue(final E value) {
 		Disposable.checkIsNotDisposed(this);
 		this.value = value;
 	}

@@ -19,14 +19,14 @@ public class MaterialActivity extends JPanel {
 	private final JPanel contentPane;
 	private MaterialAppBar appBar;
 
-	public void addWindowListener(WindowListener listener) {
+	public void addWindowListener(final WindowListener listener) {
 		if(listener == null)
 			throw new NullPointerException();
 		if(!windowListeners.contains(listener))
 			windowListeners.add(listener);
 	}
 	
-	public void removeWindowListener(WindowListener listener) {
+	public void removeWindowListener(final WindowListener listener) {
 		windowListeners.remove(listener);
 	}
 	
@@ -41,7 +41,7 @@ public class MaterialActivity extends JPanel {
 		return defaultCloseOperation;
 	}
 
-	public void setDefaultCloseOperation(int defaultCloseOperation) {
+	public void setDefaultCloseOperation(final int defaultCloseOperation) {
 		switch(defaultCloseOperation) {
 		case JFrame.EXIT_ON_CLOSE:
 		case JFrame.DO_NOTHING_ON_CLOSE:
@@ -62,16 +62,12 @@ public class MaterialActivity extends JPanel {
 		return appBar;
 	}
 
-	public void setAppBar(MaterialAppBar appBar) {
-		if(this.appBar != null) {
-			super.remove(this.appBar);
-		}
+	public void setAppBar(final MaterialAppBar appBar) {
+		if(this.appBar != null) super.remove(this.appBar);
 		
 		this.appBar = appBar;
 		
-		if(this.appBar != null) {
-			super.add(this.appBar, BorderLayout.PAGE_START);
-		}
+		if(this.appBar != null) super.add(this.appBar, BorderLayout.PAGE_START);
 		
 		this.revalidate();
 	}
@@ -88,34 +84,34 @@ public class MaterialActivity extends JPanel {
 	// THESE METHODS CANNOT BE USED!
 
 	@Override
-	public Component add(Component comp) {
+	public Component add(final Component comp) {
 		return null;
 	}
 
 	@Override
-	public Component add(String name, Component comp) {
+	public Component add(final String name, final Component comp) {
 		return null;
 	}
 
 	@Override
-	public Component add(Component comp, int index) {
+	public Component add(final Component comp, final int index) {
 		return null;
 	}
 
 	@Override
-	public void add(Component comp, Object constraints) {
+	public void add(final Component comp, final Object constraints) {
 	}
 
 	@Override
-	public void add(Component comp, Object constraints, int index) {
+	public void add(final Component comp, final Object constraints, final int index) {
 	}
 
 	@Override
-	public void remove(int index) {
+	public void remove(final int index) {
 	}
 
 	@Override
-	public void remove(Component comp) {
+	public void remove(final Component comp) {
 	}
 
 	@Override
@@ -123,10 +119,10 @@ public class MaterialActivity extends JPanel {
 	}
 
 	@Override
-	public void remove(MenuComponent popup) {
+	public void remove(final MenuComponent popup) {
 	}
 
 	@Override
-	public void setLayout(LayoutManager mgr) {
+	public void setLayout(final LayoutManager mgr) {
 	}
 }

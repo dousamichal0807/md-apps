@@ -22,7 +22,7 @@ public final class Resources {
      */
     public static final Color COLOR_SECONDARY = new Color(0xc51162);
 
-    public static URL loadResourceURL(String resourceName) {
+    public static URL loadResourceURL(final String resourceName) {
         URL url = Resources.class.getResource(resourceName);
         if (url == null)
             throw new RuntimeException(new FileNotFoundException("Resource not found: " + resourceName));

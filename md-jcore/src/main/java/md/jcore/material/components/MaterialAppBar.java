@@ -43,7 +43,7 @@ public final class MaterialAppBar extends JPanel {
 		return elevation;
 	}
 
-	public void setElevation(int elevation) {
+	public void setElevation(final int elevation) {
 		switch (elevation) {
 		case MaterialConstants.ELEVATION_FLAT:
 		case MaterialConstants.ELEVATION_OUTLINED:

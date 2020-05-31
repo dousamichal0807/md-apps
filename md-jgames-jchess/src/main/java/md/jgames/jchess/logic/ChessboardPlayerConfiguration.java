@@ -17,7 +17,7 @@ public final class ChessboardPlayerConfiguration {
 		return engineSkillLevel;
 	}
 	
-	public ChessboardPlayerConfiguration(int whiteConfig, int blackConfig, int engineSkillLevel) {
+	public ChessboardPlayerConfiguration(final int whiteConfig, final int blackConfig, final int engineSkillLevel) {
 		if ((whiteConfig != PLAYER_HUMAN && whiteConfig != PLAYER_COMPUTER) || (blackConfig != PLAYER_HUMAN && blackConfig != PLAYER_COMPUTER) || (engineSkillLevel < 0 || engineSkillLevel > 20))
 			throw new IllegalArgumentException("Passed invalid values");
 		if (whiteConfig == PLAYER_COMPUTER && blackConfig == PLAYER_COMPUTER)
