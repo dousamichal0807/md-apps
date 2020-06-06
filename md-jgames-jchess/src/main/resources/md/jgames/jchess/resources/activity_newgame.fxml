@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="md.jgames.jchess.activities.NewGameActivityController"
+            prefWidth="800" prefHeight="600">
+    <center>
+        <GridPane fx:id="mainContent" style="-fx-padding: 24px;">
+            <BorderPane fx:id="positionSelectPane" style="-fx-padding: 8px;">
+
+                <top>
+                    <Label text="Position"/>
+                </top>
+
+                <bottom>
+                    <HBox style="">
+                        <Button text="Change position" styleClass="mdc-button-flat, mdc-button-primary"/>
+                    </HBox>
+                </bottom>
+
+            </BorderPane>
+            <BorderPane fx:id="playerSetupSelectPane" style="-fx-padding: 8px">
+
+            </BorderPane>
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox fx:id="bottomPane" style="-fx-padding: 32px; -fx-padding-top: 0px;">
+            <Button styleClass="mdc-button-outlined, mdc-button-primary" text="Back"/>
+            <Button styleClass="mdc-button-outlined, mdc-button-primary" text="Start"/>
+        </HBox>
+    </bottom>
+</BorderPane>

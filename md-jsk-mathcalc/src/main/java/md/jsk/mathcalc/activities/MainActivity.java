@@ -2,7 +2,6 @@ package md.jsk.mathcalc.activities;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import md.jcore.resources.CoreResources;
 import md.jsk.mathcalc.resources.Resources;
 
 import java.io.IOException;
@@ -34,9 +33,5 @@ public final class MainActivity extends Scene {
     private MainActivity() throws IOException {
         // Load FXML file
         super(FXMLLoader.load(ActivityLoader.loadActivityFXML("main")), 800, 600);
-
-        // Load CSS stylesheets
-        this.getStylesheets().add(CoreResources.loadResourceURL("material-light.css").toExternalForm());
-        this.getStylesheets().add(Resources.loadResourceURL("material-theme.css").toExternalForm());
     }
 }

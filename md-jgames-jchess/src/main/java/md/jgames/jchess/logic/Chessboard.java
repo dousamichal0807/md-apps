@@ -6,7 +6,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import md.jcore.Disposable;
+import mdlib.utils.Disposable;
 
 /**
  * Base class for all classes implementing a chessboard for chess game.

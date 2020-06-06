@@ -1,9 +1,10 @@
 package md.jgames.jchess.logic;
 
+import mdlib.utils.Disposable;
+import mdlib.utils.io.ExecutableProcess;
+
 import java.util.*;
 
-import md.jcore.Disposable;
-import md.jcore.io.ExecutableProcess;
 
 /**
  * Represents chessboard good for gameplay. If you want to analyze a game, use
@@ -18,7 +19,7 @@ import md.jcore.io.ExecutableProcess;
  * @see SerializableGamePlayChessboard
  * @see AnalysisChessboard
  */
-public final class GamePlayChessboard extends Chessboard {
+public final class GamePlayChessboard extends Chessboard implements Disposable {
 	private ExecutableProcess stockfishProcess;
 	private String startingFEN, currentFEN;
 	private ArrayList<Move> moves;
@@ -27,30 +28,19 @@ public final class GamePlayChessboard extends Chessboard {
 	private Integer movesDone;
 
 	private void update() {
-		md.jcore.debug.Debugger.info(getClass(), "Updating chessboard...");
 
 		// Create Stockfish process if not created yet
 		if (stockfishProcess == null) {
-			md.jcore.debug.Debugger.info(getClass(), "Creating Stockfish process...");
 			stockfishProcess = Utilities.createStockfishProcess();
 			stockfishProcess.start();
 		}
-		
-		md.jcore.debug.Debugger.info(getClass(), "Setting up position...");
+
 		Utilities.setPosition(stockfishProcess, startingFEN, doneMoves());
-	
-		md.jcore.debug.Debugger.info(getClass(), "Computing current FEN...");
 		currentFEN = Utilities.getPosition(stockfishProcess);
-	
-		md.jcore.debug.Debugger.info(getClass(), "Mapping current FEN...");
 		pieces = Utilities.mapPieces(currentFEN);
-	
-		md.jcore.debug.Debugger.info(getClass(), "Mapping possible moves...");
 		TreeMap<Move, Integer> mappedMoves = Utilities.getAllMovesRating(stockfishProcess, 1);
 		possibleMoves.clear();
 		possibleMoves.addAll(mappedMoves.keySet());
-	
-		md.jcore.debug.Debugger.info(getClass(), "Update of chessboard done.");
 	}
 
 	@Override

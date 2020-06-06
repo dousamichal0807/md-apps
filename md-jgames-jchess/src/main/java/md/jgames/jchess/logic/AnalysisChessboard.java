@@ -1,15 +1,15 @@
 package md.jgames.jchess.logic;
 
+import mdlib.utils.Disposable;
+import mdlib.utils.collections.BasicTree;
+import mdlib.utils.collections.BasicTreeNode;
+import mdlib.utils.collections.MDCollections;
+import mdlib.utils.collections.MDTree;
+import mdlib.utils.io.ExecutableProcess;
+
 import java.util.*;
 
-import md.jcore.Disposable;
-import md.jcore.collections.BasicTree;
-import md.jcore.collections.BasicTreeNode;
-import md.jcore.collections.MDCollections;
-import md.jcore.collections.MDTree;
-import md.jcore.io.ExecutableProcess;
-
-public final class AnalysisChessboard extends Chessboard implements MDTree {
+public final class AnalysisChessboard extends Chessboard implements MDTree, Disposable {
     private String startingFEN, currentFEN;
     private BasicTree<Move> moveTree;
     private Vector<Integer> doneMoves;
@@ -177,7 +177,6 @@ public final class AnalysisChessboard extends Chessboard implements MDTree {
      */
     public AnalysisChessboard(final String fen) {
         moveTree = new BasicTree<>();
-        moveTree.setRootNode(new BasicTreeNode<>(null));
         doneMoves = new Vector<>();
         possibleMoves = new TreeSet<>();
 

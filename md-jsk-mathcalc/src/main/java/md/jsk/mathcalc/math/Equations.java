@@ -1,6 +1,6 @@
 package md.jsk.mathcalc.math;
 
-import md.jcore.math.*;
+import mdlib.jmath.math.*;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -56,15 +56,15 @@ public final class Equations {
      * @param n the <var>n</var> &isin; &Nopf; coefficient as above
      * @param a the <var>a</var> coefficient as above
      * @param b the <var>b</var> coefficient as above
-     * @return all roots of given binomic equation
+     * @return all roots of given binomial equation
      */
     @SuppressWarnings("unchecked")
-    public static MDNumberSet.Double solveBinomic(final int n, final double a, final double b) {
+    public static MDNumberSet.Double solveBinomial(final int n, final double a, final double b) {
         if (a == 0 && b == 0)
             return null;
         if (a == 0)
             return new MDNumberFiniteSet.Double(Collections.EMPTY_SET);
-        return solveBinomic(n, b / a);
+        return solveBinomial(n, b / a);
     }
 
     /**
@@ -73,13 +73,13 @@ public final class Equations {
      *
      * @param n <var>n</var> &isin; &Nopf; coefficient as above
      * @param c <var>c</var> coefficient as above
-     * @return set of all roots of given binomic equation
+     * @return set of all roots of given binomial equation
      */
-    public static strictfp MDNumberSet.Double solveBinomic(final int n, final double c) {
+    public static strictfp MDNumberSet.Double solveBinomial(final int n, final double c) {
         ArrayList<MDNumber.Double> roots = new ArrayList<>(n);
 
         if (c != 0) {
-            double root = MDMath.rootOfNonnegativeReal(Math.abs(c), n);
+            double root = MathUtilities.realRoot(Math.abs(c), n);
             for (int i = 0; i < n; i++) {
                 double angle = 2.0 * Math.PI / n + (c < 0 ? Math.PI : 0);
                 roots.add(new MDNumber.Double(root * Math.cos(angle), root * Math.sin(angle)));

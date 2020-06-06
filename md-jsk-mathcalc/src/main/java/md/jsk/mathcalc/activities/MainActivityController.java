@@ -22,6 +22,6 @@ public class MainActivityController {
 
     @FXML
     private void openSettings() {
-        Main.primaryStage().setScene(SettingsActivity.getInstance());
+        //Main.primaryStage().setScene(SettingsActivity.getInstance());
     }
 }

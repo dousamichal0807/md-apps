@@ -4,9 +4,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
-import md.jcore.components.MDProgressBar;
+import mdlib.utils.components.MDProgressBar;
 
-import static md.jcore.components.MDProgressBar.INDETERMINATE;
+import static mdlib.utils.components.MDProgressBar.INDETERMINATE;
 
 public final class TimesTablesPBAnimationTimer implements MDProgressBar.Animator {
 

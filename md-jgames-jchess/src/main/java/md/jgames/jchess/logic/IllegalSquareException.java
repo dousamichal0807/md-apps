@@ -1,6 +1,7 @@
 package md.jgames.jchess.logic;
 
-import md.jcore.IllegalStringFormatException;
+
+import mdlib.utils.IllegalStringFormatException;
 
 public final class IllegalSquareException extends IllegalStringFormatException {
 	private static final long serialVersionUID = 0x0100L;

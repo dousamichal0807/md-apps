@@ -2,23 +2,31 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile name="Annotation profile for md-jsk-mathcalc" enabled="true">
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mdlib-materij" />
+        <module name="mdlib-jmath" />
+      </profile>
+      <profile name="Annotation profile for mdlib-utils" enabled="true">
         <sourceOutputDir name="../target/generated-sources/annotations" />
         <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="md-jsk-mathcalc" />
+        <module name="mdlib-utils" />
         <module name="md-jsk-chemitables" />
-        <module name="md-jgames-jchess-jfx" />
+        <module name="md-jsk-mathcalc" />
         <module name="md-jgames-jchess" />
-        <module name="md-jcore" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="md-jcore" target="11" />
       <module name="md-jgames-jchess" target="11" />
       <module name="md-jgames-jchess-jfx" target="11" />
       <module name="md-jsk-chemitables" target="11" />
       <module name="md-jsk-mathcalc" target="11" />
+      <module name="mdlib-jmath" target="9" />
+      <module name="mdlib-materij" target="9" />
+      <module name="mdlib-utils" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

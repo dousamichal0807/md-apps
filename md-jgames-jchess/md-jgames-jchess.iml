@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
-    <output url="file://$MODULE_DIR$/../target/md-jgames-jchess" />
-    <output-test url="file://$MODULE_DIR$/../target/md-jgames-jchess" />
+    <output url="file://$MODULE_DIR$/../target/jchess" />
+    <output-test url="file://$MODULE_DIR$/../target/jchess" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
@@ -12,8 +12,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="md-apps" exported="" scope="RUNTIME" />
-    <orderEntry type="library" name="javafx-sdk-11.0" level="project" />
-    <orderEntry type="module" module-name="md-jcore" />
+    <orderEntry type="library" name="javafx-sdk-11.0-windows" level="project" />
+    <orderEntry type="module" module-name="mdlib-materij" />
+    <orderEntry type="module" module-name="mdlib-utils" />
   </component>
 </module>

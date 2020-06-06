@@ -7,7 +7,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import md.jcore.debug.Debugger;
 
 /**
  * Database of all loades {@link Opening}s.
@@ -104,8 +103,6 @@ public final class OpeningDatabase {
 					Opening opening = new Opening(eco, name, moves);
 					// Add the opening
 					openings.add(opening);
-					// Log that new opening was loaded
-					Debugger.info(OpeningDatabase.class, "Loaded opening: " + opening);
 				} catch (Exception exc) {
 					// If given data is illegal
 					scanner.close();

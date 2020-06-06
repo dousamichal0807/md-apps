@@ -12,7 +12,9 @@
         <option value="$PROJECT_DIR$/md-jgames-jchess/pom.xml" />
         <option value="$PROJECT_DIR$/md-jsk-mathcalc/pom.xml" />
         <option value="$PROJECT_DIR$/md-jsk-chemitables/pom.xml" />
-        <option value="$PROJECT_DIR$/md-jgames-jchess-jfx/pom.xml" />
+        <option value="$PROJECT_DIR$/mdlib-jmath/pom.xml" />
+        <option value="$PROJECT_DIR$/mdlib-materij/pom.xml" />
+        <option value="$PROJECT_DIR$/mdlib-utils/pom.xml" />
       </list>
     </option>
   </component>

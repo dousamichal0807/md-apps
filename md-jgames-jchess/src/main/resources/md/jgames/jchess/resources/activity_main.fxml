@@ -18,7 +18,7 @@
             <ImageView fx:id="logoImageView"/>
             <VBox alignment="CENTER_LEFT">
                 <Label styleClass="mdc-h1" text="jChess" />
-                <Button styleClass="mdc-button-menu" minWidth="200.0" text="New Game"/>
+                <Button styleClass="mdc-button-menu" minWidth="200.0" text="New Game" onAction="#newGame"/>
                 <Button styleClass="mdc-button-menu" minWidth="200.0" text="Open Game"/>
                 <Button styleClass="mdc-button-menu" minWidth="200.0" text="Analysis"/>
                 <Button styleClass="mdc-button-menu" minWidth="200.0" text="Learn"/>

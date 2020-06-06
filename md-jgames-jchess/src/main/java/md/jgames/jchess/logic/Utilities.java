@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import md.jcore.debug.Debugger;
-import md.jcore.io.ExecutableProcess;
+import mdlib.utils.ClasspathUtilities;
+import mdlib.utils.io.ExecutableProcess;
 
 /**
  * Contains some useful static methods and constants.
@@ -329,7 +329,7 @@ public final class Utilities {
             if (System.getProperty("os.name").toLowerCase().startsWith("win"))
                 filename.append(".exe");
 
-            stockfishPath = md.jcore.Utilities.getCWD(Utilities.class).resolve("native/stockfish")
+            stockfishPath = ClasspathUtilities.currentWorkingDirectory(Utilities.class).resolve("native/stockfish")
                     .resolve(filename.toString());
         }
         return stockfishPath;
@@ -373,7 +373,6 @@ public final class Utilities {
             AtomicReference<String> currFEN = new AtomicReference<>(null);
             process.send("d");
             process.read(line -> {
-                md.jcore.debug.Debugger.info(Utilities.class, "getCurrentFEN: accepted line: '" + line + "'");
                 if (line.startsWith("Fen: ")) {
                     currFEN.set(line.substring(5));
                     return false;
@@ -541,7 +540,6 @@ public final class Utilities {
             AtomicReference<Boolean> done = new AtomicReference<>(false);
 
             process.read(line -> {
-                Debugger.info(Utilities.class, "getAllMovesRating() - accepted line '" + line + "'");
                 if (line.isEmpty()) return true;
                 else if (line.startsWith("Nodes searched:")) {
                     done.set(true);

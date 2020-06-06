@@ -17,6 +17,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_KNIGHT
      * @see #PROMOTION_BISHOP
      * @see #PROMOTION_QUEEN
+     * @see #getPromotion()
      */
     public static final byte PROMOTION_NONE = 0;
 
@@ -27,6 +28,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_KNIGHT
      * @see #PROMOTION_BISHOP
      * @see #PROMOTION_QUEEN
+     * @see #getPromotion()
      */
     public static final byte PROMOTION_ROOK = 1;
 
@@ -37,6 +39,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_ROOK
      * @see #PROMOTION_BISHOP
      * @see #PROMOTION_QUEEN
+     * @see #getPromotion()
      */
     public static final byte PROMOTION_KNIGHT = 2;
 
@@ -47,6 +50,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_ROOK
      * @see #PROMOTION_KNIGHT
      * @see #PROMOTION_QUEEN
+     * @see #getPromotion()
      */
     public static final byte PROMOTION_BISHOP = 3;
 
@@ -57,6 +61,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_ROOK
      * @see #PROMOTION_KNIGHT
      * @see #PROMOTION_BISHOP
+     * @see #getPromotion()
      */
     public static final byte PROMOTION_QUEEN = 4;
 
@@ -85,6 +90,11 @@ public final class Move implements Comparable<Move>, Cloneable {
                 + promotion;
     }
 
+    /**
+     * Returns same number as {@link #hashCode()}, casted to {@code short}.
+     *
+     * @return hash code as {@code short}
+     */
     public short shortHashCode() {
         return (short) hashCode();
     }
@@ -106,8 +116,8 @@ public final class Move implements Comparable<Move>, Cloneable {
      * Returns boolean value, if this and other given object is equal.
      *
      * @param o2 other object to be compared
-     * @return if {@code o2} is same as this move; of {@code o2} is not instance of {@link Move}, then automatically
-     *         {@code false} is returned
+     * @return if {@code o2} is same as this move (if {@code o2} is not instance of {@link Move}, then automatically
+     * {@code false} is returned)
      */
     @Override
     public boolean equals(final Object o2) {
@@ -128,25 +138,12 @@ public final class Move implements Comparable<Move>, Cloneable {
         return new Move(this);
     }
 
-    public Move(final String from, final String to, final byte promotion) {
-        Utilities.assertSquareValidity(from);
-        Utilities.assertSquareValidity(to);
-
-        switch (promotion) {
-            case PROMOTION_NONE:
-            case PROMOTION_ROOK:
-            case PROMOTION_KNIGHT:
-            case PROMOTION_BISHOP:
-            case PROMOTION_QUEEN:
-                break;
-            default:
-                throw new IllegalArgumentException("Promotion constant not valid");
-        }
-        this.from = from;
-        this.to = to;
-        this.promotion = promotion;
-    }
-
+    /**
+     * Creates instance of {@link Move} from given UCI move notation.
+     *
+     * @param uci UCI move notation
+     * @see #Move(int)
+     */
     public Move(final String uci) {
         Matcher matcher = Utilities.PATTERN_UCI_MOVE.matcher(uci);
         if (!matcher.matches())
@@ -154,9 +151,7 @@ public final class Move implements Comparable<Move>, Cloneable {
 
         this.from = matcher.group(1);
         this.to = matcher.group(2);
-
-        String pp = matcher.group(3);
-        this.promotion = (byte) (pp == null ? 0 : pp.charAt(0));
+        this.promotion = promotionCharToConst(matcher.group(3) == null ? null : matcher.group(3).charAt(0));
     }
 
     /**
@@ -178,6 +173,11 @@ public final class Move implements Comparable<Move>, Cloneable {
         this.promotion = decomposed[4];
     }
 
+    /**
+     * Constructs new instance that is deep copy of given move.
+     *
+     * @param move move to be copied data from
+     */
     public Move(final Move move) {
         this.from = move.from;
         this.to = move.to;
@@ -208,6 +208,40 @@ public final class Move implements Comparable<Move>, Cloneable {
                 return 'q';
             default:
                 throw new IllegalArgumentException("Illegal constant for promotion");
+        }
+    }
+
+    /**
+     * Returns appropriate constant used in this class to mark pawn promotion,
+     * according to given input ({@code character} argument). If {@code null} is
+     * passed, {@link #PROMOTION_NONE} is returned. If other character than
+     * {@code 'R'}, {@code 'r'}, {@code 'N'}, {@code 'n'}, {@code 'B'}, {@code 'b'},
+     * {@code 'Q'}, {@code 'q'} is passed, {@link IllegalArgumentException} is
+     * thrown.
+     *
+     * @param character the character in UCI move notation used to indicate pawn
+     *                  promotion (if there is no promotion, {@code null} should
+     *                  be passed
+     * @return appropriate constant from this class indicating promotion of pawn
+     */
+    public static byte promotionCharToConst(final Character character) {
+        if (character == null)
+            return PROMOTION_NONE;
+        switch (character) {
+            case 'r':
+            case 'R':
+                return PROMOTION_ROOK;
+            case 'n':
+            case 'N':
+                return PROMOTION_KNIGHT;
+            case 'b':
+            case 'B':
+                return PROMOTION_BISHOP;
+            case 'q':
+            case 'Q':
+                return PROMOTION_QUEEN;
+            default:
+                throw new IllegalArgumentException("Illegal promotion piece: \'" + character + "\'");
         }
     }
 }
