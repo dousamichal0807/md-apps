@@ -19,7 +19,7 @@
                 </top>
 
                 <bottom>
-                    <HBox style="">
+                    <HBox>
                         <Button text="Change position" styleClass="mdc-button-flat, mdc-button-primary"/>
                     </HBox>
                 </bottom>

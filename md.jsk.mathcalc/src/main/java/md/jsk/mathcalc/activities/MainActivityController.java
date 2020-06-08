@@ -1,7 +1,6 @@
 package md.jsk.mathcalc.activities;
 
 import javafx.fxml.FXML;
-import md.jsk.mathcalc.Main;
 
 import java.net.URL;
 import java.util.ResourceBundle;

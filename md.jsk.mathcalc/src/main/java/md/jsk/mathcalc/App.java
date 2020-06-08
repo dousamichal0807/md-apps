@@ -10,7 +10,7 @@ import md.jsk.mathcalc.activities.MainActivity;
  * @author Michal Douša
  * @see #main(String[])
  */
-public final class Main extends Application {
+public final class App extends Application {
 
     private static Stage primaryStage;
 
@@ -27,24 +27,24 @@ public final class Main extends Application {
      * Entry point for MD jSK MathCalc application.
      */
     public static void main(final String[] args) {
-        Main.launch(args);
+        App.launch(args);
     }
 
     /**
      * Constructor to create JavaFX {@link Application} instance.
      */
-    public Main() {
+    public App() {
     }
 
     @Override
     public void start(final Stage primaryStage) {
 
         // Check if the application had not run yet
-        if (Main.primaryStage != null)
+        if (App.primaryStage != null)
             throw new IllegalStateException("This application can be run only once");
 
         // Set the primary stage of the application
-        Main.primaryStage = primaryStage;
+        App.primaryStage = primaryStage;
 
         // Configure primary stage and show it
         primaryStage.setTitle("MD MathCalc");

@@ -39,7 +39,7 @@ public final class App extends Application {
     public static void main(final String[] args) {
         MaterialSettings.launchInit();
 
-        boolean lightTheme = false;
+        boolean lightTheme = true;
         if (lightTheme) {
             MaterialSettings.primaryColor().set(Color.valueOf("#5d4037"));
             MaterialSettings.secondaryColor().set(Color.valueOf("#006064"));

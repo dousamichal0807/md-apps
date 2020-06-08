@@ -13,45 +13,4 @@
         <echo message="Native resources copied successfully!"/>
     </target>
 
-    <target name="build-all">
-        <tstamp>
-            <format property="release.version" pattern="1.0.yyyyMMdd.hhmmss" timezone="GMT+0" />
-        </tstamp>
-        <property name="release.dir" value="release/v${release.version}"/>
-
-        <jar destfile="${release.dir}/md-jcore.jar" basedir="target/md-jcore">
-            <manifest>
-                <attribute name="Implemetation-Version" value="${release.version}"/>
-            </manifest>
-        </jar>
-
-        <jar destfile="${release.dir}/md-jgames-jchess.jar" basedir="target/md-jgames-jchess">
-            <manifest>
-                <attribute name="Implemetation-Version" value="${release.version}"/>
-                <attribute name="Class-Path" value="md-jcore.jar"/>
-                <attribute name="Main-Class" value="md.jgames.jchess.Main"/>
-            </manifest>
-        </jar>
-
-        <jar destfile="${release.dir}/md-jsk-mathcalc.jar" basedir="target/md-jsk-mathcalc">
-            <manifest>
-                <attribute name="Implemetation-Version" value="${release.version}"/>
-                <attribute name="Class-Path" value="md-jcore.jar"/>
-                <attribute name="Main-Class" value="md.jsk.mathcalc.Main"/>
-            </manifest>
-        </jar>
-
-        <jar destfile="${release.dir}/md-jsk-chemitables.jar" basedir="target/md-jsk-chemitables">
-            <manifest>
-                <attribute name="Implemetation-Version" value="${release.version}"/>
-                <attribute name="Class-Path" value="md-jcore.jar"/>
-                <attribute name="Main-Class" value="md.jsk.chemitables.Main"/>
-            </manifest>
-        </jar>
-
-        <copy todir="${release.dir}/native">
-            <fileset dir="native"/>
-        </copy>
-    </target>
-
 </project>

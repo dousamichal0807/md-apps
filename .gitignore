@@ -1,4 +1,5 @@
-/target/
-/release/
-/out/
-/.idea/
+target
+release
+out
+.idea
+*.iml

@@ -1,10 +1,15 @@
 module md.jgames.jchess {
     requires java.base;
-    requires java.desktop;
+
+    requires javafx.base;
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
+
     requires mdlib.materij;
     requires mdlib.utils;
-    exports md.jgames.jchess;
-    opens md.jgames.jchess.activities;
+    requires java.desktop;
+
+    exports md.jgames.jchess to javafx.fxml, javafx.graphics;
+    opens md.jgames.jchess.activities to javafx.fxml;
 }

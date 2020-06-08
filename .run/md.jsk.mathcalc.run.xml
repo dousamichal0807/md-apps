@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="md.jsk.mathcalc" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="md.jsk.mathcalc.App" />
+    <module name="md.jsk.mathcalc" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
