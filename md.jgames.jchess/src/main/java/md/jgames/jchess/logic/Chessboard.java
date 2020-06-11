@@ -221,7 +221,7 @@ public abstract class Chessboard implements Disposable {
 
 		TreeSet<Move> moveset = new TreeSet<>();
 		for (Move move : possibleMoves())
-			if (move.getSquareFrom().equals(sq))
+			if (move.squareFrom().equals(sq))
 				moveset.add(move);
 
 		return Collections.unmodifiableSortedSet(moveset);

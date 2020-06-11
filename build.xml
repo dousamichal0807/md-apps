@@ -2,15 +2,13 @@
 <project name="md-apps">
 
     <target name="copy-native-resources">
-        <echo message="Copying native resources..."/>
-        <copy todir="target/native">
+        <copy todir="out/production/native">
             <fileset dir="native"/>
         </copy>
         <exec executable="chmod" osfamily="unix">
             <arg value="+x"/>
-            <arg value="${basedir}/target/native/stockfish/stockfish64"/>
+            <arg value="${basedir}/out/production/native/stockfish/stockfish64"/>
         </exec>
-        <echo message="Native resources copied successfully!"/>
     </target>
 
 </project>

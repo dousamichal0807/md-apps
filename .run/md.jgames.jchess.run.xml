@@ -4,6 +4,7 @@
     <module name="md.jgames.jchess" />
     <method v="2">
       <option name="Make" enabled="true" />
+      <option name="AntTarget" enabled="true" antfile="file://$PROJECT_DIR$/build.xml" target="copy-native-resources" />
     </method>
   </configuration>
 </component>

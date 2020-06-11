@@ -286,7 +286,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
                     }
                 }
 			selSquarePossibleMoves.forEach(move -> {
-				Rectangle sqrect = getSquareBounds(move.getSquareTo());
+				Rectangle sqrect = getSquareBounds(move.squareTo());
 				int s = sqrect.width / 3, x = sqrect.x, y = sqrect.y;
 				gadv.fillEllipse(new Color(0, 0, 0, 64), new Ellipse2D.Float(x + s, y + s, s, s));
 			});
@@ -353,7 +353,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
                 }
 
 			if (selectedSquare != null && sqMouseDown != null) for (Move move : selSquarePossibleMoves)
-                if (move.getSquareTo().equals(sqMouseDown)) {
+                if (move.squareTo().equals(sqMouseDown)) {
                     repaint();
                     return;
                 }
@@ -382,7 +382,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 			if (squareMouseOver != null) {
 				TreeSet<Move> moves = new TreeSet<>();
 				for (Move move : selSquarePossibleMoves)
-                    if (squareMouseOver.equals(move.getSquareTo()))
+                    if (squareMouseOver.equals(move.squareTo()))
                         moves.add(move);
 				if (moves.size() == 1) {
 					chessboard.performMove(moves.first());

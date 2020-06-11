@@ -34,8 +34,8 @@
     </dependencies>
 
     <build>
-        <outputDirectory>/../out/production/${project.artifactId}</outputDirectory>
-        <testOutputDirectory>/../out/test/${project.artifactId}</testOutputDirectory>
+        <outputDirectory>../out/production/${project.artifactId}</outputDirectory>
+        <testOutputDirectory>../out/test/${project.artifactId}</testOutputDirectory>
     </build>
 
 </project>

@@ -6,6 +6,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import md.jgames.jchess.components.ChessboardView?>
+
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="md.jgames.jchess.activities.NewGameActivityController"
@@ -18,9 +20,13 @@
                     <Label text="Position"/>
                 </top>
 
+                <center>
+                    <ChessboardView disable="true" fx:id="chessboardView" />
+                </center>
+
                 <bottom>
                     <HBox>
-                        <Button text="Change position" styleClass="mdc-button-flat, mdc-button-primary"/>
+                        <Button text="Change position" styleClass="mdc-button-outlined, mdc-button-primary"/>
                     </HBox>
                 </bottom>
 
@@ -32,8 +38,8 @@
     </center>
     <bottom>
         <HBox fx:id="bottomPane" style="-fx-padding: 32px; -fx-padding-top: 0px;">
-            <Button styleClass="mdc-button-outlined, mdc-button-primary" text="Back"/>
-            <Button styleClass="mdc-button-outlined, mdc-button-primary" text="Start"/>
+            <Button styleClass="mdc-button-contained-sb, mdc-button-primary" text="Back"/>
+            <Button styleClass="mdc-button-contained, mdc-button-primary" text="Start"/>
         </HBox>
     </bottom>
 </BorderPane>

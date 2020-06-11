@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import md.jgames.jchess.activities.MainActivity;
-import mdlib.materij.MaterialSettings;
+import mdlib.materifx.MaterialSettings;
 
 /**
  * MD jChess as JavaFX {@link Application} entry point.

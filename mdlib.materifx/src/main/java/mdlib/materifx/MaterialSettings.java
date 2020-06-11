@@ -1,8 +1,8 @@
-package mdlib.materij;
+package mdlib.materifx;
 
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import mdlib.materij.resources.MateriJResources;
+import mdlib.materifx.resources.MateriJResources;
 import mdlib.utils.ColorUtilities;
 import mdlib.utils.Filter;
 import mdlib.utils.FilteredAtomicReference;

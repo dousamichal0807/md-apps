@@ -11,72 +11,57 @@ import javax.imageio.ImageIO;
 /**
  * Class containing some constants and responsible for loading resources from
  * this package. Used by the jChess application.
- * 
+ *
  * @author Michal Douša
  */
 public final class AppResources {
 
-	private AppResources() {
-	}
+    private AppResources() {
+    }
 
-	/**
-	 * Returns an {@link InputStream} of given resource. If requested resource does
-	 * not exist, this method throws {@link RuntimeException}. Its
-	 * {@link RuntimeException#getCause()} method returns a
-	 * {@link FileNotFoundException}.
-	 * 
-	 * @param resourceName name of the resource file
-	 * @return resource as input stream
-	 * 
-	 * @throws RuntimeException when required resource does not exist as desribed
-	 *                          above
-	 * 
-	 * @see #loadImageResource(String)
-	 */
-	public static InputStream loadResource(final String resourceName) {
-		InputStream stream = AppResources.class.getResourceAsStream(resourceName);
-		if (stream == null)
-			throw new RuntimeException(
-					new FileNotFoundException("jChess resource '" + resourceName + "' was not found."));
-		return stream;
-	}
+    /**
+     * Returns an {@link InputStream} of given resource. If requested resource does
+     * not exist, this method throws {@link RuntimeException}. Its
+     * {@link RuntimeException#getCause()} method returns a
+     * {@link FileNotFoundException}.
+     *
+     * @param resourceName name of the resource file
+     * @return resource as input stream
+     *
+     * @throws RuntimeException when required resource does not exist as desribed
+     *                          above
+     *
+     * @see #loadImageResource(String)
+     */
+    public static InputStream loadResource(final String resourceName) {
+        InputStream stream = AppResources.class.getResourceAsStream(resourceName);
+        if (stream == null)
+            throw new RuntimeException(
+                    new FileNotFoundException("jChess resource '" + resourceName + "' was not found."));
+        return stream;
+    }
 
-	/**
-	 * Loads an image resource into {@link BufferedImage} instance using
-	 * {@link ImageIO#read(InputStream)} method.
-	 * 
-	 * @param resourceName name of the image file
-	 * @return resource as {@link BufferedImage}
-	 * 
-	 * @throws RuntimeException when one of the situations desribed below occurs:
-	 *                          <ul>
-	 *                          <li>when required resource does not exist</li>
-	 *                          <li>when required resource is not an image or it is
-	 *                          not in supported format by
-	 *                          {@link ImageIO#read(InputStream)} method</li>
-	 *                          </ul>
-	 */
-	public static BufferedImage loadImageResource(final String resourceName) {
-		try {
-			InputStream stream = loadResource(resourceName);
-			return ImageIO.read(stream);
-		} catch (IOException exc) {
-			throw new RuntimeException(exc);
-		}
-	}
-
-	/**
-	 * Returns an {@link URL} of given activity FXML file, if exists.
-	 *
-	 * @param activityName the name of the requested activity
-	 * @return {@link URL} of given activity FXML file
-	 * @throws RuntimeException caused by {@link FileNotFoundException} if activity
-	 *                          FXML file does not exist
-	 */
-	public static URL loadActivityFXML(final String activityName) {
-		URL url = AppResources.class.getResource("activity_" + activityName + ".fxml");
-		if (url == null)
-			throw new RuntimeException(new FileNotFoundException("Activity FXML file not found: \"" + activityName + "\""));
-		return url;
-	}
+    /**
+     * Loads an image resource into {@link BufferedImage} instance using
+     * {@link ImageIO#read(InputStream)} method.
+     *
+     * @param resourceName name of the image file
+     * @return resource as {@link BufferedImage}
+     *
+     * @throws RuntimeException when one of the situations desribed below occurs:
+     *                          <ul>
+     *                          <li>when required resource does not exist</li>
+     *                          <li>when required resource is not an image or it is
+     *                          not in supported format by
+     *                          {@link ImageIO#read(InputStream)} method</li>
+     *                          </ul>
+     */
+    public static BufferedImage loadImageResource(final String resourceName) {
+        try {
+            InputStream stream = loadResource(resourceName);
+            return ImageIO.read(stream);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
 }

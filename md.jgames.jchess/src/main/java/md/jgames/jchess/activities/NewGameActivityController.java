@@ -1,5 +1,8 @@
 package md.jgames.jchess.activities;
 
+import md.jgames.jchess.components.ChessboardView;
+import md.jgames.jchess.logic.GamePlayChessboard;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.*;
@@ -14,6 +17,8 @@ public class NewGameActivityController implements Initializable {
     private GridPane mainContent;
     @FXML
     private BorderPane positionSelectPane;
+    @FXML
+    private ChessboardView chessboardView;
     @FXML
     private BorderPane playerSetupSelectPane;
     @FXML
@@ -37,6 +42,9 @@ public class NewGameActivityController implements Initializable {
         mainContent.getRowConstraints().addAll(rc);
         GridPane.setConstraints(positionSelectPane, 0, 0);
         GridPane.setConstraints(playerSetupSelectPane, 1, 0);
+
+        // ChessboardView
+        chessboardView.setChessboard(new GamePlayChessboard());
 
         // Bottom Pane
         Pane separating = new Pane();

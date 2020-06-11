@@ -1,0 +1,70 @@
+.root {
+    -fx-background-color: -mdc-activity-background;
+    -fx-font: 16px Roboto;
+}
+
+.text {
+    -fx-font-smoothing-type: gray;
+}
+
+/* H1 */
+
+.mdc-h1 {
+    -fx-font-size: 48px;
+    -fx-font-weight: 300;
+    -fx-padding: 10px 10px;
+    -fx-text-fill: -mdc-lighter-foreground;
+}
+
+/* Material buttons */
+
+.mdc-button-flat, .mdc-button-outlined, .mdc-button-menu {
+    -fx-background-color: transparent;
+    -fx-border-radius: 4px;
+    -fx-text-fill: -mdc-lighter-foreground;
+}
+
+.mdc-button-menu {
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 8px 12px;
+}
+
+.mdc-button-outlined {
+    -fx-border-color: rgba(127, 127, 127, .25);
+    -fx-border-width: 1px;
+}
+
+.mdc-button-contained-sb, .mdc-button-contained {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 8, 0, 0, 0);
+}
+
+.mdc-button-contained-sb {
+    -fx-background-color: -mdc-surface-background;
+    -fx-text-fill: -mdc-lighter-foreground;
+}
+
+.mdc-button-contained {
+    -fx-background-color: -mdc-lighter-foreground;
+    -fx-text-fill: -mdc-surface-background;
+}
+
+.mdc-button-flat, .mdc-button-outlined, .mdc-button-contained-sb, .mdc-button-contained {
+    -fx-font-family: 'Roboto Medium';
+    -fx-padding: 8px 24px;
+}
+
+.mdc-button-flat:disabled, .mdc-button-outlined:disabled, .mdc-button-contained-sb, .mdc-button-menu:disabled {
+    -fx-text-fill: ladder(#808080, transparent, -mdc-lighter-foreground);
+}
+
+.mdc-button-flat:hover, .mdc-button-outlined:hover, .mdc-button-menu:hover {
+    -fx-background-color: ladder(#202020, transparent, -mdc-lighter-foreground);
+}
+
+.mdc-button-flat.mdc-button-primary, .mdc-button-outlined.mdc-button-primary, .mdc-button-contained-sb.mdc-button-primary {
+    -fx-text-fill: -mdc-primary;
+}
+
+.mdc-button-flat.mdc-button-secondary, .mdc-button-outlined.mdc-button-secondary, .mdc-button-contained-sb.mdc-button-secondary {
+    -fx-text-fill: -mdc-secondary;
+}

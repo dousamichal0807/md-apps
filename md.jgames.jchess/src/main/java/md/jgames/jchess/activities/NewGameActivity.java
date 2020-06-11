@@ -2,8 +2,8 @@ package md.jgames.jchess.activities;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import md.jgames.jchess.resources.AppResources;
-import mdlib.materij.MaterialSettings;
+
+import mdlib.materifx.MaterialSettings;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class NewGameActivity extends Scene {
     }
 
     private NewGameActivity() throws IOException {
-        super(FXMLLoader.load(AppResources.loadActivityFXML("newgame")));
+        super(FXMLLoader.load(NewGameActivity.class.getResource("activity_newgame.fxml")), 800, 600);
         MaterialSettings.activityPostInit(this);
     }
 }

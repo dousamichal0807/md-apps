@@ -1,4 +1,4 @@
-package mdlib.materij.resources;
+package mdlib.materifx.resources;
 
 import javafx.scene.text.Font;
 

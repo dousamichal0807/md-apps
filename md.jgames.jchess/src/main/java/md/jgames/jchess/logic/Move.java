@@ -17,7 +17,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_KNIGHT
      * @see #PROMOTION_BISHOP
      * @see #PROMOTION_QUEEN
-     * @see #getPromotion()
+     * @see #pawnPromotion()
      */
     public static final byte PROMOTION_NONE = 0;
 
@@ -28,7 +28,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_KNIGHT
      * @see #PROMOTION_BISHOP
      * @see #PROMOTION_QUEEN
-     * @see #getPromotion()
+     * @see #pawnPromotion()
      */
     public static final byte PROMOTION_ROOK = 1;
 
@@ -39,7 +39,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_ROOK
      * @see #PROMOTION_BISHOP
      * @see #PROMOTION_QUEEN
-     * @see #getPromotion()
+     * @see #pawnPromotion()
      */
     public static final byte PROMOTION_KNIGHT = 2;
 
@@ -50,7 +50,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_ROOK
      * @see #PROMOTION_KNIGHT
      * @see #PROMOTION_QUEEN
-     * @see #getPromotion()
+     * @see #pawnPromotion()
      */
     public static final byte PROMOTION_BISHOP = 3;
 
@@ -61,7 +61,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #PROMOTION_ROOK
      * @see #PROMOTION_KNIGHT
      * @see #PROMOTION_BISHOP
-     * @see #getPromotion()
+     * @see #pawnPromotion()
      */
     public static final byte PROMOTION_QUEEN = 4;
 
@@ -69,25 +69,38 @@ public final class Move implements Comparable<Move>, Cloneable {
     private final String to;
     private final byte promotion;
 
-    public String getSquareFrom() {
+    /**
+     * Returns the square, where the piece moves from.
+     *
+     * @return square which the piece moves from
+     */
+    public String squareFrom() {
         return from;
     }
 
-    public String getSquareTo() {
+    /**
+     * Returns the square, where the piece moves to.
+     *
+     * @return square which the piece moves to
+     */
+    public String squareTo() {
         return to;
     }
 
-    public byte getPromotion() {
+    /**
+     * Returns which of pawn promotion will be done during performing the move. If no promotion is intended to be done
+     * {@link #PROMOTION_NONE} will be returned.
+     *
+     * @return {@link #PROMOTION_NONE}, {@link #PROMOTION_ROOK}, {@link #PROMOTION_KNIGHT}, {@link #PROMOTION_BISHOP} or
+     * {@link #PROMOTION_QUEEN}, as specified above.
+     */
+    public byte pawnPromotion() {
         return promotion;
     }
 
     @Override
     public int hashCode() {
-        return 4096 * (from.charAt(0) - 'a')
-                + 512 * (from.charAt(1) - '1')
-                + 64 * (to.charAt(0) - 'a')
-                + 8 * (to.charAt(1) - '1')
-                + promotion;
+        return 4096 * (from.charAt(0) - 'a') + 512 * (from.charAt(1) - '1') + 64 * (to.charAt(0) - 'a') + 8 * (to.charAt(1) - '1') + promotion;
     }
 
     /**
@@ -100,7 +113,9 @@ public final class Move implements Comparable<Move>, Cloneable {
     }
 
     /**
-     * Returns move represented in UCI notation.
+     * Returns move represented in UCI notation used by chess engines.
+     *
+     * @return move in UCI notation
      */
     @Override
     public String toString() {
@@ -129,7 +144,7 @@ public final class Move implements Comparable<Move>, Cloneable {
 
     @Override
     public int compareTo(final Move move2) {
-        return this.toString().compareTo(move2.toString());
+        return Integer.compare(this.hashCode(), move2.hashCode());
     }
 
     @SuppressWarnings("MethodDoesntCallSuperMethod")
@@ -155,9 +170,11 @@ public final class Move implements Comparable<Move>, Cloneable {
     }
 
     /**
-     * Creates {@link Move} object from given hash code.
+     * Creates {@link Move} object from given valid hash code. If invalid hash code is given, {@link
+     * IllegalArgumentException} will be thrown
      *
      * @param hashCode the hash code to be the instance created from
+     * @throws IllegalArgumentException if invalid hash code is given
      */
     public Move(int hashCode) {
         if (hashCode < 0 || hashCode > 32764)
@@ -184,14 +201,14 @@ public final class Move implements Comparable<Move>, Cloneable {
         this.promotion = move.promotion;
     }
 
-
     /**
-     * Returns a character used in UCI move notation for piece promotion
-     * corresponding to the promotion constant from this class given by parameter.
+     * Returns a character used in UCI move notation for piece promotion corresponding to the promotion constant from
+     * this class given by parameter.
      *
      * @param constant the "promotion constant"
-     * @return corresponding {@code char} of the constant, or {@code null} if
-     * {@link #PROMOTION_NONE} was given as parameter
+     * @return corresponding {@code char} of the constant, or {@code null} if {@link #PROMOTION_NONE} was given as
+     * parameter
+     *
      * @throws IllegalArgumentException if illegal parameter value was given
      */
     public static Character promotionConstToChar(final byte constant) {
@@ -212,16 +229,13 @@ public final class Move implements Comparable<Move>, Cloneable {
     }
 
     /**
-     * Returns appropriate constant used in this class to mark pawn promotion,
-     * according to given input ({@code character} argument). If {@code null} is
-     * passed, {@link #PROMOTION_NONE} is returned. If other character than
-     * {@code 'R'}, {@code 'r'}, {@code 'N'}, {@code 'n'}, {@code 'B'}, {@code 'b'},
-     * {@code 'Q'}, {@code 'q'} is passed, {@link IllegalArgumentException} is
-     * thrown.
+     * Returns appropriate constant used in this class to mark pawn promotion, according to given input ({@code
+     * character} argument). If {@code null} is passed, {@link #PROMOTION_NONE} is returned. If other character than
+     * {@code 'R'}, {@code 'r'}, {@code 'N'}, {@code 'n'}, {@code 'B'}, {@code 'b'}, {@code 'Q'}, {@code 'q'} is passed,
+     * {@link IllegalArgumentException} is thrown.
      *
-     * @param character the character in UCI move notation used to indicate pawn
-     *                  promotion (if there is no promotion, {@code null} should
-     *                  be passed
+     * @param character the character in UCI move notation used to indicate pawn promotion (if there is no promotion,
+     *                  {@code null} should be passed
      * @return appropriate constant from this class indicating promotion of pawn
      */
     public static byte promotionCharToConst(final Character character) {
