@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Implementation-Version: 1.0
+Main-Class: md.jgames.jchess.App
+Class-Path: javafx-swt.jar javafx.base.jar javafx.controls.jar javafx.fx
+ ml.jar javafx.graphics.jar javafx.media.jar javafx.swing.jar javafx.web
+ .jar mdlib.materifx.jar mdlib.utils.jar
+

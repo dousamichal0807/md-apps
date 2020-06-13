@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>mdlib</groupId>
-    <artifactId>mdlib.materij</artifactId>
+    <artifactId>mdlib.materifx</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

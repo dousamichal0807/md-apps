@@ -1,24 +1,20 @@
 package md.jgames.jchess.logic;
 
+import mdlib.utils.ClasspathUtilities;
+import mdlib.utils.io.ExecutableProcess;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import mdlib.utils.ClasspathUtilities;
-import mdlib.utils.io.ExecutableProcess;
 
 /**
  * Contains some useful static methods and constants.
  *
  * @author Michal Douša
- *
  * @see ExecutableProcess
  * @see Chessboard
  */
@@ -40,9 +36,8 @@ public final class Utilities {
     public static final String FEN_STARTING_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     /**
-     * Regex pattern for Forsyth-Edwards Notation. For testing, if FEN is valid use
-     * {@link #isValidFEN(String)} method instead, because this regex does not cover
-     * all rules of FEN notation.
+     * Regex pattern for Forsyth-Edwards Notation. For testing, if FEN is valid use {@link #isValidFEN(String)} method
+     * instead, because this regex does not cover all rules of FEN notation.
      *
      * @see #isValidFEN(String)
      * @see #assertFENValidity(String)
@@ -50,9 +45,8 @@ public final class Utilities {
     public static final Pattern PATTERN_FEN = Pattern.compile("((?:[prnbqkPRNBQK1-8]+/){7}[prnbqkPRNBQK1-8]+) ([wb]) (-|KQ?k?q?|K?Qk?q?|K?Q?kq?|K?Q?k?q) (-|[a-h][36]) ([0-9])+ ([0-9])+");
 
     /**
-     * Regex pattern for read lines in {@link #getAllMovesRating(ExecutableProcess, int)}
-     * method. For more information, see <code>go perft <em>&lt;depth&gt;</em></code>
-     * Stockfish command.
+     * Regex pattern for read lines in {@link #getAllMovesRating(ExecutableProcess, int)} method. For more information,
+     * see <code>go perft <em>&lt;depth&gt;</em></code> Stockfish command.
      *
      * @see #getAllMovesRating(ExecutableProcess, int)
      */
@@ -67,8 +61,8 @@ public final class Utilities {
     public static final Pattern PATTERN_UCI_MOVE = Pattern.compile("([a-h][1-8])([a-h][1-8])([qrbn])?");
 
     /**
-     * Regex pattern for chessboard square notation. To check validity of particular
-     * square, use {@link #isValidSquare(String)} instead.
+     * Regex pattern for chessboard square notation. To check validity of particular square, use {@link
+     * #isValidSquare(String)} instead.
      */
     public static final Pattern PATTERN_SQUARE = Pattern.compile("[a-h][1-8]");
 
@@ -76,16 +70,15 @@ public final class Utilities {
      * Method testing if given input is a valid chessboard square notation.
      *
      * @param square input string
-     * @return a {@code boolean} value, if given input is a valid chessboard square
-     * notation
+     * @return a {@code boolean} value, if given input is a valid chessboard square notation
      */
     public static boolean isValidSquare(final String square) {
         return PATTERN_SQUARE.matcher(square).matches();
     }
 
     /**
-     * Method testing if the specified string is a notation that use chess engines,
-     * for example Stockfish to annotate a move.
+     * Method testing if the specified string is a notation that use chess engines, for example Stockfish to annotate a
+     * move.
      *
      * @param uciNotation input to be tested
      * @return a {@code boolean} value, if given input is valid UCI move notation
@@ -95,11 +88,11 @@ public final class Utilities {
     }
 
     /**
-     * Method testing if the given {@code String} is valid Forsyth-Edwards Notation
-     * of a position on the chessboard
+     * Method testing if the given {@code String} is valid Forsyth-Edwards Notation of a position on the chessboard
      *
      * @param fen the FEN notation
      * @return {@code boolean} value, if given input is valid FEN notation
+     *
      * @see #mapPieces(String)
      * @see #getPosition(ExecutableProcess)
      */
@@ -135,15 +128,21 @@ public final class Utilities {
                 f++;
                 switch (ch) {
                     // King
-                    case 'K': wk++; break;
-                    case 'k': bk++; break;
+                    case 'K':
+                        wk++;
+                        break;
+                    case 'k':
+                        bk++;
+                        break;
                     // Pawn
                     case 'P':
-                        if (rankNo == 7) return false;
+                        if (rankNo == 7)
+                            return false;
                         wp++;
                         break;
                     case 'p':
-                        if (rankNo == 0) return false;
+                        if (rankNo == 0)
+                            return false;
                         bp++;
                         break;
                     // Other pieces
@@ -161,7 +160,8 @@ public final class Utilities {
                         break;
                     default:
                         int s = (int) ch - '1';
-                        if (s < 0 || s > 7) return false;
+                        if (s < 0 || s > 7)
+                            return false;
                         f += s;
                         break;
                 }
@@ -176,13 +176,10 @@ public final class Utilities {
     }
 
     /**
-     * Checks, if square is valid. If not, automatically throws
-     * {@link IllegalSquareException}
+     * Checks, if square is valid. If not, automatically throws {@link IllegalSquareException}
      *
      * @param square square notation to check
-     *
      * @throws IllegalSquareException when square notation is illegal
-     *
      * @see #assertFENValidity(String)
      */
     public static void assertSquareValidity(final String square) {
@@ -191,8 +188,7 @@ public final class Utilities {
     }
 
     /**
-     * Checks, if given UCI move notation is valid. If not, throws
-     * {@link IllegalUCIMoveNotationException}.
+     * Checks, if given UCI move notation is valid. If not, throws {@link IllegalUCIMoveNotationException}.
      *
      * @param uciNotation UCI move notation to be asserted as valid
      * @throws IllegalUCIMoveNotationException if notation is invalid
@@ -203,8 +199,7 @@ public final class Utilities {
     }
 
     /**
-     * Checks, if FEN notation is valid. If not, automatically throws
-     * {@link IllegalFENException}
+     * Checks, if FEN notation is valid. If not, automatically throws {@link IllegalFENException}
      *
      * @param fen the FEN notation to check
      * @throws IllegalFENException when FEN notation is illegal
@@ -217,9 +212,8 @@ public final class Utilities {
     }
 
     /**
-     * Maps pieces to 8x8 2D array. Uses {@code byte} constants from
-     * {@link Chessboard} class. Number of rank is used as first index and number of
-     * column is used as second index of the returned 2D array.
+     * Maps pieces to 8x8 2D array. Uses {@code byte} constants from {@link Chessboard} class. Number of rank is used as
+     * first index and number of column is used as second index of the returned 2D array.
      *
      * @param fen FEN notation to map pieces from
      * @return {@code byte[][]} 2D array as specified above
@@ -231,12 +225,12 @@ public final class Utilities {
         byte[][] pieces = new byte[8][8];
         String[] ranks = fen.split("/");
 
-        for (int rankIndex = 0; rankIndex < 8; rankIndex++) {
+        for (byte rankIndex = 0; rankIndex < 8; rankIndex++) {
             String rank = ranks[7 - rankIndex];
-            for (int fileIndex = 0, rankCharIndex = 0; rankCharIndex < rank.length()
-                    && fileIndex < 8; rankCharIndex++) {
+            for (byte fileIndex = 0, rankCharIndex = 0; rankCharIndex < rank.length() && fileIndex < 8; rankCharIndex++) {
                 char rankChar = rank.charAt(rankCharIndex);
-                if (rankChar >= '1' && rankChar <= '8') fileIndex += rankChar - '0';
+                if (rankChar >= '1' && rankChar <= '8')
+                    fileIndex += rankChar - '0';
                 else {
                     pieces[rankIndex][fileIndex] = pieceCharToConstant(rankChar);
                     fileIndex++;
@@ -248,18 +242,14 @@ public final class Utilities {
     }
 
     /**
-     * Converts {@code char}s representing pieces to equivalent {@code byte}
-     * constants in {@link Chessboard} class.
+     * Converts {@code char}s representing pieces to equivalent {@code byte} constants in {@link Chessboard} class.
      *
      * @param piece the {@code char} to be converted
      * @return equivalent {@code byte} constant from {@link Chessboard} class
      *
-     * @throws IllegalArgumentException if none of these {@code char}s is given as
-     *                                  argument: {@code 'p'}, {@code 'r'},
-     *                                  {@code 'n'}, {@code 'b'}, {@code 'q'},
-     *                                  {@code 'k'}, {@code 'P'}, {@code 'R'},
-     *                                  {@code 'N'}, {@code 'B'}, {@code 'Q'},
-     *                                  {@code 'K'}
+     * @throws IllegalArgumentException if none of these {@code char}s is given as argument: {@code 'p'}, {@code 'r'},
+     *                                  {@code 'n'}, {@code 'b'}, {@code 'q'}, {@code 'k'}, {@code 'P'}, {@code 'R'},
+     *                                  {@code 'N'}, {@code 'B'}, {@code 'Q'}, {@code 'K'}
      */
     public static byte pieceCharToConstant(final char piece) {
         switch (piece) {
@@ -303,7 +293,8 @@ public final class Utilities {
         while (firstRank == null) {
             Collections.shuffle(firstRankPieces);
             StringBuilder firstRankBuilder = new StringBuilder(8);
-            for (Character firstRankPiece : firstRankPieces) firstRankBuilder.append(firstRankPiece);
+            for (Character firstRankPiece : firstRankPieces)
+                firstRankBuilder.append(firstRankPiece);
             firstRank = firstRankBuilder.toString();
             if (!firstRank.matches(".*r.*k.*r.*") || !firstRank.matches(".*b(..|....|......|)b.*"))
                 firstRank = null;
@@ -329,25 +320,23 @@ public final class Utilities {
             if (System.getProperty("os.name").toLowerCase().startsWith("win"))
                 filename.append(".exe");
 
-            stockfishPath = ClasspathUtilities.currentWorkingDirectory(Utilities.class).resolve("native/stockfish")
-                    .resolve(filename.toString());
+            stockfishPath = ClasspathUtilities.currentWorkingDirectory(Utilities.class).resolve("native/stockfish").resolve(filename.toString());
         }
         return stockfishPath;
     }
 
     /**
-     * Creates an {@link ExecutableProcess} of Stockfish chess engine. Throws
-     * {@link StockfishNotFoundException} if chess engine executable was not found.
+     * Creates an {@link ExecutableProcess} of Stockfish chess engine. Throws {@link StockfishNotFoundException} if
+     * chess engine executable was not found.
      *
      * @return an {@link ExecutableProcess} of Stockfish chess engine
      *
      * @throws StockfishNotFoundException if chess engine executable was not found
-     *
      * @see #setPosition(ExecutableProcess, String, List)
      * @see #setPosition(ExecutableProcess, String, Move...)
      * @see #setOption(ExecutableProcess, String, Object)
      * @see #setOptions(ExecutableProcess, Map)
-     * @see #waitForStockfishToBeReady(ExecutableProcess)
+     * @see #waitForReady(ExecutableProcess)
      * @see #getBestMove(ExecutableProcess, int)
      * @see #getPosition(ExecutableProcess)
      * @see #getAllMovesRating(ExecutableProcess, int)
@@ -364,23 +353,27 @@ public final class Utilities {
      *
      * @param process the Stockfish process to be got the position from
      * @return current FEN set in the given Stockfish process
+     *
      * @throws NullPointerException if {@code process} is {@code null}
      * @see #setPosition(ExecutableProcess, String, Move...)
      * @see #setPosition(ExecutableProcess, String, List)
      */
     public static String getPosition(final ExecutableProcess process) {
+        Objects.requireNonNull(process, "null given instead of ExecutableProcess");
+        Semaphore semaphore = new Semaphore(0);
+        AtomicReference<String> currFEN = new AtomicReference<>(null);
         synchronized (process) {
-            AtomicReference<String> currFEN = new AtomicReference<>(null);
-            process.send("d");
             process.read(line -> {
                 if (line.startsWith("Fen: ")) {
                     currFEN.set(line.substring(5));
+                    semaphore.release();
                     return false;
                 } else
                     return true;
             });
-            while (currFEN.get() == null)
-                ;
+
+            process.send("d");
+            semaphore.acquireUninterruptibly();
             return currFEN.get();
         }
     }
@@ -391,34 +384,37 @@ public final class Utilities {
      * @param process the Stockfish process which you want to set an option on
      * @param name    option name
      * @param value   option value
-     *
      * @throws NullPointerException if {@code process} is {@code null}
-     *
      * @see #setOptions(ExecutableProcess, Map)
      */
     public static void setOption(final ExecutableProcess process, final String name, final Object value) {
+        Objects.requireNonNull(process, "null given instead of ExecutableProcess");
+        Objects.requireNonNull(name, "Option name cannot be null");
+        Objects.requireNonNull(value, "Option value cannot be null");
+
+        StringBuilder command = new StringBuilder();
+        command.append("setoption name ");
+        command.append(name);
+        command.append(" value ");
+        command.append(value);
+
         synchronized (process) {
-            StringBuilder command = new StringBuilder();
-            command.append("setoption name ");
-            command.append(name);
-            command.append(" value ");
-            command.append(value);
             process.send(command.toString());
         }
     }
 
     /**
-     * Sets options of Stockfish chess engine from a {@link Map}. As key use option
-     * name and as value use option value.
+     * Sets options of Stockfish chess engine from a {@link Map}. As key use option name and as value use option value.
      *
      * @param process the Stockfish process which you want to set options on
      * @param options map, where key is option name and value is option value
-     *
      * @throws NullPointerException if {@code process} is {@code null}
-     *
      * @see #setOption(ExecutableProcess, String, Object)
      */
     public static void setOptions(final ExecutableProcess process, final Map<String, Object> options) {
+        Objects.requireNonNull(process, "null given instead of ExecutableProcess instance");
+        Objects.requireNonNull(options, "null given instead of options");
+
         synchronized (process) {
             for (String k : options.keySet()) {
                 Object v = options.get(k);
@@ -428,52 +424,52 @@ public final class Utilities {
     }
 
     /**
-     * Sets the position on a Stockfish process via initial position and done moves
-     * from that position. If no move was done, pass {@code null} or an empty array.
-     * You can use a {@link List} in the
-     * {@link #setPosition(ExecutableProcess, String, List)} method.
+     * Sets the position on a Stockfish process via initial position and done moves from that position. If no move was
+     * done, pass {@code null} or an empty array. You can use a {@link List} in the {@link
+     * #setPosition(ExecutableProcess, String, List)} method.
      *
      * @param process the Stockfish process which you want to set the position on
      * @param fen     the initial FEN position
      * @param moves   done moves from the initial position
-     *
      * @throws NullPointerException if {@code process} is {@code null}
-     *
      * @see #getPosition(ExecutableProcess)
      * @see #setPosition(ExecutableProcess, String, List)
      */
     public static void setPosition(final ExecutableProcess process, final String fen, final Move... moves) {
-        synchronized (process) {
-            Utilities.assertFENValidity(fen);
-            StringBuilder cmd = new StringBuilder();
-            cmd.append("position fen ");
-            cmd.append(fen);
-            if (moves != null && moves.length != 0) {
-                cmd.append(" moves");
-                for (Move move : moves) {
-                    cmd.append(' ');
-                    cmd.append(move);
-                }
+        Objects.requireNonNull(process, "null given instead of ExecutableProcess instance");
+        Utilities.assertFENValidity(fen);
+
+        StringBuilder cmd = new StringBuilder();
+        cmd.append("position fen ");
+        cmd.append(fen);
+        if (moves != null && moves.length != 0) {
+            cmd.append(" moves");
+            for (Move move : moves) {
+                cmd.append(' ');
+                cmd.append(move);
             }
+        }
+
+        synchronized (process) {
             process.send(cmd.toString());
         }
     }
 
     /**
-     * Works same as {@link #setPosition(ExecutableProcess, String, Move...)}, but
-     * you can pass {@link List} instead of array.
+     * Works same as {@link #setPosition(ExecutableProcess, String, Move...)}, but you can pass {@link List} instead of
+     * array.
      *
      * @param process the Stockfish process which you want to set the position on
      * @param fen     the initial FEN position
      * @param moves   done moves from the initial position
-     *
      * @throws NullPointerException if {@code process} is {@code null}
-     *
      * @see #getPosition(ExecutableProcess)
      * @see #setPosition(ExecutableProcess, String, Move...)
      */
     public static void setPosition(final ExecutableProcess process, final String fen, final List<Move> moves) {
+        Objects.requireNonNull(process, "null given instead of ExecutableProcess instance");
         Utilities.assertFENValidity(fen);
+
         StringBuilder cmd = new StringBuilder();
         cmd.append("position fen ");
         cmd.append(fen);
@@ -484,65 +480,68 @@ public final class Utilities {
                 cmd.append(move);
             }
         }
-        process.send(cmd.toString());
+
+        synchronized (process) {
+            process.send(cmd.toString());
+        }
     }
 
     /**
-     * Sends a {@code go} command to the Stockfish engine. Once sent, you cannot
-     * interrupt the action. First, to set position, use the
-     * {@link #setPosition(ExecutableProcess, String, Move...)} method.
+     * Sends a {@code go} command to the Stockfish engine. Once sent, you cannot interrupt the action. First, to set
+     * position, use the {@link #setPosition(ExecutableProcess, String, Move...)} method.
      *
-     * @param process the Stockfish process which you want to send {@code go}
-     *                command to
-     * @param depth   the depth, for more information about UCI protocol, see
-     *                http://wbec-ridderkerk.nl/html/UCIProtocol.html
+     * @param process the Stockfish process which you want to send {@code go} command to
+     * @param depth   the depth, for more information about UCI protocol, see http://wbec-ridderkerk.nl/html/UCIProtocol.html
      * @return the best move that chess engine returned
      *
      * @throws NullPointerException if {@code process} is {@code null}
      */
     public static Move getBestMove(final ExecutableProcess process, final int depth) {
-        synchronized (process) {
-            AtomicReference<Move> bestMove = new AtomicReference<>();
+        Objects.requireNonNull(process, "null given instead of ExecutableProcess instance");
 
+        Semaphore semaphore = new Semaphore(0);
+        AtomicReference<Move> bestMove = new AtomicReference<>();
+
+        synchronized (process) {
             process.read(line -> {
                 if (line.startsWith("bestmove")) {
                     String[] splitted = line.split(" ");
                     bestMove.set(new Move(splitted[1]));
+                    semaphore.release();
                     return false;
                 }
                 return true;
             });
 
             process.send("go depth " + depth);
-            while (bestMove.get() == null) {
-            }
+            semaphore.acquireUninterruptibly();
             return bestMove.get();
         }
     }
 
     /**
-     * Similar to {@link #getBestMove(ExecutableProcess, int)}, but it rates every
-     * single move, if it is good or not. Returns {@link TreeMap}, where key is
-     * particular move and value is its rating by Stockfish engine. To do so, this
+     * Similar to {@link #getBestMove(ExecutableProcess, int)}, but it rates every single move, if it is good or not.
+     * Returns {@link TreeMap}, where key is particular move and value is its rating by Stockfish engine. To do so, this
      * method uses <code>go perft <i>&lt;depth&gt;</i></code> UCI command.
      *
-     * @param process the Stockfish process which you want to send {@code go}
-     *                command to
-     * @param depth   the depth, for more information about UCI protocol, see
-     *                http://wbec-ridderkerk.nl/html/UCIProtocol.html
+     * @param process the Stockfish process which you want to send {@code go} command to
+     * @param depth   the depth, for more information about UCI protocol, see http://wbec-ridderkerk.nl/html/UCIProtocol.html
      * @return a {@link TreeMap} as described above
      *
      * @throws NullPointerException if {@code process} is {@code null}
      */
     public static TreeMap<Move, Integer> getAllMovesRating(final ExecutableProcess process, final int depth) {
-        synchronized (process) {
-            TreeMap<Move, Integer> map = new TreeMap<>();
-            AtomicReference<Boolean> done = new AtomicReference<>(false);
+        Objects.requireNonNull(process, "null given instead of ExecutableProcess instance");
 
+        Semaphore semaphore = new Semaphore(0);
+        TreeMap<Move, Integer> map = new TreeMap<>();
+
+        synchronized (process) {
             process.read(line -> {
-                if (line.isEmpty()) return true;
+                if (line.isEmpty())
+                    return true;
                 else if (line.startsWith("Nodes searched:")) {
-                    done.set(true);
+                    semaphore.release();
                     return false;
                 }
                 Matcher matcher = PATTERN_STOCKFISH_MOVE_RATING.matcher(line);
@@ -555,32 +554,31 @@ public final class Utilities {
             });
 
             process.send("go perft " + depth);
-            while (!done.get()) {
-            }
+            semaphore.acquireUninterruptibly();
             return map;
         }
     }
 
     /**
-     * Sends the {@code isready} command and waits until chess engine sends
-     * {@code readyok} back
+     * Sends the {@code isready} command and waits until chess engine sends {@code readyok} back
      *
      * @param process the Stockfish process to wait for
-     *
      * @throws NullPointerException if {@code process} is {@code null}
      */
-    public static void waitForStockfishToBeReady(final ExecutableProcess process) {
+    public static void waitForReady(final ExecutableProcess process) {
+        Objects.requireNonNull(process, "null given instead of ExecutableProcess instance");
+
+        Semaphore semaphore = new Semaphore(0);
+
         synchronized (process) {
-            AtomicReference<Boolean> ready = new AtomicReference<>(false);
             process.read(line -> {
                 boolean rdy = line.equals("readyok");
-                ready.set(rdy);
+                semaphore.release();
                 return !rdy;
             });
             process.send("isready");
 
-            while (!ready.get()) {
-            }
+            semaphore.acquireUninterruptibly();
         }
     }
 }

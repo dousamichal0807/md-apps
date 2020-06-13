@@ -14,8 +14,6 @@ import java.util.jar.Manifest;
 
 public final class ClasspathUtilities {
 
-    public static final Attributes.Name JAR_MANIFEST_IMPL_VERSION = new Attributes.Name("Implementation-Version");
-
     // Do not create any instance
     private ClasspathUtilities() {
     }
@@ -26,15 +24,11 @@ public final class ClasspathUtilities {
             cwd = Paths.get("/").resolve(cwd.subpath(0, cwd.getNameCount() - 1));
             return cwd;
         } catch (URISyntaxException exc) {
-            StringWriter msg = new StringWriter();
-            msg.write("getCurrentWorkingDirectory() encountered an unexpected error:\n");
-            exc.printStackTrace(new PrintWriter(msg));
-            Debugger.error(ClasspathUtilities.class, msg);
-            return null;
+            throw new RuntimeException(exc);
         }
     }
 
-    public static Attributes jarManifestAttributesFor(final Class<?> clazz) {
+    public static Attributes jarMfAttributes(final Class<?> clazz) {
         try (InputStream inputStream = clazz.getResourceAsStream("/META-INF/MANIFEST.MF")) {
             Manifest manifest = new Manifest(inputStream);
             return manifest.getMainAttributes();
