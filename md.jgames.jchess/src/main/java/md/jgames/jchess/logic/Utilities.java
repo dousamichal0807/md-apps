@@ -50,31 +50,7 @@ public final class Utilities {
      *
      * @see #getAllMovesRating(ExecutableProcess, int)
      */
-    public static final Pattern PATTERN_STOCKFISH_MOVE_RATING = Pattern.compile("([a-h][1-8][a-h][1-8][qbnr]?): ([0-9]+)");
-
-    /**
-     * Regex pattern for UCI move notation.
-     *
-     * @see Move
-     * @see #isValidUCIMoveNotation(String)
-     */
-    public static final Pattern PATTERN_UCI_MOVE = Pattern.compile("([a-h][1-8])([a-h][1-8])([qrbn])?");
-
-    /**
-     * Regex pattern for chessboard square notation. To check validity of particular square, use {@link
-     * #isValidSquare(String)} instead.
-     */
-    public static final Pattern PATTERN_SQUARE = Pattern.compile("[a-h][1-8]");
-
-    /**
-     * Method testing if given input is a valid chessboard square notation.
-     *
-     * @param square input string
-     * @return a {@code boolean} value, if given input is a valid chessboard square notation
-     */
-    public static boolean isValidSquare(final String square) {
-        return PATTERN_SQUARE.matcher(square).matches();
-    }
+    private static final Pattern PATTERN_STOCKFISH_MOVE_RATING = Pattern.compile("([a-h][1-8][a-h][1-8][qbnr]?): ([0-9]+)");
 
     /**
      * Method testing if the specified string is a notation that use chess engines, for example Stockfish to annotate a
@@ -84,7 +60,7 @@ public final class Utilities {
      * @return a {@code boolean} value, if given input is valid UCI move notation
      */
     public static boolean isValidUCIMoveNotation(final String uciNotation) {
-        return PATTERN_UCI_MOVE.matcher(uciNotation).matches();
+        return Move.PATTERN_UCI_MOVE.matcher(uciNotation).matches();
     }
 
     /**
@@ -176,34 +152,10 @@ public final class Utilities {
     }
 
     /**
-     * Checks, if square is valid. If not, automatically throws {@link IllegalSquareException}
-     *
-     * @param square square notation to check
-     * @throws IllegalSquareException when square notation is illegal
-     * @see #assertFENValidity(String)
-     */
-    public static void assertSquareValidity(final String square) {
-        if (!isValidSquare(square))
-            throw new IllegalSquareException(square);
-    }
-
-    /**
-     * Checks, if given UCI move notation is valid. If not, throws {@link IllegalUCIMoveNotationException}.
-     *
-     * @param uciNotation UCI move notation to be asserted as valid
-     * @throws IllegalUCIMoveNotationException if notation is invalid
-     */
-    public static void assertUCIMoveNotationValidity(final String uciNotation) {
-        if (!isValidUCIMoveNotation(uciNotation))
-            throw new IllegalUCIMoveNotationException(uciNotation);
-    }
-
-    /**
      * Checks, if FEN notation is valid. If not, automatically throws {@link IllegalFENException}
      *
      * @param fen the FEN notation to check
      * @throws IllegalFENException when FEN notation is illegal
-     * @see #assertSquareValidity(String)
      * @see #mapPieces(String)
      */
     public static void assertFENValidity(final String fen) {

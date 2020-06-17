@@ -37,7 +37,7 @@ public final class ClasspathUtilities {
             msg.write("getMainfest() encountered an unexpected error:\n");
             exc.printStackTrace(new PrintWriter(msg));
             Debugger.error(ClasspathUtilities.class, msg);
-            return null;
+            throw new RuntimeException(exc);
         }
     }
 }

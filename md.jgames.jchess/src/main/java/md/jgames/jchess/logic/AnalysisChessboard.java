@@ -40,25 +40,25 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
 
     @Override
     public String getStartingFEN() {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         return startingFEN;
     }
 
     @Override
     public String getCurrentFEN() {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         return currentFEN;
     }
 
     @Override
     public int doneMovesCount() {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         return doneMoves.size();
     }
 
     @Override
     public List<Move> doneMoves() {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         ArrayList<Move> moves = new ArrayList<>(doneMoves.size());
         BasicTreeNode<Move> node = moveTree.rootNode();
         for (int i = 0; i < doneMoves.size(); i++) {
@@ -70,7 +70,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
 
     @Override
     public void reset(final String fen) {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         Utilities.assertFENValidity(fen);
         moveTree.rootNode().childNodes().clear();
         doneMoves.clear();
@@ -81,7 +81,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
 
     @Override
     public void undo() {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         if (!doneMoves.isEmpty()) {
             doneMoves.remove(doneMoves.size() - 1);
             update();
@@ -90,7 +90,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
 
     @Override
     public void redo() {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         // Get the current node and check if it has at least one subnode
         BasicTreeNode<Move> currentNode = moveTree.rootNode();
         for (int i : doneMoves)
@@ -102,7 +102,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
 
     @Override
     public void performMove(final Move move) {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         // Move cannot be null
         if (move == null)
             throw new NullPointerException("Move to perform cannot be null");
@@ -133,13 +133,14 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
 
     @Override
     public SortedSet<Move> possibleMoves() {
-        Disposable.checkIsNotDisposed(this);
+        Disposable.requireNotDisposed(this);
         return Collections.unmodifiableSortedSet(possibleMoves);
     }
 
     @Override
     public byte[][] pieces() {
-        Disposable.checkIsNotDisposed(this);
+        // The chessboard cannot be disposed
+        Disposable.requireNotDisposed(this);
         byte[][] p = new byte[8][];
         for (int i = 0; i < 8; i++)
             p[i] = Arrays.copyOf(pieces[i], 8);
@@ -147,14 +148,13 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
     }
 
     @Override
-    public byte pieceAt(final String square) {
-        Disposable.checkIsNotDisposed(this);
-        Utilities.assertSquareValidity(square);
-
-        int rank = square.charAt(1) - '1';
-        int file = square.charAt(2) - 'a';
-
-        return pieces[rank][file];
+    public byte pieceAt(final Square square) {
+        // The chessboard cannot be disposed
+        Disposable.requireNotDisposed(this);
+        // Require square to be non-null value
+        Objects.requireNonNull(square, "Passing null as argument is illegal in this method");
+        // Return piece
+        return pieces[square.rank()][square.file()];
     }
 
     @Override
@@ -193,8 +193,6 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
      * @param chessboard the chessboard to be new instance created from
      *
      * @throws NullPointerException if {@code null} is given as argument
-     * @throws md.jcore.AlreadyDisposedException if given chessboard is already
-     *                                           disposed
      */
     public AnalysisChessboard(final GamePlayChessboard chessboard) {
         this(chessboard.getStartingFEN());
@@ -203,7 +201,7 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
     }
 
     @Override
-    public void dispose() {
+    public void close() {
         if (!isDisposed()) {
             if (stockfishProcess != null && stockfishProcess.isAlive())
                 stockfishProcess.close();

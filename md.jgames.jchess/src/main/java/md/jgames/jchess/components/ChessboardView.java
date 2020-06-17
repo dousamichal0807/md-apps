@@ -2,17 +2,14 @@ package md.jgames.jchess.components;
 
 import md.jgames.jchess.logic.Chessboard;
 import md.jgames.jchess.logic.Move;
-import mdlib.utils.Filter;
-import mdlib.utils.FilteredAtomicReference;
+import md.jgames.jchess.logic.Move.PawnPromotion;
+import md.jgames.jchess.logic.Square;
 import mdlib.utils.JFXUtilities;
 
-import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javafx.animation.AnimationTimer;
-import javafx.beans.binding.Bindings;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -21,31 +18,17 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
-public final class ChessboardView extends Canvas {
-
-    // Initial empty chessboard image
-    private static final Image INITTIAL_CHESSBOARD_IMAGE = SwingFXUtils.toFXImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), null);
-
-    // Chessboard image filtered field
-    private static final FilteredAtomicReference<Image> chessboardImage = new FilteredAtomicReference<>(Filter.FILTER_NOT_NULL, INITTIAL_CHESSBOARD_IMAGE);
-
-    /**
-     * Returns {@link FilteredAtomicReference} to image used as chessboard in this component. Caannot pass {@code null}
-     * as value.
-     *
-     * @return {@link FilteredAtomicReference} to the chessboard image
-     *
-     * @see FilteredAtomicReference#set(Object)
-     */
-    public static FilteredAtomicReference<Image> chessboardImage() {
-        return chessboardImage;
-    }
+public final class ChessboardView extends Pane {
 
     private Chessboard chessboard;
     private boolean chessboardReversed;
+    private String alternativeText;
+
+    private final Canvas canvas;
+    private final AnimationTimer animationTimer;
 
     public Chessboard getChessboard() {
         return chessboard;
@@ -60,7 +43,7 @@ public final class ChessboardView extends Canvas {
      * @param chessboard new {@link Chessboard} to be shown
      * @param disposePrevious {@code boolean} value, if you want to dispose the previous {@link Chessboard} instance
      */
-    public void setChessboard(Chessboard chessboard, boolean disposePrevious) {
+    public void setChessboard(final Chessboard chessboard, final boolean disposePrevious) {
         if (disposePrevious && this.chessboard != null)
             this.chessboard.dispose();
 
@@ -72,72 +55,90 @@ public final class ChessboardView extends Canvas {
      *
      * @param chessboard new {@link Chessboard} instance to be set
      */
-    public void setChessboard(Chessboard chessboard) {
+    public void setChessboard(final Chessboard chessboard) {
         setChessboard(chessboard, false);
     }
 
+    /**
+     * Returns if the chessboard should be displayed with black pieces in front.
+     *
+     * @return if the chessboard should be displayed reversed
+     */
     public boolean isChessboardReversed() {
         return chessboardReversed;
     }
 
-    public void setChessboardReversed(boolean chessboardReversed) {
+    /**
+     * Used to set if the chessboard should be displayed with black pieces in front
+     *
+     * @param chessboardReversed if the chessboard should be displayed reversed
+     */
+    public void setChessboardReversed(final boolean chessboardReversed) {
         this.chessboardReversed = chessboardReversed;
     }
 
-    private final AnimationTimer animationTimer;
-    private String selectedSquare;
-    private SortedSet<Move> selSquarePossibleMoves;
-    private boolean mouseDown;
+    public String getAlternativeText() {
+        return alternativeText;
+    }
+
+    public void setAlternativeText(final String alternativeText) {
+        this.alternativeText = alternativeText.trim();
+    }
 
     /**
      * Creates a {@link ChessboardView} component.
      */
     public ChessboardView() {
         // Animation timer
-        animationTimer = JFXUtilities.animationTimer(this::repaint);
+        this.animationTimer = JFXUtilities.animationTimer(this::repaint);
+        this.animationTimer.start(); // Not ideal!
 
-        Bindings.selectBoolean(sceneProperty(), "window", "showing").addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-                animationTimer.start();
-            else
-                animationTimer.stop();
-        });
+        // Canvas setup
+        this.canvas = new Canvas();
+        this.widthProperty().addListener((observable, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
+        this.heightProperty().addListener((observable, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
+        this.getChildren().addAll(canvas);
 
-        // Mouse events
-        addEventHandler(MouseEvent.MOUSE_PRESSED, JFXUtilities.eventHandler(this::onMousePressed));
-        addEventHandler(MouseEvent.MOUSE_RELEASED, JFXUtilities.eventHandler(this::onMouseReleased));
+        // Canvas mouse events
+        this.addEventHandler(MouseEvent.MOUSE_PRESSED, JFXUtilities.eventHandler(this::onMousePressed));
+        this.addEventHandler(MouseEvent.MOUSE_RELEASED, JFXUtilities.eventHandler(this::onMouseReleased));
     }
 
-    // Auxiliary methods
+    // Auxiliary methods and fields
+
+    private Square selectedSquare;
+    private SortedSet<Move> selSquarePossibleMoves;
+    private boolean mouseDown;
 
     private Rectangle2D chessboardBounds() {
-        int size = (int) Math.min(getWidth(), getHeight()) / 8 * 7;
+        int size = (int) Math.min(getWidth(), getHeight()) * 7 / 64 * 8;
         int offsetX = (int) ((getWidth() - size) / 2.0);
         int offsetY = (int) ((getHeight() - size) / 2.0);
         return new Rectangle2D(offsetX, offsetY, size, size);
     }
 
-    private strictfp Rectangle2D rectangleFor(final String square) {
+    private strictfp Rectangle2D rectangleFor(final Square square) {
         Rectangle2D chessboard = chessboardBounds();
+
+        // square size is chessboard size divided by 8, because we have 8x8 squares
         double squareSize = chessboard.getHeight() / 8.0;
-        byte x, y;
-        if (chessboardReversed) {
-            x = (byte) ('h' - square.charAt(0));
-            y = (byte) (square.charAt(1) - '1');
-        } else {
-            x = (byte) (square.charAt(0) - 'a');
-            y = (byte) ('8' - square.charAt(1));
-        }
+
+        // get square x and y in range from 0 to 7
+        byte x = (byte) (chessboardReversed ? 7 - square.file() : square.file());
+        byte y = (byte) (chessboardReversed ? square.rank() : 7 - square.rank());
+
+        // Where the square really is (its upper-left corner coordinates)
         double realX = chessboard.getMinX() + x * squareSize;
         double realY = chessboard.getMinY() + y * squareSize;
+
         return new Rectangle2D(realX, realY, squareSize, squareSize);
     }
 
-    private String squareAt(final Point2D point) {
+    private Square squareAt(final Point2D point) {
         if (chessboardBounds().contains(point))
-            for (char file = 'a'; file <= 'h'; file++)
-                for (char rank = '1'; rank <= '8'; rank++) {
-                    String square = new String(new char[] {rank, file});
+            for (byte file = 0; file < 8; file++)
+                for (byte rank = 0; rank < 8; rank++) {
+                    Square square = new Square(rank, file);
                     Rectangle2D rectangle = rectangleFor(square);
                     if (rectangle.contains(point))
                         return square;
@@ -149,31 +150,35 @@ public final class ChessboardView extends Canvas {
 
     private void repaint() {
         // Get GraphicsContext and clear canvas
-        GraphicsContext gctx = getGraphicsContext2D();
+        GraphicsContext gctx = canvas.getGraphicsContext2D();
         gctx.clearRect(0, 0, getWidth(), getHeight());
+
+        // Draw chessboard if it is not set to null, otherwise draw alternative text
         if (chessboard != null) {
             // Draw chessboard
-            JFXUtilities.canvasDrawImage(gctx, chessboardImage.get(), chessboardBounds());
+            JFXUtilities.canvasDrawImage(gctx, ChessboardViewConfiguration.chessboardImage().get(), chessboardBounds());
+        } else {
+            // Draw alternative text
         }
     }
 
     // Event handling
 
-    private void onMousePressed(MouseEvent event) {
+    private void onMousePressed(final MouseEvent event) {
         Point2D mousePoint = new Point2D(event.getSceneX(), event.getSceneY());
-        String mouseSquare = squareAt(mousePoint);
+        Square mouseSquare = squareAt(mousePoint);
 
-        if (!isDisabled() && mouseSquare != null && selectedSquare != null && !selSquarePossibleMoves.contains(new Move(selectedSquare + mouseSquare))) {
+        if (!isDisabled() && mouseSquare != null && selectedSquare != null && !selSquarePossibleMoves.contains(new Move(selectedSquare, mouseSquare, PawnPromotion.NONE))) {
             this.selectedSquare = mouseSquare;
             this.selSquarePossibleMoves = chessboard.possibleMovesFor(selectedSquare);
             this.mouseDown = true;
         }
     }
 
-    private void onMouseReleased(MouseEvent event) {
+    private void onMouseReleased(final MouseEvent event) {
         this.mouseDown = false;
         Point2D mousePoint = new Point2D(event.getSceneX(), event.getSceneY());
-        String mouseSquare = squareAt(mousePoint);
+        Square mouseSquare = squareAt(mousePoint);
 
         if (!isDisabled() && mouseSquare != null) {
             TreeSet<Move> moves = new TreeSet<>();

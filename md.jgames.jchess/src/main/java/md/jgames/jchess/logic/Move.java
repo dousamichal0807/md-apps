@@ -1,6 +1,11 @@
 package md.jgames.jchess.logic;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents a move on chessboard.
@@ -11,70 +16,22 @@ import java.util.regex.Matcher;
 public final class Move implements Comparable<Move>, Cloneable {
 
     /**
-     * Constant representing that there is no promotion.
+     * Regex pattern for UCI move notation.
      *
-     * @see #PROMOTION_ROOK
-     * @see #PROMOTION_KNIGHT
-     * @see #PROMOTION_BISHOP
-     * @see #PROMOTION_QUEEN
-     * @see #pawnPromotion()
+     * @see Move
      */
-    public static final byte PROMOTION_NONE = 0;
+    public static final Pattern PATTERN_UCI_MOVE = Pattern.compile("([a-h][1-8])([a-h][1-8])([qrbn])?");
 
-    /**
-     * Constant representing promotion to the rook.
-     *
-     * @see #PROMOTION_NONE
-     * @see #PROMOTION_KNIGHT
-     * @see #PROMOTION_BISHOP
-     * @see #PROMOTION_QUEEN
-     * @see #pawnPromotion()
-     */
-    public static final byte PROMOTION_ROOK = 1;
-
-    /**
-     * Constant representing promotion to the knight.
-     *
-     * @see #PROMOTION_NONE
-     * @see #PROMOTION_ROOK
-     * @see #PROMOTION_BISHOP
-     * @see #PROMOTION_QUEEN
-     * @see #pawnPromotion()
-     */
-    public static final byte PROMOTION_KNIGHT = 2;
-
-    /**
-     * Constant representing promotion to the bishop.
-     *
-     * @see #PROMOTION_NONE
-     * @see #PROMOTION_ROOK
-     * @see #PROMOTION_KNIGHT
-     * @see #PROMOTION_QUEEN
-     * @see #pawnPromotion()
-     */
-    public static final byte PROMOTION_BISHOP = 3;
-
-    /**
-     * Constant representing promotion to the queen.
-     *
-     * @see #PROMOTION_NONE
-     * @see #PROMOTION_ROOK
-     * @see #PROMOTION_KNIGHT
-     * @see #PROMOTION_BISHOP
-     * @see #pawnPromotion()
-     */
-    public static final byte PROMOTION_QUEEN = 4;
-
-    private final String from;
-    private final String to;
-    private final byte promotion;
+    private final Square from;
+    private final Square to;
+    private final PawnPromotion pawnPromotion;
 
     /**
      * Returns the square, where the piece moves from.
      *
      * @return square which the piece moves from
      */
-    public String squareFrom() {
+    public Square squareFrom() {
         return from;
     }
 
@@ -83,24 +40,22 @@ public final class Move implements Comparable<Move>, Cloneable {
      *
      * @return square which the piece moves to
      */
-    public String squareTo() {
+    public Square squareTo() {
         return to;
     }
 
     /**
-     * Returns which of pawn promotion will be done during performing the move. If no promotion is intended to be done
-     * {@link #PROMOTION_NONE} will be returned.
+     * Returns which of pawn promotion should be done during performing the move.
      *
-     * @return {@link #PROMOTION_NONE}, {@link #PROMOTION_ROOK}, {@link #PROMOTION_KNIGHT}, {@link #PROMOTION_BISHOP} or
-     * {@link #PROMOTION_QUEEN}, as specified above.
+     * @return Some value from {@link PawnPromotion} enumeration, as specified above.
      */
-    public byte pawnPromotion() {
-        return promotion;
+    public PawnPromotion pawnPromotion() {
+        return pawnPromotion;
     }
 
     @Override
     public int hashCode() {
-        return 4096 * (from.charAt(0) - 'a') + 512 * (from.charAt(1) - '1') + 64 * (to.charAt(0) - 'a') + 8 * (to.charAt(1) - '1') + promotion;
+        return (from.hashCode() >> 9) | (to.hashCode() >> 3) | pawnPromotion.hashCode();
     }
 
     /**
@@ -122,8 +77,7 @@ public final class Move implements Comparable<Move>, Cloneable {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(from);
         stringBuilder.append(to);
-        if (promotion != PROMOTION_NONE)
-            stringBuilder.append(promotionConstToChar(promotion));
+        stringBuilder.append(pawnPromotion);
         return stringBuilder.toString();
     }
 
@@ -139,7 +93,7 @@ public final class Move implements Comparable<Move>, Cloneable {
         if (!(o2 instanceof Move))
             return false;
         Move move2 = (Move) o2;
-        return this.from.equals(move2.from) && this.to.equals(move2.to) && this.promotion == move2.promotion;
+        return from.equals(move2.from) && to.equals(move2.to) && this.pawnPromotion == move2.pawnPromotion;
     }
 
     @Override
@@ -160,13 +114,45 @@ public final class Move implements Comparable<Move>, Cloneable {
      * @see #Move(int)
      */
     public Move(final String uci) {
-        Matcher matcher = Utilities.PATTERN_UCI_MOVE.matcher(uci);
+        Matcher matcher = PATTERN_UCI_MOVE.matcher(uci);
         if (!matcher.matches())
-            throw new IllegalUCIMoveNotationException(uci);
+            throw new IllegalArgumentException("Illegal UCI move notation: \'" + uci + "\'");
 
-        this.from = matcher.group(1);
-        this.to = matcher.group(2);
-        this.promotion = promotionCharToConst(matcher.group(3) == null ? null : matcher.group(3).charAt(0));
+        this.from = new Square(matcher.group(1));
+        this.to = new Square(matcher.group(2));
+        this.pawnPromotion = PawnPromotion.fromChar(matcher.group(3) == null ? null : matcher.group(3).charAt(0));
+    }
+
+    /**
+     * Creates move from a square that piece is moving from, a square that piece is moving to and if there is a pawn
+     * promotion.
+     *
+     * @param from          the square that piece is moving from
+     * @param to            the square that piece is moving to
+     * @param pawnPromotion pawn promotion information
+     * @throws NullPointerException if at least one passed argument is {@code null}.
+     */
+    public Move(final Square from, final Square to, final PawnPromotion pawnPromotion) {
+        // Require non-null squares
+        Objects.requireNonNull(from, "Square from cannot be null");
+        Objects.requireNonNull(from, "Square to cannot be null");
+        // Assign values
+        this.from = from;
+        this.to = to;
+        this.pawnPromotion = pawnPromotion;
+    }
+
+    /**
+     * Creates move from a square that piece is moving from, a square that piece is moving to. While using this
+     * contructor you are saying, that there is no pawn promotion.
+     *
+     * @param from the square that piece is moving from
+     * @param to   the square that piece is moving to
+     * @throws NullPointerException if at least one passed argument is {@code null}.
+     * @see #Move(Square, Square, PawnPromotion)
+     */
+    public Move(final Square from, final Square to) {
+        this(from, to, PawnPromotion.NONE);
     }
 
     /**
@@ -175,19 +161,21 @@ public final class Move implements Comparable<Move>, Cloneable {
      *
      * @param hashCode the hash code to be the instance created from
      * @throws IllegalArgumentException if invalid hash code is given
+     * @throws NullPointerException     if at least one passed argument is {@code null}.
      */
-    public Move(int hashCode) {
+    public Move(final int hashCode) {
         if (hashCode < 0 || hashCode > 32764)
             throw new IllegalArgumentException("Invalid move hash code");
-        byte[] decomposed = new byte[5];
 
-        for (int i = 4; i >= 0; i--) {
-            decomposed[i] = (byte) (hashCode % 8);
-            hashCode /= 8;
-        }
-        this.from = (char) (decomposed[0] + 'a') + "" + (char) (decomposed[1] + '1');
-        this.to = (char) (decomposed[2] + 'a') + "" + (char) (decomposed[3] + '1');
-        this.promotion = decomposed[4];
+        // Get square from, square to and promotion hash code
+        int hcFrom = (hashCode >> 9) & 64;
+        int hcTo = (hashCode >> 3) & 64;
+        int hcPromotion = hashCode & 8;
+
+        // Assign values
+        this.from = new Square(hcFrom);
+        this.to = new Square(hcTo);
+        this.pawnPromotion = PawnPromotion.fromHashCode(hcPromotion);
     }
 
     /**
@@ -198,64 +186,97 @@ public final class Move implements Comparable<Move>, Cloneable {
     public Move(final Move move) {
         this.from = move.from;
         this.to = move.to;
-        this.promotion = move.promotion;
+        this.pawnPromotion = move.pawnPromotion;
     }
 
     /**
-     * Returns a character used in UCI move notation for piece promotion corresponding to the promotion constant from
-     * this class given by parameter.
+     * An enumeration-like class defining finite values. Used to indicate pawn promotion. This class is not a Java
+     * enumeration because of disability of overriding {@link #hashCode()} method.
      *
-     * @param constant the "promotion constant"
-     * @return corresponding {@code char} of the constant, or {@code null} if {@link #PROMOTION_NONE} was given as
-     * parameter
-     *
-     * @throws IllegalArgumentException if illegal parameter value was given
+     * @author Michal Douša
      */
-    public static Character promotionConstToChar(final byte constant) {
-        switch (constant) {
-            case PROMOTION_NONE:
-                return null;
-            case PROMOTION_ROOK:
-                return 'r';
-            case PROMOTION_KNIGHT:
-                return 'n';
-            case PROMOTION_BISHOP:
-                return 'b';
-            case PROMOTION_QUEEN:
-                return 'q';
-            default:
-                throw new IllegalArgumentException("Illegal constant for promotion");
+    public static final class PawnPromotion implements Comparable<PawnPromotion> {
+
+        private static final HashSet<PawnPromotion> values = new HashSet<>();
+
+        public static final PawnPromotion NONE = new PawnPromotion(null, (byte) 0);
+        public static final PawnPromotion ROOK = new PawnPromotion('r', (byte) 1);
+        public static final PawnPromotion KNIGHT = new PawnPromotion('n', (byte) 2);
+        public static final PawnPromotion BISHOP = new PawnPromotion('b', (byte) 3);
+        public static final PawnPromotion QUEEN = new PawnPromotion('q', (byte) 4);
+
+        private final Character character;
+        private final byte hashCode;
+
+        // ctor
+        private PawnPromotion(final Character character, final byte hashCode) {
+            this.character = character;
+            this.hashCode = hashCode;
+            values.add(this);
         }
-    }
 
-    /**
-     * Returns appropriate constant used in this class to mark pawn promotion, according to given input ({@code
-     * character} argument). If {@code null} is passed, {@link #PROMOTION_NONE} is returned. If other character than
-     * {@code 'R'}, {@code 'r'}, {@code 'N'}, {@code 'n'}, {@code 'B'}, {@code 'b'}, {@code 'Q'}, {@code 'q'} is passed,
-     * {@link IllegalArgumentException} is thrown.
-     *
-     * @param character the character in UCI move notation used to indicate pawn promotion (if there is no promotion,
-     *                  {@code null} should be passed
-     * @return appropriate constant from this class indicating promotion of pawn
-     */
-    public static byte promotionCharToConst(final Character character) {
-        if (character == null)
-            return PROMOTION_NONE;
-        switch (character) {
-            case 'r':
-            case 'R':
-                return PROMOTION_ROOK;
-            case 'n':
-            case 'N':
-                return PROMOTION_KNIGHT;
-            case 'b':
-            case 'B':
-                return PROMOTION_BISHOP;
-            case 'q':
-            case 'Q':
-                return PROMOTION_QUEEN;
-            default:
-                throw new IllegalArgumentException("Illegal promotion piece: \'" + character + "\'");
+        /**
+         * Converts {@link PawnPromotion} value to corresponding character.
+         *
+         * @return character used in UCI notation
+         */
+        public Character toChar() {
+            return character;
+        }
+
+        /**
+         * Returns same result as {@link #hashCode()} method, but as {@code byte} instead of {@code int}.
+         *
+         * @return hash code as a {@code byte value}
+         */
+        public byte byteHashCode() {
+            return hashCode;
+        }
+
+        @Override
+        public int hashCode() {
+            return hashCode;
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            // is obj instance of PawnPromotion?
+            if (!(obj instanceof PawnPromotion))
+                return false;
+
+            // We can cast the object
+            PawnPromotion pp2 = (PawnPromotion) obj;
+            return this.hashCode == pp2.hashCode;
+        }
+
+        @Override
+        public String toString() {
+            return character == null ? "" : Character.toString(character);
+        }
+
+        @Override
+        public int compareTo(final PawnPromotion obj) {
+            return Byte.compare(this.hashCode, obj.hashCode);
+        }
+
+        // Static members -----------------------------------------------------
+
+        public static Set<PawnPromotion> values() {
+            return Collections.unmodifiableSet(values);
+        }
+
+        public static PawnPromotion fromChar(final Character character) {
+            for (PawnPromotion value : PawnPromotion.values())
+                if (value.character == character)
+                    return value;
+            throw new IllegalArgumentException("Invalid character passed");
+        }
+
+        public static PawnPromotion fromHashCode(final int hashCode) {
+            for (PawnPromotion value : PawnPromotion.values())
+                if (value.hashCode() == hashCode)
+                    return value;
+            throw new IllegalArgumentException("Invalid hash code passed");
         }
     }
 }

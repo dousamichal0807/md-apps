@@ -2,4 +2,5 @@ target
 release
 out
 .idea
+.settings
 *.iml

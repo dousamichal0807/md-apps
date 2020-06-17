@@ -2,50 +2,27 @@ package mdlib.utils.collections;
 
 import java.util.ArrayList;
 
-import mdlib.utils.Disposable;
+public final class GraphVertex<E> {
+    private final Graph<E> parentGraph;
+    ArrayList<GraphEdge<E>> edges;
+    private E value;
 
-public final class GraphVertex<E> implements Disposable {
-	private Graph<E> parentGraph;
-	ArrayList<GraphEdge<E>> edges;
-	private E value;
-	
-	GraphVertex(final Graph<E> parent, final E value) {
-		this.value = value;
-		this.parentGraph = parent;
-		this.edges = new ArrayList<>();
-	}
+    // package-only ctor
+    GraphVertex(final Graph<E> parent, final E value) {
+        this.value = value;
+        this.parentGraph = parent;
+        this.edges = new ArrayList<>();
+    }
 
-	public Graph<E> getParentGraph() {
-		Disposable.checkIsNotDisposed(this);
-		return parentGraph;
-	}
-	
-	public E getValue() {
-		Disposable.checkIsNotDisposed(this);
-		return value;
-	}
-	
-	public void setValue(final E value) {
-		Disposable.checkIsNotDisposed(this);
-		this.value = value;
-	}
-	
-	// Disposing -------------------------------------------------------------------
+    public Graph<E> getParentGraph() {
+        return parentGraph;
+    }
 
-	@Override
-	public void dispose() {
-		parentGraph.vertices.remove(this);
-		edges.forEach(GraphEdge::dispose);
-		
-		parentGraph = null;
-		edges = null;
-		value = null;
-		
-		System.gc();
-	}
+    public E getValue() {
+        return value;
+    }
 
-	@Override
-	public boolean isDisposed() {
-		return parentGraph == null;
-	}
+    public void setValue(final E value) {
+        this.value = value;
+    }
 }

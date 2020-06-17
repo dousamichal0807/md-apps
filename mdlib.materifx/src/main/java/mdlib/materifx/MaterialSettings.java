@@ -4,8 +4,9 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import mdlib.materifx.resources.MateriJResources;
 import mdlib.utils.ColorUtilities;
-import mdlib.utils.Filter;
 import mdlib.utils.FilteredAtomicReference;
+
+import java.util.Objects;
 
 /**
  * This class contains utilities for JavaFX applications that helps to make this
@@ -29,10 +30,10 @@ public final class MaterialSettings {
      */
     public static final byte THEME_LIGHT = 0;
 
-    private static final FilteredAtomicReference<Color> primaryColor = new FilteredAtomicReference<>(Filter.FILTER_NOT_NULL, Color.INDIGO);
-    private static final FilteredAtomicReference<Color> onPrimaryColor = new FilteredAtomicReference<>(Filter.FILTER_NOT_NULL, Color.WHITE);
-    private static final FilteredAtomicReference<Color> secondaryColor = new FilteredAtomicReference<>(Filter.FILTER_NOT_NULL, Color.DARKCYAN);
-    private static final FilteredAtomicReference<Color> onSecondaryColor = new FilteredAtomicReference<>(Filter.FILTER_NOT_NULL, Color.WHITE);
+    private static final FilteredAtomicReference<Color> primaryColor = new FilteredAtomicReference<>(Objects::nonNull, Color.INDIGO);
+    private static final FilteredAtomicReference<Color> primaryVariantColor = new FilteredAtomicReference<>(Objects::nonNull, Color.WHITE);
+    private static final FilteredAtomicReference<Color> secondaryColor = new FilteredAtomicReference<>(Objects::nonNull, Color.DARKCYAN);
+    private static final FilteredAtomicReference<Color> secondaryVariantColor = new FilteredAtomicReference<>(Objects::nonNull, Color.WHITE);
     private static final FilteredAtomicReference<Byte> theme = new FilteredAtomicReference<>(value -> value != null && (value == THEME_LIGHT || value == THEME_DARK), THEME_LIGHT);
 
     /**
@@ -56,7 +57,7 @@ public final class MaterialSettings {
      * @see FilteredAtomicReference
      */
     public static FilteredAtomicReference<Color> primaryVariantColor() {
-        return onPrimaryColor;
+        return primaryVariantColor;
     }
 
     /**
@@ -78,7 +79,7 @@ public final class MaterialSettings {
      * @return reference to on-secondary color
      */
     public static FilteredAtomicReference<Color> secondaryVariantColor() {
-        return onSecondaryColor;
+        return secondaryVariantColor;
     }
 
     /**

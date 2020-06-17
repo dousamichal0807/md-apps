@@ -20,12 +20,8 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
+import md.jgames.jchess.logic.*;
 import mdlib.utils.drawing.AdvancedAWTGraphics;
-import md.jgames.jchess.logic.Chessboard;
-import md.jgames.jchess.logic.ChessboardEvent;
-import md.jgames.jchess.logic.ChessboardListener;
-import md.jgames.jchess.logic.Move;
-import md.jgames.jchess.logic.Utilities;
 import md.jgames.jchess.resources.AppResources;
 
 /**
@@ -37,7 +33,10 @@ import md.jgames.jchess.resources.AppResources;
  * 
  * @see #getChessboard()
  * @see #setChessboard(Chessboard)
+ *
+ * @deprecated
  */
+@Deprecated
 public final class ChessboardView extends JComponent implements MouseListener, MouseMotionListener, ChessboardListener {
 
 	private static final long serialVersionUID = 1L;
@@ -46,7 +45,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 	private String alternativeText;
 
 	private final TreeMap<Byte, Image> chessmenImagesMap;
-	private final TreeMap<String, Color> markedSquares;
+	private final TreeMap<Square, Color> markedSquares;
 	private boolean chessboardReversed;
 
 	/**
@@ -182,19 +181,18 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 		return getImageForPiece(Chessboard.PIECE_NONE);
 	}
 
-	public void markSquare(final String sq, final Color c) {
-		Utilities.assertSquareValidity(sq);
+	public void markSquare(final Square sq, final Color c) {
 		if (c == null || c.getAlpha() == 0)
 			markedSquares.remove(sq);
 		else
 			markedSquares.put(sq, c);
 	}
 
-	public void unmarkSquare(final String sq) {
+	public void unmarkSquare(final Square sq) {
 		markedSquares.remove(sq);
 	}
 
-	public Color getMarkForSquare(final String sq) {
+	public Color getMarkForSquare(final Square sq) {
 		return markedSquares.get(sq);
 	}
 
@@ -210,7 +208,7 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 
 	// Painting & Mouse event handling ----------------------------------------
 
-	private String selectedSquare;
+	private Square selectedSquare;
 	private final TreeSet<Move> selSquarePossibleMoves;
 	private boolean mouseDown;
 
@@ -225,29 +223,26 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 		return new Rectangle(x, y, s, s);
 	}
 
-	public Rectangle getSquareBounds(final String square) {
-		Utilities.assertSquareValidity(square);
-		int x = square.charAt(0) - 'a';
-		int y = square.charAt(1) - '1';
+	public Rectangle getSquareBounds(final Square square) {
+
 		Rectangle bounds = this.getChessboardBounds();
 		int sqsz = this.getChessboardBounds().width / 8;
 		int realx, realy;
 		if (!isChessboardReversed()) {
-			realx = bounds.x + x * sqsz;
-			realy = bounds.y + (7 - y) * sqsz;
+			realx = bounds.x + square.file() * sqsz;
+			realy = bounds.y + (7 - square.rank()) * sqsz;
 		} else {
-			realx = bounds.x + (7 - x) * sqsz;
-			realy = bounds.y + y * sqsz;
+			realx = bounds.x + (7 - square.file()) * sqsz;
+			realy = bounds.y + square.rank() * sqsz;
 		}
 		return new Rectangle(realx, realy, sqsz, sqsz);
 	}
 
-	public void selectSquare(final String square) {
+	public void selectSquare(final Square square) {
 		selectedSquare = null;
 		selSquarePossibleMoves.clear();
 
 		if (square != null) {
-			Utilities.assertSquareValidity(square);
 			selectedSquare = square;
 			selSquarePossibleMoves.addAll(chessboard.possibleMovesFor(square));
 		}
@@ -266,9 +261,9 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 		if (chessboard != null) {
 			gadv.paintImage(this.getChessboardImage(), this.getChessboardBounds());
 
-			for (char rank = '1'; rank <= '8'; rank++)
-                for (char file = 'a'; file <= 'h'; file++) {
-                    String sq = file + "" + rank;
+			for (byte rank = 0; rank < 8; rank++)
+                for (byte file = 0; file < 8; file++) {
+                    Square sq = new Square(file, rank);
                     Rectangle sqb = this.getSquareBounds(sq);
                     Color mark = this.getMarkForSquare(sq);
                     if (mark != null)
@@ -342,11 +337,11 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 		Point mousePos = e.getPoint();
 
 		if (this.isEnabled() && this.getChessboardBounds().contains(mousePos)) {
-			String sqMouseDown = null;
+			Square sqMouseDown = null;
 
-			for (char f = 'a'; f <= 'h' && sqMouseDown == null; f++)
-                for (char r = '1'; r <= '8' && sqMouseDown == null; r++) {
-                    String sq = f + "" + r;
+			for (byte file = 0; file < 8 && sqMouseDown == null; file++)
+                for (byte rank = 0; rank < 8 && sqMouseDown == null; rank++) {
+                    Square sq = new Square(rank, file);
                     Rectangle sqrect = this.getSquareBounds(sq);
                     if (sqrect.contains(mousePos))
                         sqMouseDown = sq;
@@ -371,10 +366,10 @@ public final class ChessboardView extends JComponent implements MouseListener, M
 
 		if (this.isEnabled()) {
 			Point p = e.getPoint();
-			String squareMouseOver = null;
-			for (char f = 'a'; f <= 'h' && squareMouseOver == null; f++)
-                for (char r = '1'; r <= '8' && squareMouseOver == null; r++) {
-                    String sq = f + "" + r;
+			Square squareMouseOver = null;
+			for (byte file = 0; file < 8; file++)
+				for (byte rank = 0; rank < 8; rank++) {
+					Square sq = new Square(rank, file);
                     Rectangle sqrect = this.getSquareBounds(sq);
                     if (sqrect.contains(p))
                         squareMouseOver = sq;

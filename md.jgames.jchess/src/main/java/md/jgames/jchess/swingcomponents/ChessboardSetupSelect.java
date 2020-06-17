@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import md.jgames.jchess.logic.GamePlayChessboard;
 import md.jgames.jchess.logic.Utilities;
 
+@Deprecated
 public class ChessboardSetupSelect extends JPanel {
     private static final long serialVersionUID = 1L;
 

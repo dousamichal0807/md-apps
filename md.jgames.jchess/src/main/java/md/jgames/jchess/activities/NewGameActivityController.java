@@ -5,6 +5,7 @@ import md.jgames.jchess.logic.GamePlayChessboard;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 
 import java.net.URL;

@@ -1,11 +1,13 @@
 package mdlib.utils;
 
+import java.util.function.Predicate;
+
 public final class FilteredAtomicReference<V> {
 
-    private final Filter<? super V> filter;
+    private final Predicate<? super V> filter;
     private V value;
 
-    public FilteredAtomicReference(final Filter<? super V> filter, final V initialValue) {
+    public FilteredAtomicReference(final Predicate<? super V> filter, final V initialValue) {
         this.filter = filter;
         this.set(initialValue);
     }
@@ -15,7 +17,7 @@ public final class FilteredAtomicReference<V> {
     }
 
     public V set(final V value) {
-        if (filter != null && !filter.offer(value))
+        if (filter != null && !filter.test(value))
             throw new IllegalArgumentException("Value did not pass through filter: " + value);
 
         V prev = this.value;
