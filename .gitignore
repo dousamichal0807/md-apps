@@ -1,6 +1,6 @@
-target
-release
-out
-.idea
-.settings
-*.iml
+/**/target
+/**/release
+/**/out
+/**/.idea
+/**/.settings
+/**/*.iml

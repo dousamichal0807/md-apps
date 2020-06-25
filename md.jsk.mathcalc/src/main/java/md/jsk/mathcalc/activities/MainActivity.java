@@ -10,7 +10,6 @@ import java.io.IOException;
  * Main activity for MD jSK MathCalc
  *
  * @author Michal Douša
- * @see SettingsActivity
  */
 public final class MainActivity extends Scene {
 

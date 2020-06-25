@@ -1,9 +1,6 @@
 package md.jgames.jchess.logic;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -197,7 +194,7 @@ public final class Move implements Comparable<Move>, Cloneable {
      */
     public static final class PawnPromotion implements Comparable<PawnPromotion> {
 
-        private static final HashSet<PawnPromotion> values = new HashSet<>();
+        private static final ArrayList<PawnPromotion> values = new ArrayList<>(5);
 
         public static final PawnPromotion NONE = new PawnPromotion(null, (byte) 0);
         public static final PawnPromotion ROOK = new PawnPromotion('r', (byte) 1);
@@ -208,7 +205,7 @@ public final class Move implements Comparable<Move>, Cloneable {
         private final Character character;
         private final byte hashCode;
 
-        // ctor
+        // private ctor
         private PawnPromotion(final Character character, final byte hashCode) {
             this.character = character;
             this.hashCode = hashCode;
@@ -227,7 +224,7 @@ public final class Move implements Comparable<Move>, Cloneable {
         /**
          * Returns same result as {@link #hashCode()} method, but as {@code byte} instead of {@code int}.
          *
-         * @return hash code as a {@code byte value}
+         * @return hash code as a {@code byte} value
          */
         public byte byteHashCode() {
             return hashCode;
@@ -240,13 +237,8 @@ public final class Move implements Comparable<Move>, Cloneable {
 
         @Override
         public boolean equals(final Object obj) {
-            // is obj instance of PawnPromotion?
-            if (!(obj instanceof PawnPromotion))
-                return false;
-
-            // We can cast the object
-            PawnPromotion pp2 = (PawnPromotion) obj;
-            return this.hashCode == pp2.hashCode;
+            // Is `obj` instance of PawnPromotion and has the same hash code?
+            return (obj instanceof PawnPromotion) && this.hashCode() == obj.hashCode();
         }
 
         @Override
@@ -261,8 +253,8 @@ public final class Move implements Comparable<Move>, Cloneable {
 
         // Static members -----------------------------------------------------
 
-        public static Set<PawnPromotion> values() {
-            return Collections.unmodifiableSet(values);
+        public static List<PawnPromotion> values() {
+            return Collections.unmodifiableList(values);
         }
 
         public static PawnPromotion fromChar(final Character character) {

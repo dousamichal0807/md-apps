@@ -145,6 +145,7 @@ public final class Utilities {
             if (f != 8 || bk > 1 || wk > 1 || bp > 8 || wp > 8 || bp + bo > 15 || wp + wo > 15)
                 return false;
         }
+        //noinspection RedundantIfStatement
         if (bk != 1 || wk != 1)
             return false;
 

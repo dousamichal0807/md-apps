@@ -19,12 +19,12 @@ import java.util.*;
  */
 public final class GamePlayChessboard extends Chessboard implements Disposable {
 
-    private ExecutableProcess stockfishProcess;
+    private final ExecutableProcess stockfishProcess;
     private String startingFEN, currentFEN;
-    private ArrayList<Move> moves;
-    private TreeSet<Move> possibleMoves;
+    private final ArrayList<Move> moves;
+    private final TreeSet<Move> possibleMoves;
     private byte[][] pieces;
-    private Integer movesDone;
+    private int movesDone;
 
     private void update() {
         Utilities.setPosition(stockfishProcess, startingFEN, doneMoves());
@@ -36,7 +36,7 @@ public final class GamePlayChessboard extends Chessboard implements Disposable {
     }
 
     @Override
-    public String getStartingFEN() {
+    public String startingFEN() {
         Disposable.requireNotDisposed(this);
         return startingFEN;
     }
@@ -61,7 +61,7 @@ public final class GamePlayChessboard extends Chessboard implements Disposable {
     }
 
     @Override
-    public String getCurrentFEN() {
+    public String currentFEN() {
         Disposable.requireNotDisposed(this);
         if (currentFEN == null)
             throw new IllegalStateException("Chessboard is disposed");
@@ -99,12 +99,6 @@ public final class GamePlayChessboard extends Chessboard implements Disposable {
         startingFEN = fen;
         movesDone = 0;
 
-        // Create Stockfish chess engine process if not created yet
-        if (stockfishProcess == null) {
-            stockfishProcess = Utilities.createStockfishProcess();
-            stockfishProcess.start();
-        }
-
         // Always send 'ucinewgame' if we are overwriting chessboard with new game
         // For more information see Universal Chess Interface (UCI) standard.
         stockfishProcess.send("ucinewgame");
@@ -124,7 +118,8 @@ public final class GamePlayChessboard extends Chessboard implements Disposable {
             newMoves.add(moves.get(i));
         newMoves.add(move);
 
-        moves = newMoves;
+        moves.clear();
+        moves.addAll(newMoves);
         movesDone++;
 
         update();
@@ -200,6 +195,8 @@ public final class GamePlayChessboard extends Chessboard implements Disposable {
         possibleMoves = new TreeSet<>();
         startingFEN = fen;
         movesDone = 0;
+        stockfishProcess = Utilities.createStockfishProcess();
+        stockfishProcess.start();
         update();
     }
 
@@ -217,6 +214,8 @@ public final class GamePlayChessboard extends Chessboard implements Disposable {
         moves = new ArrayList<>();
         possibleMoves = new TreeSet<>();
         short[] sbmoves = sboard.getMoves();
+        stockfishProcess = Utilities.createStockfishProcess();
+        stockfishProcess.start();
         for (short sbmove : sbmoves)
             this.moves.add(new Move(sbmove));
 
@@ -226,14 +225,12 @@ public final class GamePlayChessboard extends Chessboard implements Disposable {
     @Override
     public void close() {
         if (!isDisposed()) {
-            moves = null;
-            possibleMoves = null;
+            moves.clear();
+            possibleMoves.clear();
             movesDone = 0;
             startingFEN = null;
             currentFEN = null;
-
             stockfishProcess.close();
-            stockfishProcess = null;
         }
     }
 

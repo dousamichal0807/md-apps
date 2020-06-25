@@ -4,31 +4,31 @@ import mdlib.utils.Disposable;
 import mdlib.utils.collections.BasicTree;
 import mdlib.utils.collections.BasicTreeNode;
 import mdlib.utils.collections.MDCollections;
-import mdlib.utils.collections.MDTree;
+import mdlib.utils.collections.Tree;
+import mdlib.utils.collections.TreeNode.UnmodifiableNode;
 import mdlib.utils.io.ExecutableProcess;
 
 import java.util.*;
 
-public final class AnalysisChessboard extends Chessboard implements MDTree, Disposable {
+/**
+ * Represents a chessboard good for analyzing a game. Its counterpart, {@link GamePlayChessboard} is good for playing a
+ * game. The moves are organised in a tree because of move variations, not in a list, as usually should be done. When
+ * calling {@link #redo()}, the main line is automatically used as it is there as a first child of the tree/a node.
+ */
+public final class AnalysisChessboard extends Chessboard implements Tree<Move, UnmodifiableNode<Move>>, Disposable {
+
     private String startingFEN, currentFEN;
-    private BasicTree<Move> moveTree;
-    private Vector<Integer> doneMoves;
+    private BasicTree<Move> doneMovesTree;
+    private Vector<Integer> doneMovesIndices;
     private ExecutableProcess stockfishProcess;
     private TreeSet<Move> possibleMoves;
     private byte[][] pieces;
 
     private void update() {
-        if (stockfishProcess == null) {
-            stockfishProcess = Utilities.createStockfishProcess();
-            stockfishProcess.start();
-        }
-
         // Set position
         Utilities.setPosition(stockfishProcess, startingFEN, doneMoves());
-
         // Get current FEN
         currentFEN = Utilities.getPosition(stockfishProcess);
-
         // Get all possible moves
         TreeMap<Move, Integer> moves = Utilities.getAllMovesRating(stockfishProcess, 1);
         possibleMoves.clear();
@@ -39,13 +39,13 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
     }
 
     @Override
-    public String getStartingFEN() {
+    public String startingFEN() {
         Disposable.requireNotDisposed(this);
         return startingFEN;
     }
 
     @Override
-    public String getCurrentFEN() {
+    public String currentFEN() {
         Disposable.requireNotDisposed(this);
         return currentFEN;
     }
@@ -53,18 +53,22 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
     @Override
     public int doneMovesCount() {
         Disposable.requireNotDisposed(this);
-        return doneMoves.size();
+        return doneMovesIndices.size();
     }
 
     @Override
     public List<Move> doneMoves() {
+        // Chessboard cannot be disposed
         Disposable.requireNotDisposed(this);
-        ArrayList<Move> moves = new ArrayList<>(doneMoves.size());
-        BasicTreeNode<Move> node = moveTree.rootNode();
-        for (int i = 0; i < doneMoves.size(); i++) {
-            node = node.childNodes().get(i);
+        // Create list with moves
+        ArrayList<Move> moves = new ArrayList<>(doneMovesIndices.size());
+        // Start with the root node then navigate down as specified in `this.doneMoves`
+        BasicTreeNode<Move> node = doneMovesTree.getRootNode();
+        for (Integer doneMove : doneMovesIndices) {
+            node = node.childNodes().get(doneMove);
             moves.add(node.getValue());
         }
+        // Return as unmodifiable list
         return Collections.unmodifiableList(moves);
     }
 
@@ -72,8 +76,9 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
     public void reset(final String fen) {
         Disposable.requireNotDisposed(this);
         Utilities.assertFENValidity(fen);
-        moveTree.rootNode().childNodes().clear();
-        doneMoves.clear();
+        stockfishProcess.send("ucinewgame");
+        doneMovesTree.getRootNode().clearChildren();
+        doneMovesIndices.clear();
         startingFEN = fen;
 
         update();
@@ -82,8 +87,8 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
     @Override
     public void undo() {
         Disposable.requireNotDisposed(this);
-        if (!doneMoves.isEmpty()) {
-            doneMoves.remove(doneMoves.size() - 1);
+        if (!doneMovesIndices.isEmpty()) {
+            doneMovesIndices.remove(doneMovesIndices.size() - 1);
             update();
         }
     }
@@ -92,12 +97,12 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
     public void redo() {
         Disposable.requireNotDisposed(this);
         // Get the current node and check if it has at least one subnode
-        BasicTreeNode<Move> currentNode = moveTree.rootNode();
-        for (int i : doneMoves)
+        BasicTreeNode<Move> currentNode = doneMovesTree.getRootNode();
+        for (int i : doneMovesIndices)
             currentNode = currentNode.childNodes().get(i);
         // If it has no children, then, then, cannot redo move
         if (!currentNode.childNodes().isEmpty())
-            doneMoves.add(0);
+            doneMovesIndices.add(0);
     }
 
     @Override
@@ -112,8 +117,8 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
             throw new IllegalStateException("Cannot perform given move - it is not a possible move");
 
         // Get the current node where we are
-        BasicTreeNode<Move> currentNode = moveTree.rootNode();
-        for (int i : doneMoves)
+        BasicTreeNode<Move> currentNode = doneMovesTree.getRootNode();
+        for (int i : doneMovesIndices)
             currentNode = currentNode.childNodes().get(i);
 
         // Is this move already present in the tree? If yes, don't add it again.
@@ -121,14 +126,18 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
             BasicTreeNode<Move> node = currentNode.childNodes().get(i);
             if (node.getValue().equals(move)) {
                 // We have found that move
-                doneMoves.add(i);
+                doneMovesIndices.add(i);
+                // update() and return
+                update();
                 return;
             }
         }
 
         // Otherwise, create new node and add it
-        doneMoves.add(currentNode.childNodes().size());
-        currentNode.childNodes().add(new BasicTreeNode<>(move));
+        doneMovesIndices.add(currentNode.childNodes().size());
+        currentNode.addChild(new BasicTreeNode<>(move));
+        // Update chessboard
+        update();
     }
 
     @Override
@@ -158,44 +167,40 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
     }
 
     @Override
-    public BasicTreeNode.Unmodifiable<Move> rootNode() {
-        return MDCollections.unmodifiableTree(moveTree).rootNode();
+    public UnmodifiableNode<Move> getRootNode() {
+        return MDCollections.unmodifiableTree(doneMovesTree).getRootNode();
     }
 
     /**
-     * Creates an instance of this class with initial position set to standard
-     * starting position.
+     * Creates an instance of this class with initial position set to standard starting position.
      */
     public AnalysisChessboard() {
         this(Utilities.FEN_STARTING_POSITION);
     }
 
     /**
-     * Creates an instance of this class with initial position annotated with FEN
-     * given as parameter.
+     * Creates an instance of this class with initial position annotated with FEN given as parameter.
+     *
      * @param fen FEN of the initial position
      */
     public AnalysisChessboard(final String fen) {
-        moveTree = new BasicTree<>();
-        doneMoves = new Vector<>();
+        doneMovesTree = new BasicTree<>();
+        doneMovesIndices = new Vector<>();
         possibleMoves = new TreeSet<>();
-
-        if (stockfishProcess != null)
-            stockfishProcess.send("ucinewgame");
+        stockfishProcess = Utilities.createStockfishProcess();
+        stockfishProcess.start();
 
         reset(fen);
     }
 
     /**
-     * Creates an instance of {@link AnalysisChessboard} from
-     * {@link GamePlayChessboard} instance.
+     * Creates an instance of {@link AnalysisChessboard} from {@link GamePlayChessboard} instance.
      *
      * @param chessboard the chessboard to be new instance created from
-     *
      * @throws NullPointerException if {@code null} is given as argument
      */
     public AnalysisChessboard(final GamePlayChessboard chessboard) {
-        this(chessboard.getStartingFEN());
+        this(chessboard.startingFEN());
         for (Move move : chessboard.doneMoves())
             performMove(move);
     }
@@ -209,8 +214,8 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
             stockfishProcess = null;
             startingFEN = null;
             currentFEN = null;
-            moveTree = null;
-            doneMoves = null;
+            doneMovesTree = null;
+            doneMovesIndices = null;
             possibleMoves = null;
             pieces = null;
         }
@@ -218,6 +223,6 @@ public final class AnalysisChessboard extends Chessboard implements MDTree, Disp
 
     @Override
     public boolean isDisposed() {
-        return moveTree == null;
+        return doneMovesTree == null;
     }
 }

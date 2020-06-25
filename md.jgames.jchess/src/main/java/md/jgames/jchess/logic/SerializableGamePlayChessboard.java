@@ -34,7 +34,7 @@ public class SerializableGamePlayChessboard implements Serializable {
 	public SerializableGamePlayChessboard(final GamePlayChessboard chessboard) {
 		List<Move> moveList = chessboard.getAllMoves();
 		
-		startingFEN = chessboard.getStartingFEN();
+		startingFEN = chessboard.startingFEN();
 		moves = new short[moveList.size()];
 		movesDone = chessboard.doneMovesCount();
 		

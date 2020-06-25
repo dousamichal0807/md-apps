@@ -2,7 +2,7 @@ package mdlib.materifx;
 
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import mdlib.materifx.resources.MateriJResources;
+import mdlib.materifx.resources.MateriFXResources;
 import mdlib.utils.ColorUtilities;
 import mdlib.utils.FilteredAtomicReference;
 
@@ -31,9 +31,9 @@ public final class MaterialSettings {
     public static final byte THEME_LIGHT = 0;
 
     private static final FilteredAtomicReference<Color> primaryColor = new FilteredAtomicReference<>(Objects::nonNull, Color.INDIGO);
-    private static final FilteredAtomicReference<Color> primaryVariantColor = new FilteredAtomicReference<>(Objects::nonNull, Color.WHITE);
-    private static final FilteredAtomicReference<Color> secondaryColor = new FilteredAtomicReference<>(Objects::nonNull, Color.DARKCYAN);
-    private static final FilteredAtomicReference<Color> secondaryVariantColor = new FilteredAtomicReference<>(Objects::nonNull, Color.WHITE);
+    private static final FilteredAtomicReference<Color> primaryVariantColor = new FilteredAtomicReference<>(Objects::nonNull, Color.INDIGO.darker());
+    private static final FilteredAtomicReference<Color> secondaryColor = new FilteredAtomicReference<>(Objects::nonNull, Color.CYAN);
+    private static final FilteredAtomicReference<Color> secondaryVariantColor = new FilteredAtomicReference<>(Objects::nonNull, Color.DARKCYAN);
     private static final FilteredAtomicReference<Byte> theme = new FilteredAtomicReference<>(value -> value != null && (value == THEME_LIGHT || value == THEME_DARK), THEME_LIGHT);
 
     /**
@@ -94,12 +94,12 @@ public final class MaterialSettings {
      */
     public static void launchInit() {
         // Load Roboto font
-        MateriJResources.loadFont("Roboto-Regular.ttf");
-        MateriJResources.loadFont("Roboto-Italic.ttf");
-        MateriJResources.loadFont("Roboto-Medium.ttf");
-        MateriJResources.loadFont("Roboto-MediumItalic.ttf");
-        MateriJResources.loadFont("Roboto-Bold.ttf");
-        MateriJResources.loadFont("Roboto-BoldItalic.ttf");
+        MateriFXResources.loadFont("Roboto-Regular.ttf");
+        MateriFXResources.loadFont("Roboto-Italic.ttf");
+        MateriFXResources.loadFont("Roboto-Medium.ttf");
+        MateriFXResources.loadFont("Roboto-MediumItalic.ttf");
+        MateriFXResources.loadFont("Roboto-Bold.ttf");
+        MateriFXResources.loadFont("Roboto-BoldItalic.ttf");
     }
 
     /**
@@ -111,10 +111,10 @@ public final class MaterialSettings {
     public static void activityPostInit(final Scene activity) {
 
         // Core Material CSS
-        activity.getStylesheets().add(MateriJResources.getResourceURL("material.css").toExternalForm());
+        activity.getStylesheets().add(MateriFXResources.getResourceURL("material.css").toExternalForm());
 
         // Light or dark theme CSS
-        activity.getStylesheets().add(MateriJResources.getResourceURL(theme().get() == THEME_LIGHT ?
+        activity.getStylesheets().add(MateriFXResources.getResourceURL(theme().get() == THEME_LIGHT ?
                 "material-light.css" : "material-dark.css").toExternalForm());
 
         // MATERIAL COLOR THEMING

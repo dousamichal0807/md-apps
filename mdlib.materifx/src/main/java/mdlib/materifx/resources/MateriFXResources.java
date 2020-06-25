@@ -6,10 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 
-public final class MateriJResources {
+public final class MateriFXResources {
 
     // Do not create any instances
-    private MateriJResources() {
+    private MateriFXResources() {
     }
 
     /**
@@ -22,7 +22,7 @@ public final class MateriJResources {
      *                              does not exist
      */
     public static URL getResourceURL(final String resourceName) {
-        URL url = MateriJResources.class.getResource(resourceName);
+        URL url = MateriFXResources.class.getResource(resourceName);
         if (url == null)
             throw new RuntimeException(new FileNotFoundException("MD MateriJ resource not found: " + resourceName));
         return url;
@@ -38,7 +38,7 @@ public final class MateriJResources {
      *                              does not exist
      */
     public static InputStream loadToStream(final String resourceName) {
-        InputStream stream = MateriJResources.class.getResourceAsStream(resourceName);
+        InputStream stream = MateriFXResources.class.getResourceAsStream(resourceName);
         if (stream == null)
             throw new RuntimeException(new FileNotFoundException("jCore resource not found: " + resourceName));
         return stream;

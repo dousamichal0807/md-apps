@@ -127,20 +127,20 @@ public abstract class Chessboard implements Disposable {
      *
      * @return FEN of the position when initialized
      *
-     * @see #getCurrentFEN()
+     * @see #currentFEN()
      * @see #possibleMoves()
      */
-    public abstract String getStartingFEN();
+    public abstract String startingFEN();
 
     /**
      * Used to get FEN of the current position on the chessboard.
      *
      * @return FEN of current position
      *
-     * @see #getStartingFEN()
+     * @see #startingFEN()
      * @see #possibleMoves()
      */
-    public abstract String getCurrentFEN();
+    public abstract String currentFEN();
 
     /**
      * Returns the number of done moves.
@@ -148,7 +148,7 @@ public abstract class Chessboard implements Disposable {
      * @return # of done moves.
      *
      * @see #doneMoves()
-     * @see #getCurrentFEN()
+     * @see #currentFEN()
      * @see #possibleMoves()
      * @see #undo()
      * @see #redo()
